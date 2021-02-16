@@ -74,3 +74,5 @@ release 1.1
 	- fixed jTimeSched.exe-launcher for 64-bit systems
 	- better error messages when projects/settings fail to load
 
+release 1.2
+	- move from Ant build system to Maven build system
