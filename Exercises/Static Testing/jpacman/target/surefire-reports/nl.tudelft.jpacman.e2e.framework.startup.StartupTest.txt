@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: nl.tudelft.jpacman.e2e.framework.startup.StartupTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.191 s - in nl.tudelft.jpacman.e2e.framework.startup.StartupTest

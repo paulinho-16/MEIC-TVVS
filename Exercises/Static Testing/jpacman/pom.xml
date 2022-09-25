@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <groupId>nl.tudelft.jpacman</groupId>
+  <artifactId>jpacman-framework</artifactId>
+  <version>8.1.1</version>
+  <url>https://github.com/serg-delft/jpacman-framework</url>
+  <description>
+    Pacman-inspired game, for teaching testing purposes.
+  </description>
+  <organization>
+    <url>http://www.tudelft.nl</url>
+    <name>Delft University of Technology</name>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <distributionManagement>
+    <repository>
+      <id>courses-ewi</id>
+      <url>https://courses.ewi.tudelft.nl/nexus/repository/maven-releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>courses-ewi</id>
+      <url>https://courses.ewi.tudelft.nl/nexus/repository/maven-snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <properties>
+    <!-- Maven related -->
+    <assembly.plugin.version>3.4.2</assembly.plugin.version>
+    <compiler.plugin.version>3.10.1</compiler.plugin.version>
+    <dependency.plugin.version>3.3.0</dependency.plugin.version>
+    <jar.plugin.version>3.3.0</jar.plugin.version>
+    <jxr.plugin.version>3.3.0</jxr.plugin.version>
+    <site.plugin.version>4.0.0-M3</site.plugin.version>
+    <javadoc.plugin.version>3.4.1</javadoc.plugin.version>
+    <projectinfo.plugin.version>2.9</projectinfo.plugin.version>
+    <shade.plugin.version>3.4.0</shade.plugin.version>
+    <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
+
+    <!-- Project related -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- Project's deps -->
+    <guava.plugin.version>24.1-jre</guava.plugin.version>
+    <jacoco.plugin.version>0.8.8</jacoco.plugin.version>
+
+    <!-- JUnit related -->
+    <junit.jupiter.version>5.1.1</junit.jupiter.version>
+    <junit.platform.version>1.1.1</junit.platform.version>
+    <junit.version>4.12</junit.version>
+    <junit.vintage.version>5.1.1</junit.vintage.version>
+    <cucumber.version>1.2.5</cucumber.version>
+    <assertj.version>3.9.1</assertj.version>
+    <mockito.version>2.18.0</mockito.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.plugin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${junit.vintage.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-runner</artifactId>
+      <version>${junit.platform.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>${junit.platform.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M1</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.1.1</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!-- This plugin will set properties values using dependency information -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${dependency.plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${site.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${projectinfo.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler.plugin.version}</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${assembly.plugin.version}</version>
+        <configuration>
+          <descriptors>
+            <descriptor>${basedir}/src-assembly.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${jar.plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>test-files</id>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${shade.plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.plugin.version}</version>
+        <configuration>
+          <trimStackTrace>false</trimStackTrace>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>default-prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <haltOnFailure>false</haltOnFailure>
+                <rules>
+                <rule>
+                    <element>BUNDLE</element>
+                   <limits>
+                     <limit>
+                        <counter>LINE</counter>
+                        <value>COVEREDRATIO</value>
+                        <minimum>0.60</minimum>
+                    </limit>
+                    </limits>
+                </rule>
+                </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--
+        The [Checkstyle](https://checkstyle.sourceforge.io), [SpotBugs](https://spotbugs.github.io),
+        and [PMD](https://pmd.github.io) plugins have configurations, for the
+        checkstyle:checkstyle and pmd:pmd targets to work properly.  The plugins
+        should also be specified under the build section, see:
+        https://github.com/sevntu-checkstyle/checkstyle-samples/blob/master/maven-project/pom.xml
+      -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <configLocation>${basedir}/rulesets/checkstyle-rules.xml</configLocation>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>10.3.3</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.19.0</version>
+        <configuration>
+          <rulesets>
+            <ruleset>${basedir}/rulesets/pmd-unusedcode.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-basic.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-braces.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-clone.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-codesize.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-comments.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-controversial.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-coupling.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-design.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-empty.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-finalizers.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-imports.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-j2ee.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-javabeans.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-junit.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-logging-jakarta-commons.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-logging-java.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-metrics.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_13.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_14.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_15.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_junit4.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-naming.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-optimizations.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-quickstart.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-strictexception.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-strings.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-sunsecure.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-typeresolution.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-unnecessary.xml</ruleset>
+          </rulesets>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.7.2.0</version>
+        <configuration>
+          <includeFilterFile>rulesets/spotbugs-rules.xml</includeFilterFile>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${site.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${projectinfo.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${javadoc.plugin.version}</version>
+        <configuration>
+          <failOnError>false</failOnError>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <id>default</id>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>${jxr.plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.plugin.version}</version>
+      </plugin>
+
+      <plugin> <!-- JUnit report -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>${surefire.plugin.version}</version>
+      </plugin>
+
+      <!-- Static tools: Checkstyle, PMD, Spotbugs -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <configLocation>${basedir}/rulesets/checkstyle-rules.xml</configLocation>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.19.0</version>
+        <configuration>
+          <rulesets>
+            <ruleset>${basedir}/rulesets/pmd-unusedcode.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-basic.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-braces.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-clone.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-codesize.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-comments.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-controversial.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-coupling.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-design.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-empty.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-finalizers.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-imports.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-j2ee.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-javabeans.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-junit.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-logging-jakarta-commons.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-logging-java.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-metrics.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_13.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_14.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_15.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating_to_junit4.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-migrating.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-naming.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-optimizations.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-quickstart.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-strictexception.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-strings.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-sunsecure.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-typeresolution.xml</ruleset>
+            <ruleset>${basedir}/rulesets/pmd-unnecessary.xml</ruleset>
+          </rulesets>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.7.2.0</version>
+        <configuration>
+          <includeFilterFile>rulesets/spotbugs-rules.xml</includeFilterFile>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </reporting>
+</project>

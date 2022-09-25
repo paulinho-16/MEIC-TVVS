@@ -1,0 +1,8 @@
+nl.tudelft.jpacman
+nl.tudelft.jpacman.board
+nl.tudelft.jpacman.game
+nl.tudelft.jpacman.level
+nl.tudelft.jpacman.npc
+nl.tudelft.jpacman.npc.ghost
+nl.tudelft.jpacman.sprite
+nl.tudelft.jpacman.ui

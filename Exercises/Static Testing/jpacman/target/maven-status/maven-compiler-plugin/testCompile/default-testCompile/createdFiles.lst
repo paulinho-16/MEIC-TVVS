@@ -1,0 +1,13 @@
+nl\tudelft\jpacman\board\BasicSquare.class
+nl\tudelft\jpacman\board\BoardTest.class
+nl\tudelft\jpacman\board\BasicUnit.class
+nl\tudelft\jpacman\e2e\framework\startup\StartupTest.class
+nl\tudelft\jpacman\integration\StartupSystemTest.class
+nl\tudelft\jpacman\LauncherSmokeTest.class
+nl\tudelft\jpacman\level\LevelTest.class
+nl\tudelft\jpacman\sprite\SpriteTest.class
+nl\tudelft\jpacman\board\BoardFactoryTest.class
+nl\tudelft\jpacman\board\SquareTest.class
+nl\tudelft\jpacman\board\OccupantTest.class
+nl\tudelft\jpacman\npc\ghost\NavigationTest.class
+nl\tudelft\jpacman\e2e\framework\startup\StartupSteps.class

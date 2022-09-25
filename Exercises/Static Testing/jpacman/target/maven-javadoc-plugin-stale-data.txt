@@ -1,0 +1,132 @@
+@options
+@packages
+@argfile
+-classpath
+'C:/Users/Paulinho/.m2/repository/com/google/guava/guava/24.1-jre/guava-24.1-jre.jar;C:/Users/Paulinho/.m2/repository/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar;C:/Users/Paulinho/.m2/repository/org/checkerframework/checker-compat-qual/2.0.0/checker-compat-qual-2.0.0.jar;C:/Users/Paulinho/.m2/repository/com/google/errorprone/error_prone_annotations/2.1.3/error_prone_annotations-2.1.3.jar;C:/Users/Paulinho/.m2/repository/com/google/j2objc/j2objc-annotations/1.1/j2objc-annotations-1.1.jar;C:/Users/Paulinho/.m2/repository/org/codehaus/mojo/animal-sniffer-annotations/1.14/animal-sniffer-annotations-1.14.jar;C:/Users/Paulinho/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.1.1/junit-jupiter-api-5.1.1.jar;C:/Users/Paulinho/.m2/repository/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar;C:/Users/Paulinho/.m2/repository/org/opentest4j/opentest4j/1.0.0/opentest4j-1.0.0.jar;C:/Users/Paulinho/.m2/repository/org/junit/platform/junit-platform-commons/1.1.1/junit-platform-commons-1.1.1.jar;C:/Users/Paulinho/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.1.1/junit-jupiter-engine-5.1.1.jar;C:/Users/Paulinho/.m2/repository/org/junit/platform/junit-platform-engine/1.1.1/junit-platform-engine-1.1.1.jar;C:/Users/Paulinho/.m2/repository/org/junit/vintage/junit-vintage-engine/5.1.1/junit-vintage-engine-5.1.1.jar;C:/Users/Paulinho/.m2/repository/org/junit/platform/junit-platform-runner/1.1.1/junit-platform-runner-1.1.1.jar;C:/Users/Paulinho/.m2/repository/org/junit/platform/junit-platform-suite-api/1.1.1/junit-platform-suite-api-1.1.1.jar;C:/Users/Paulinho/.m2/repository/org/junit/platform/junit-platform-launcher/1.1.1/junit-platform-launcher-1.1.1.jar;C:/Users/Paulinho/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.1.1/junit-jupiter-params-5.1.1.jar;C:/Users/Paulinho/.m2/repository/junit/junit/4.12/junit-4.12.jar;C:/Users/Paulinho/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar;C:/Users/Paulinho/.m2/repository/org/mockito/mockito-core/2.18.0/mockito-core-2.18.0.jar;C:/Users/Paulinho/.m2/repository/net/bytebuddy/byte-buddy/1.8.3/byte-buddy-1.8.3.jar;C:/Users/Paulinho/.m2/repository/net/bytebuddy/byte-buddy-agent/1.8.3/byte-buddy-agent-1.8.3.jar;C:/Users/Paulinho/.m2/repository/org/objenesis/objenesis/2.6/objenesis-2.6.jar;C:/Users/Paulinho/.m2/repository/org/assertj/assertj-core/3.9.1/assertj-core-3.9.1.jar;C:/Users/Paulinho/.m2/repository/info/cukes/cucumber-java/1.2.5/cucumber-java-1.2.5.jar;C:/Users/Paulinho/.m2/repository/info/cukes/cucumber-core/1.2.5/cucumber-core-1.2.5.jar;C:/Users/Paulinho/.m2/repository/info/cukes/cucumber-html/0.2.3/cucumber-html-0.2.3.jar;C:/Users/Paulinho/.m2/repository/info/cukes/cucumber-jvm-deps/1.0.5/cucumber-jvm-deps-1.0.5.jar;C:/Users/Paulinho/.m2/repository/info/cukes/gherkin/2.12.2/gherkin-2.12.2.jar;C:/Users/Paulinho/.m2/repository/info/cukes/cucumber-junit/1.2.5/cucumber-junit-1.2.5.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'1.8'
+-sourcepath
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java;C:/Users/Paulinho/Desktop/jpacman/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2022 <a href="http://www.tudelft.nl">Delft University of Technology</a>. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Paulinho/Desktop/jpacman/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'jpacman-framework 8.1.1 API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'C:/Users/Paulinho/Desktop/jpacman/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'jpacman-framework 8.1.1 API'
+nl.tudelft.jpacman.board
+nl.tudelft.jpacman.game
+nl.tudelft.jpacman
+nl.tudelft.jpacman.level
+nl.tudelft.jpacman.npc.ghost
+nl.tudelft.jpacman.npc
+nl.tudelft.jpacman.sprite
+nl.tudelft.jpacman.ui
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/board/Board.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/board/BoardFactory.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/board/Direction.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/board/Square.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/board/Unit.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/game/Game.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/game/GameFactory.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/game/SinglePlayerGame.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/Launcher.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/CollisionInteractionMap.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/CollisionMap.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/DefaultPlayerInteractionMap.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/Level.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/LevelFactory.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/MapParser.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/Pellet.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/Player.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/PlayerCollisions.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/level/PlayerFactory.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/Blinky.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/Clyde.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/GhostColor.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/GhostFactory.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/Inky.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/Navigation.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/package-info.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/ghost/Pinky.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/npc/Ghost.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/PacmanConfigurationException.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/sprite/AnimatedSprite.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/sprite/EmptySprite.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/sprite/ImageSprite.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/sprite/PacManSprites.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/sprite/Sprite.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/sprite/SpriteStore.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/ui/Action.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/ui/BoardPanel.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/ui/ButtonPanel.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/ui/PacKeyListener.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/ui/PacManUI.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/ui/PacManUiBuilder.java'
+'C:/Users/Paulinho/Desktop/jpacman/src/main/java/nl/tudelft/jpacman/ui/ScorePanel.java'
+C:\Users\Paulinho\.m2\repository\com\google\guava\guava\24.1-jre\guava-24.1-jre.jar = 1664047476679
+C:\Users\Paulinho\.m2\repository\com\google\code\findbugs\jsr305\1.3.9\jsr305-1.3.9.jar = 1664047476431
+C:\Users\Paulinho\.m2\repository\org\checkerframework\checker-compat-qual\2.0.0\checker-compat-qual-2.0.0.jar = 1664047476430
+C:\Users\Paulinho\.m2\repository\com\google\errorprone\error_prone_annotations\2.1.3\error_prone_annotations-2.1.3.jar = 1664047476422
+C:\Users\Paulinho\.m2\repository\com\google\j2objc\j2objc-annotations\1.1\j2objc-annotations-1.1.jar = 1664047476421
+C:\Users\Paulinho\.m2\repository\org\codehaus\mojo\animal-sniffer-annotations\1.14\animal-sniffer-annotations-1.14.jar = 1664047476477
+C:\Users\Paulinho\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.1.1\junit-jupiter-api-5.1.1.jar = 1664047476539
+C:\Users\Paulinho\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar = 1664047476508
+C:\Users\Paulinho\.m2\repository\org\opentest4j\opentest4j\1.0.0\opentest4j-1.0.0.jar = 1664047476509
+C:\Users\Paulinho\.m2\repository\org\junit\platform\junit-platform-commons\1.1.1\junit-platform-commons-1.1.1.jar = 1664047476558
+C:\Users\Paulinho\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.1.1\junit-jupiter-engine-5.1.1.jar = 1664047476608
+C:\Users\Paulinho\.m2\repository\org\junit\platform\junit-platform-engine\1.1.1\junit-platform-engine-1.1.1.jar = 1664047476603
+C:\Users\Paulinho\.m2\repository\org\junit\vintage\junit-vintage-engine\5.1.1\junit-vintage-engine-5.1.1.jar = 1664047476613
+C:\Users\Paulinho\.m2\repository\org\junit\platform\junit-platform-runner\1.1.1\junit-platform-runner-1.1.1.jar = 1664047476624
+C:\Users\Paulinho\.m2\repository\org\junit\platform\junit-platform-suite-api\1.1.1\junit-platform-suite-api-1.1.1.jar = 1664047476650
+C:\Users\Paulinho\.m2\repository\org\junit\platform\junit-platform-launcher\1.1.1\junit-platform-launcher-1.1.1.jar = 1664047476680
+C:\Users\Paulinho\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.1.1\junit-jupiter-params-5.1.1.jar = 1664047476759
+C:\Users\Paulinho\.m2\repository\junit\junit\4.12\junit-4.12.jar = 1664047476741
+C:\Users\Paulinho\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar = 1664047476721
+C:\Users\Paulinho\.m2\repository\org\mockito\mockito-core\2.18.0\mockito-core-2.18.0.jar = 1664047476837
+C:\Users\Paulinho\.m2\repository\net\bytebuddy\byte-buddy\1.8.3\byte-buddy-1.8.3.jar = 1664047477394
+C:\Users\Paulinho\.m2\repository\net\bytebuddy\byte-buddy-agent\1.8.3\byte-buddy-agent-1.8.3.jar = 1664047476801
+C:\Users\Paulinho\.m2\repository\org\objenesis\objenesis\2.6\objenesis-2.6.jar = 1664047476818
+C:\Users\Paulinho\.m2\repository\org\assertj\assertj-core\3.9.1\assertj-core-3.9.1.jar = 1664047477649
+C:\Users\Paulinho\.m2\repository\info\cukes\cucumber-java\1.2.5\cucumber-java-1.2.5.jar = 1664047476926
+C:\Users\Paulinho\.m2\repository\info\cukes\cucumber-core\1.2.5\cucumber-core-1.2.5.jar = 1664047476958
+C:\Users\Paulinho\.m2\repository\info\cukes\cucumber-html\0.2.3\cucumber-html-0.2.3.jar = 1664047476940
+C:\Users\Paulinho\.m2\repository\info\cukes\cucumber-jvm-deps\1.0.5\cucumber-jvm-deps-1.0.5.jar = 1664047477230
+C:\Users\Paulinho\.m2\repository\info\cukes\gherkin\2.12.2\gherkin-2.12.2.jar = 1664047477491
+C:\Users\Paulinho\.m2\repository\info\cukes\cucumber-junit\1.2.5\cucumber-junit-1.2.5.jar = 1664047477044
+C:\Users\Paulinho\Desktop\jpacman\src\main\java = 1663901298000
+C:\Users\Paulinho\Desktop\jpacman\target\generated-sources\annotations = 1664047495227
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\allclasses-index.html = 1664120687130
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\allclasses.html = 1664120687141
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\allpackages-index.html = 1664120687133
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\constant-values.html = 1664120686846
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\deprecated-list.html = 1664120687137
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\element-list = 1664120686776
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\help-doc.html = 1664120687153
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\index-all.html = 1664120687121
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\index.html = 1664120687148
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\member-search-index.js = 1664120687116
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\member-search-index.zip = 1664120687117
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\overview-summary.html = 1664120687150
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\overview-tree.html = 1664120687067
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\package-search-index.js = 1664120687107
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\package-search-index.zip = 1664120687110
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\script.js = 1664120687160
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\search.js = 1664120687162
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\serialized-form.html = 1664120686854
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\stylesheet.css = 1664120687157
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\type-search-index.js = 1664120687113
+C:\Users\Paulinho\Desktop\jpacman\target\site\apidocs\type-search-index.zip = 1664120687114
