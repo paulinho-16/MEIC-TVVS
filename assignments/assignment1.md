@@ -34,4 +34,27 @@ The project consists of the following directories:
 
 ## Static Testing
 
+Static Testing is a software testing technique, used to check defects in software applications without executing the code.
+It is concerned with the analysis of the static system representation (source code, documents, models, prototypes, etc.) to discover faults.
+
+The two main types of static testing techniques are:
+  - **manual examinations**: include analysis of code done manually, also known as reviews
+  - **automated analysis**: static analysis done using tools
+
+Some main reasons to perform static testing are:
+  - Early defect detection and correction
+  - Reduced testing cost and time, as it is easier to identify and solve errors at an early stage of development
+  - Improved maintainability of code and design, by enforcing formalized coding standards
+  - Detection of dependencies and inconsistencies in software, whose arrangement reduces the number of defects found later in the process
+
 ## Tools, Reports and Bugs
+
+### Group 10
+
+- Hugo Guimarães, up201806490
+- Paulo Ribeiro, up201806505
+
+### Sources
+
+- [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/recitations/recitation-1.pdf)
+- [What is Static Testing? What is a Testing Review? - Guru99](https://www.guru99.com/testing-review.html)
