@@ -1,2 +1,37 @@
 # Assignment 1 - Static Testing
 
+## Project Description
+
+The *jTimeSched* project consists of a simple and lightweight time tracking tool, through a lean but extremely intuitive GUI.
+The program allows the user to track elapsed time for tasks and projects and use the data for the recording of time worked.
+
+It's possible to create or delete a task/project at any time.
+For each task/project, the program displays its title, creation date, total time spent and time spent on the current day, all these parameters being manually editable by the user.
+In addition, each item also has an associated checkbox that allows us to mark completed tasks/projects, a colour that allows us to mark similar projects, for example, and a button that starts/stops counting the time for that item.
+The program allows the user to sort items in ascending or descending order based on each of these properties.
+
+The GUI also displays the total number of tasks/projects, the overall time spent on them, and the total time spent on the current day.
+There is also an input field that allows the user to highlight items based on textual search.
+Finally, the interface presents a log of the events that occurred in the current session, recording, for example, changes in items and activations/deactivations in the times of each task/project.
+
+The image below depicts an example of using this project.
+
+![Usage example of the *jTimeSched* project](./images/jTimeSched.png)
+
+The project consists of the following directories:
+
+- `assets` - content related to the program icon
+- `assignments` - folder that will store our assignments along the course
+- `conf` - content stored by the program, with all the information about the tasks/projects
+- `dist` - content related to the distribution of the program
+- `launcher` - contains the project executables
+- `rulesets` - folder with the set of rules defined for the testing tools
+- `src` - contains the source code of the project, including the main class *JTimeSchedApp*
+  - `gui` - code related to the program interface
+  - `misc` - functions that are required from lots of places in the code, in this case, related to date formatting.
+  - `project` - main code with the program logic
+- `target` - generated files upon build, including the reports of the testing tools
+
+## Static Testing
+
+## Tools, Reports and Bugs
