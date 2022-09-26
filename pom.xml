@@ -12,6 +12,9 @@
     </organization>
 
     <properties>
+        <!-- Maven related -->
+        <site.plugin.version>4.0.0-M3</site.plugin.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -69,6 +72,13 @@
                 </executions>
             </plugin>
 
+            <!-- Maven Site plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${site.plugin.version}</version>
+            </plugin>
+
             <!-- Checkstyle tool (Static Testing) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -90,6 +100,13 @@
 
     <reporting>
         <plugins>
+
+            <!-- Maven Site plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${site.plugin.version}</version>
+            </plugin>
 
             <!-- Checkstyle tool (Static Testing) -->
             <plugin>
