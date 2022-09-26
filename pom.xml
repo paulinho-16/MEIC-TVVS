@@ -95,6 +95,13 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <!-- SpotBugs tool (Static Testing) -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.7.2.0</version>
+            </plugin>
         </plugins>
     </build>
 
@@ -116,6 +123,14 @@
                 <configuration>
                     <configLocation>${basedir}/rulesets/checkstyle-rules.xml</configLocation>
                 </configuration>
+            </plugin>
+
+            <!-- SpotBugs tool (Static Testing) -->
+
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.7.2.0</version>
             </plugin>
         </plugins>
     </reporting>
