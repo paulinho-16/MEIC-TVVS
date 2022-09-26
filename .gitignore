@@ -190,3 +190,10 @@ dist/*
 !dist/create_dist_zip.sh
 conf/*
 assets/output/*
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+jtimesched.iml
