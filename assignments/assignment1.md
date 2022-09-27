@@ -80,15 +80,41 @@ braceAdjustment indentation from 2 to 0
 This bug caused a plentiful amount of warnings related to tabs being used instead of empty spaces.
 By fixing this issue, we reduced the amount of warnings from 4150 to 611 (then 603 after lowering the bracket indentation from 2 to 0).
 
+File -> Settings -> Code Style -> Java -> Use Tab off
 CTRL + SHIFT + R -> using Regex, replace [\t] by four empty spaces, only in the `src` directory
 
 2.
 
-![FileTabCharacter bug found by Checkstyle](./images/checkstyle_bug2.png)
+![LeftCurly bug found by Checkstyle](./images/checkstyle_bug2.png)
 
+File -> Settings -> Code Style -> Java -> Brace Adjustement all options to End of line
+Then, right click on the `src` directory and click "Reformat Code", to apply settings to ...
+Tinha 4 bugs deste tipo.
+Dizer que Reformat Code até eliminou mais warnings do que o esperado, relacionados com linhas vazias
 
+ Before:
+```java
+public static String getAppVersion()
+    {
+        String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
+        return (appVersion != null) ? appVersion : "unknown";
+    }
+```
+
+After:
+```java
+public static String getAppVersion() {
+        String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
+        return (appVersion != null) ? appVersion : "unknown";
+    }
+```
 
 3.
+
+![MissingSwitchDefault bug found by Checkstyle](./images/checkstyle_bug3.png)
+
+Procuramos formas de corrigir o problema de uma só vez, mas após não encontrarmos soluções, acabamos por corrigir manualmente, já que eram apenas 7 situações no código.
+
 
 4.
 

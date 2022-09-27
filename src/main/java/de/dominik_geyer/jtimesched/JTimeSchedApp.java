@@ -1,17 +1,17 @@
 /* jTimeSched - A simple and lightweight time tracking tool
  * Copyright (C) 2010-2012 Dominik D. Geyer <dominik.geyer@gmail.com>
  * See LICENSE.txt for details.
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,12 +42,12 @@ public class JTimeSchedApp {
     static public final String SETTINGS_FILE = CONF_PATH + "jTimeSched.settings";
     static public final String LOCK_FILE = CONF_PATH + "jTimeSched.lock";
     static public final String LOG_FILE = CONF_PATH + "jTimeSched.log";
-    
+
     static private Logger LOGGER;
-    
+
     /**
      * Application's entry point.
-     * 
+     *
      * @param args Command line arguments
      */
     public static void main(String[] args) {
@@ -55,49 +55,48 @@ public class JTimeSchedApp {
         File dirConf = new File(JTimeSchedApp.CONF_PATH);
         if (!dirConf.isDirectory())
             dirConf.mkdir();
-        
+
         // request lock
         if (!JTimeSchedApp.lockInstance()) {
             JOptionPane.showMessageDialog(null,
                     "It seems that there is already a running instance of jTimeSched " +
-                    "using the projects-file in use.\n\n" +
-                    "Possible solutions:\n" +
-                    "1) Most likely you want to use the running instance residing in the system-tray.\n" +
-                    "2) Run another instance from within a different directory.\n" +
-                    "3) Delete the lock-file '" + JTimeSchedApp.LOCK_FILE + "' manually if it is a leftover caused by an unclean shutdown.\n\n" +
-                    "jTimeSched will exit now.",
+                            "using the projects-file in use.\n\n" +
+                            "Possible solutions:\n" +
+                            "1) Most likely you want to use the running instance residing in the system-tray.\n" +
+                            "2) Run another instance from within a different directory.\n" +
+                            "3) Delete the lock-file '" + JTimeSchedApp.LOCK_FILE + "' manually if it is a leftover caused by an unclean shutdown.\n\n" +
+                            "jTimeSched will exit now.",
                     "Another running instance for projects-file detected",
                     JOptionPane.WARNING_MESSAGE);
-            
+
             System.exit(1);
         }
-        
-        
+
+
         // initialize logger
         JTimeSchedApp.LOGGER = Logger.getLogger("JTimeSched");
         JTimeSchedApp.LOGGER.setLevel(Level.ALL);
-        
+
         try {
             FileHandler fh = new FileHandler(JTimeSchedApp.LOG_FILE, true);
             fh.setFormatter(new PlainTextFormatter());
             JTimeSchedApp.LOGGER.addHandler(fh);
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Enable to initialize logger for file "+JTimeSchedApp.LOG_FILE);
+            System.err.println("Enable to initialize logger for file " + JTimeSchedApp.LOG_FILE);
         }
-        
-        
+
+
         // open main frame
         new JTimeSchedFrame();
     }
 
     /**
      * Determines and returns the application's version, which is set in the Manifest file in attribute "ImplementationVersion".
-     * 
+     *
      * @return String The application's version; if not set in Manifest or not available it returns the string "unknown"
      */
-    public static String getAppVersion()
-    {
+    public static String getAppVersion() {
         String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
         return (appVersion != null) ? appVersion : "unknown";
     }
