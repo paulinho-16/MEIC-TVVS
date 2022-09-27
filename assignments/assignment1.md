@@ -49,12 +49,79 @@ Some main reasons to perform static testing are:
 
 ## Tools, Reports and Bugs
 
-### Group 10
+For this first assignment, we chose to use [Checkstyle](https://checkstyle.sourceforge.io/) and [Spotbugs](https://spotbugs.github.io/) as tools to detect and fix bugs in the source code.
+For each of these tools, we present its description, configuration, a summary of the report produced by them, five discovered bugs and our solution to fix them.
+
+### Checkstyle
+
+
+#### Description
+
+// TODO
+
+#### Configuration
+
+// TODO
+
+braceAdjustment indentation from 2 to 0
+
+#### Report
+
+// TODO: 
+
+#### Bugs Found
+
+1. 
+
+![FileTabCharacter bug found by Checkstyle](./images/checkstyle_bug1.png)
+
+![FileTabCharacter bug fix](./images/checkstyle_fix1.png)
+
+This bug caused a plentiful amount of warnings related to tabs being used instead of empty spaces.
+By fixing this issue, we reduced the amount of warnings from 4150 to 611 (then 603 after lowering the bracket indentation from 2 to 0).
+
+CTRL + SHIFT + R -> using Regex, replace [\t] by four empty spaces, only in the `src` directory
+
+2.
+
+![FileTabCharacter bug found by Checkstyle](./images/checkstyle_bug2.png)
+
+
+
+3.
+
+4.
+
+5.
+
+#### Bugs Fixes
+
+### SpotBugs
+
+#### Description
+
+// TODO
+
+#### Configuration
+
+// TODO
+
+#### Report
+
+// TODO
+
+#### Bugs Found
+
+#### Bug Fixes
+
+-----
+
+#### Group 10
 
 - Hugo Guimarães, up201806490
 - Paulo Ribeiro, up201806505
 
-### Sources
+#### Sources
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/recitations/recitation-1.pdf)
 - [What is Static Testing? What is a Testing Review? - Guru99](https://www.guru99.com/testing-review.html)
