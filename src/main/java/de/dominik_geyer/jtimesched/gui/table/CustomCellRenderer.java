@@ -107,6 +107,8 @@ public class CustomCellRenderer extends JLabel implements TableCellRenderer {
                 this.setIcon(ii);
                 this.setHorizontalAlignment(SwingConstants.CENTER);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + modelColumn);
         }
 
         if (prj.isRunning()) {

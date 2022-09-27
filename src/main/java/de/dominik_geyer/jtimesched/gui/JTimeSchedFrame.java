@@ -811,6 +811,8 @@ public class JTimeSchedFrame extends JFrame {
                     case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
                         handleStartPause(prj);
                         break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + column);
                 }
             } else if (button == MouseEvent.BUTTON2) {    // middle button
                 handleStartPause(prj);
@@ -853,6 +855,8 @@ public class JTimeSchedFrame extends JFrame {
                         }
 
                         break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + column);
                 }
             }
         }
@@ -949,6 +953,8 @@ public class JTimeSchedFrame extends JFrame {
                     popup.show(e.getComponent(), e.getX(), e.getY());
 
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + column);
             }
         }
     }
@@ -972,7 +978,7 @@ public class JTimeSchedFrame extends JFrame {
 
             ProjectTableModel ptm = (ProjectTableModel) tblSched.getModel();
             Project p = ptm.getProjectAt(row);
-
+            
             switch (keyCode) {
                 case KeyEvent.VK_SPACE:
                     handleStartPause(p);
@@ -982,6 +988,8 @@ public class JTimeSchedFrame extends JFrame {
                     handleDelete(ptm, p, row);
                     e.consume();
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + keyCode);
             }
         }
 

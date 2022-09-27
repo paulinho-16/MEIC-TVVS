@@ -92,7 +92,7 @@ Then, right click on the `src` directory and click "Reformat Code", to apply set
 Tinha 4 bugs deste tipo.
 Dizer que Reformat Code até eliminou mais warnings do que o esperado, relacionados com linhas vazias
 
- Before:
+Before:
 ```java
 public static String getAppVersion()
     {
@@ -115,6 +115,34 @@ public static String getAppVersion() {
 
 Procuramos formas de corrigir o problema de uma só vez, mas após não encontrarmos soluções, acabamos por corrigir manualmente, já que eram apenas 7 situações no código.
 
+Before:
+```java
+if (button == MouseEvent.BUTTON1) {    // left button
+    switch (column) {
+        case ProjectTableModel.COLUMN_ACTION_DELETE:
+            if (e.getClickCount() == 2)
+                handleDelete(tstm, prj, row);
+            break;
+        case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+            handleStartPause(prj);
+            break;
+    }
+}
+```
+
+After:
+```java
+if (button == MouseEvent.BUTTON1) {    // left button
+    switch (column) {
+        case ProjectTableModel.COLUMN_ACTION_DELETE:
+            {...}
+        case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+            {...}
+        default:
+            throw new IllegalStateException("Unexpected value: " + column);
+    }
+}
+```
 
 4.
 

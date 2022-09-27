@@ -191,6 +191,8 @@ public class ProjectTableModel extends AbstractTableModel {
                 else
                     prj.adjustSecondsToday(newSeconds);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + column);
         }
 
         this.fireTableRowsUpdated(row, row);

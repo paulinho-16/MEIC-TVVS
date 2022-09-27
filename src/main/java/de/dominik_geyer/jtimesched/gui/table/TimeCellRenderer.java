@@ -57,6 +57,8 @@ public class TimeCellRenderer extends JLabel implements TableCellRenderer {
                         String.format("Quota overall: %s", ProjectTime.formatSeconds(prj.getQuotaOverall())) :
                         null);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + modelColumn);
         }
 
         if (prj.isRunning()) {
