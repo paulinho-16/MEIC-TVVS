@@ -238,6 +238,14 @@ Dizer que resolvemos estes 4 erros , reduzindo para 20 erros.
 Explicar o porquê de tornar a classe static aumentar a performance
 Reduziu de 20 para 19 bugs
 
+Using static classes when possible has two effects on improving performance:
+- Fewer null checks because a static method invocation does not require a null check on the receiver
+- Fewer allocations which leads to less memory pressure and time spent in GC (Garbage Collector).
+
+> sources
+> https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance
+> https://stackoverflow.com/questions/12279438/performance-of-static-methods-vs-instance-methods
+
 Before:
 ```java
   class JTimeSchedGUILogHandler extends Handler {...}
@@ -249,6 +257,31 @@ After:
 ```
 
 4.
+
+![BC_UNCONFIRMED_CAST bug found by SpotBugs](./images/spotbugs_bug4.png)
+
+The `ProjectTable` class is a subclass of `JTable`.
+In the initial code segment, it is assumed that an object from the parent class is in fact the `ProjectTable` class.
+
+Before:
+```java
+  ProjectTable pt = (ProjectTable) table;
+  (...)
+```
+
+Therefore, a class verification should be added before the cast, to ensure it will succeed.
+
+After:
+```java
+  if (table instanceof ProjectTable) {
+    ProjectTable pt=(ProjectTable)table;
+    (...)
+  }
+```
+
+Dizer que reduziu para 18 erros.
+
+>source https://stackoverflow.com/questions/4862960/explicit-casting-from-super-class-to-subclass
 
 5.
 

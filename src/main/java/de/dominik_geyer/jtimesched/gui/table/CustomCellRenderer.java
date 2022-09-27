@@ -59,11 +59,13 @@ public class CustomCellRenderer extends JLabel implements TableCellRenderer {
                 this.setText((String) value);
 
                 // row-color
-                ProjectTable pt = (ProjectTable) table;
-                if (pt.isHighlightRow(modelRow)) {
-                    this.setBorder(new LineBorder(Color.BLACK, 2));
-                } else {
-                    this.setBorder(null);
+                if (table instanceof ProjectTable) {
+                    ProjectTable pt = (ProjectTable) table;
+                    if (pt.isHighlightRow(modelRow)) {
+                        this.setBorder(new LineBorder(Color.BLACK, 2));
+                    } else {
+                        this.setBorder(null);
+                    }
                 }
 
                 if (!prj.getNotes().isEmpty()) {
