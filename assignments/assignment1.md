@@ -225,6 +225,12 @@ After:
 
 2.
 
+![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug2.png)
+
+Explicar o porquê dos erros, e dizer a solução (https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
+Explicar como criamos a cópia da Date...
+Dizer que resolvemos estes 4 erros , reduzindo para 20 erros.
+
 3.
 
 4.

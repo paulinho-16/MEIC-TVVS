@@ -52,6 +52,7 @@ public class Project {
         this.timeCreated = new Date();
     }
 
+
     public String getTitle() {
         return title;
     }
@@ -69,11 +70,11 @@ public class Project {
     }
 
     public Date getTimeCreated() {
-        return timeCreated;
+        return new Date(timeCreated.getTime());
     }
 
     public Date getTimeStart() {
-        return timeStart;
+        return new Date(timeStart.getTime());
     }
 
     public boolean isRunning() {
@@ -97,7 +98,7 @@ public class Project {
     }
 
     public void setTimeCreated(Date timeCreated) {
-        this.timeCreated = timeCreated;
+        this.timeCreated = new Date(timeCreated.getTime());
     }
 
     public void setRunning(boolean running) {
@@ -105,7 +106,7 @@ public class Project {
     }
 
     public void setTimeStart(Date timeStart) {
-        this.timeStart = timeStart;
+        this.timeStart = new Date(timeStart.getTime());
     }
 
     protected int getElapsedSeconds() throws ProjectException {
