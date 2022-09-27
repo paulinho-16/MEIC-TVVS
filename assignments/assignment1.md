@@ -54,26 +54,31 @@ For each of these tools, we present its description, configuration, a summary of
 
 ### Checkstyle
 
-
 #### Description
 
-// TODO
+Checkstyle is a development tool to help write **Java** code that adheres to a coding standard. It automates the verification of Java code to spare humans from this tedious (but fundamental) task.
+It can check many aspects of your source code, namely class or method design problems, code layout and formatting issues.
 
 #### Configuration
 
-// TODO
+Since it is a very configurable tool, we decided to configure it according to the Google coding conventions from [Google Java Style](https://google.github.io/styleguide/javaguide.html).
+Although, after analysing the project code, we modified some of those checks, namely:
 
-braceAdjustment indentation from 2 to 0
-arrayInitIndent indentation from 2 to 4
-(ver valores default na net e comparar)
-
-metemos o max size da LineLength a 200 em vez de 100, explicar que tinha alguams violações, mas que o código fazia sentido da forma como estava
+- Changed the value of the property `braceAdjustment` of the module `Indentation`. This property specifies how far a braces should be indented when on the next line. We changed it from 2 to 0 since the source code presented no indentation on these cases and it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). However, this modification  became useless as soon as we fixed the bug number 2 (LeftCurly) by positioning the braces on the end of the line instead of the following line.
+- Changed the value of the property `arrayInitIndent` of the module `Indentation`. This property specifies how far an array initialisation should be indented when on next line. We changed it from 2 to 4 as it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). This discarded some of the initial warnings.
+- Changed the value of the property `max` of the module `LineLength`. This property specifies the maximum line length allowed. We changed it from 100 to 200 since the first value resulted in many warnings that did not make sense in our context. For example, it occurred in some comments whose line separation would not be advantageous.
 
 #### Report
 
-// TODO: 
+The initial report produced by Checkstyle identified 1450 warnings and 0 errors.
+The file with the most warnings is `JTimeSchedFrame.java`, with 1557 found, and the rules with the most violations are `FileTabCharacter`, with 2275, and `Indentation`, with 1511. We decided to explore bugs of different categories, them being **whitespace**, **indentation**, **blocks**, **coding**, **imports** and **modifier**.
+
+![Initial report of Checkstyle](./images/checkstyle_report.png)
 
 #### Bugs & Fixes
+
+The following section presents some of the explored bugs and the solutions we came up with to fix them. Notice that we avoided solving problems manually on a case-by-case basis, always trying to find automated ways to solve them using the IntelliJ IDE's potential.
+This way, fixing similar bugs becomes much faster, approaching real-life contexts.
 
 1. 
 
@@ -302,4 +307,5 @@ Dizer que terminamos com apenas 16 erros.
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/recitations/recitation-1.pdf)
 - [What is Static Testing? What is a Testing Review? - Guru99](https://www.guru99.com/testing-review.html)
+- [Checkstyle](https://checkstyle.sourceforge.io/)
 - [Bug Descriptions - SpotBugs](https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html)
