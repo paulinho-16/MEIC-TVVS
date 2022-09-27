@@ -1000,7 +1000,7 @@ public class JTimeSchedFrame extends JFrame {
         }
     }
 
-    class JTimeSchedGUILogHandler extends Handler {
+    static class JTimeSchedGUILogHandler extends Handler {
         private JTextArea logArea;
 
         public JTimeSchedGUILogHandler(JTextArea ta) {

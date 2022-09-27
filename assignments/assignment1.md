@@ -225,13 +225,28 @@ After:
 
 2.
 
-![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug2.png)
+![EI_EXPOSE_REP and EI_EXPOSE_REP2 bugs found by SpotBugs](./images/spotbugs_bug2.png)
 
 Explicar o porquê dos erros, e dizer a solução (https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
 Explicar como criamos a cópia da Date...
 Dizer que resolvemos estes 4 erros , reduzindo para 20 erros.
 
 3.
+
+![SIC_INNER_SHOULD_BE_STATIC bug found by SpotBugs](./images/spotbugs_bug3.png)
+
+Explicar o porquê de tornar a classe static aumentar a performance
+Reduziu de 20 para 19 bugs
+
+Before:
+```java
+  class JTimeSchedGUILogHandler extends Handler {...}
+```
+
+After:
+```java
+  static class JTimeSchedGUILogHandler extends Handler {...}
+```
 
 4.
 
