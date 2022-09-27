@@ -64,8 +64,8 @@ public class ColorCellEditor extends AbstractCellEditor implements TableCellEdit
 
         Point posClick = e.getLocationOnScreen();
         ColorDialog colorDialog = new ColorDialog(parent,
-                posClick,
-                this.currentColor);
+            posClick,
+            this.currentColor);
 
         colorDialog.setVisible(true);
         this.selectedColor = colorDialog.getSelectedColor();

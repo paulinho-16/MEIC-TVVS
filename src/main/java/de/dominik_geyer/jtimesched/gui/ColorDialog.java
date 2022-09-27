@@ -55,14 +55,14 @@ public class ColorDialog extends JDialog implements ActionListener {
 
 
         Color[] colors = new Color[]{
-                new Color(219, 148, 112),
-                new Color(219, 201, 112),
-                //new Color(184,    219,    112),
-                new Color(130, 219, 112),
-                new Color(229, 122, 194),
-                //new Color(207,    111,    63),
-                new Color(122, 194, 229),
-                new Color(205, 205, 205),
+            new Color(219, 148, 112),
+            new Color(219, 201, 112),
+            //new Color(184,    219,    112),
+            new Color(130, 219, 112),
+            new Color(229, 122, 194),
+            //new Color(207,    111,    63),
+            new Color(122, 194, 229),
+            new Color(205, 205, 205),
         };
 
         JPanel panel = new JPanel();
@@ -135,8 +135,8 @@ public class ColorDialog extends JDialog implements ActionListener {
                                                      ColorDialog.this.dispose();
                                                  }
                                              },
-                keyStroke,
-                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            keyStroke,
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 
         this.pack();
@@ -150,8 +150,8 @@ public class ColorDialog extends JDialog implements ActionListener {
             this.selectedColor = null;
         } else if (e.getActionCommand() == CHOOSER) {
             Color chosenColor = JColorChooser.showDialog(ColorDialog.this,
-                    "Choose a custom color",
-                    ColorDialog.this.currentColor);
+                "Choose a custom color",
+                ColorDialog.this.currentColor);
 
             if (chosenColor != null)
                 this.selectedColor = chosenColor;

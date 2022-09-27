@@ -57,15 +57,15 @@ public class JTimeSchedApp {
         // request lock
         if (!JTimeSchedApp.lockInstance()) {
             JOptionPane.showMessageDialog(null,
-                    "It seems that there is already a running instance of jTimeSched " +
-                            "using the projects-file in use.\n\n" +
-                            "Possible solutions:\n" +
-                            "1) Most likely you want to use the running instance residing in the system-tray.\n" +
-                            "2) Run another instance from within a different directory.\n" +
-                            "3) Delete the lock-file '" + JTimeSchedApp.LOCK_FILE + "' manually if it is a leftover caused by an unclean shutdown.\n\n" +
-                            "jTimeSched will exit now.",
-                    "Another running instance for projects-file detected",
-                    JOptionPane.WARNING_MESSAGE);
+                "It seems that there is already a running instance of jTimeSched " +
+                    "using the projects-file in use.\n\n" +
+                    "Possible solutions:\n" +
+                    "1) Most likely you want to use the running instance residing in the system-tray.\n" +
+                    "2) Run another instance from within a different directory.\n" +
+                    "3) Delete the lock-file '" + JTimeSchedApp.LOCK_FILE + "' manually if it is a leftover caused by an unclean shutdown.\n\n" +
+                    "jTimeSched will exit now.",
+                "Another running instance for projects-file detected",
+                JOptionPane.WARNING_MESSAGE);
 
             System.exit(1);
         }

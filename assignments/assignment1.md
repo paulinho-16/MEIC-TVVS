@@ -64,6 +64,10 @@ For each of these tools, we present its description, configuration, a summary of
 // TODO
 
 braceAdjustment indentation from 2 to 0
+arrayInitIndent indentation from 2 to 4
+(ver valores default na net e comparar)
+
+metemos o max size da LineLength a 200 em vez de 100, explicar que tinha alguams violações, mas que o código fazia sentido da forma como estava
 
 #### Report
 
@@ -82,6 +86,8 @@ By fixing this issue, we reduced the amount of warnings from 4150 to 611 (then 6
 
 File -> Settings -> Code Style -> Java -> Use Tab off
 CTRL + SHIFT + R -> using Regex, replace [\t] by four empty spaces, only in the `src` directory
+
+Nota: dizer que corrigimos outros problemas da categoria "indentation", como por ex. a indentação dos arrayInitIndent
 
 2.
 
@@ -157,9 +163,11 @@ Gerar novo report bla bla bla
 
 5.
 
+
+
 #### Bugs Fixes
 
-### SpotBugs
+## SpotBugs
 
 #### Description
 

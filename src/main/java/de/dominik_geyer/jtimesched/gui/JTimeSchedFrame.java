@@ -144,13 +144,13 @@ public class JTimeSchedFrame extends JFrame {
             JTimeSchedApp.getLogger().severe("Error loading projects file: " + e.getMessage());
 
             JOptionPane.showMessageDialog(this,
-                    "An error occurred while loading the projects file.\n" +
-                            "Details: \"" + e.getMessage() + "\"\n\n" +
-                            "Please correct or remove the file '" + JTimeSchedApp.PRJ_FILE + "' " +
-                            "(or replace it with the backup file '" + JTimeSchedApp.PRJ_FILE_BACKUP + "', if present).\n\n" +
-                            "JTimeSched will quit now to avoid data corruption.",
-                    "Error loading projects file",
-                    JOptionPane.ERROR_MESSAGE);
+                "An error occurred while loading the projects file.\n" +
+                    "Details: \"" + e.getMessage() + "\"\n\n" +
+                    "Please correct or remove the file '" + JTimeSchedApp.PRJ_FILE + "' " +
+                    "(or replace it with the backup file '" + JTimeSchedApp.PRJ_FILE_BACKUP + "', if present).\n\n" +
+                    "JTimeSched will quit now to avoid data corruption.",
+                "Error loading projects file",
+                JOptionPane.ERROR_MESSAGE);
 
             System.exit(1);
         }
@@ -365,8 +365,8 @@ public class JTimeSchedFrame extends JFrame {
 
             if (running) {
                 strTray += String.format(" - %s %s",
-                        runningProject.getTitle(),
-                        ProjectTime.formatSeconds(runningProject.getSecondsToday()));
+                    runningProject.getTitle(),
+                    ProjectTime.formatSeconds(runningProject.getSecondsToday()));
             }
 
             // escape ampersand-character on windows
@@ -434,10 +434,10 @@ public class JTimeSchedFrame extends JFrame {
             }
 
             strStats = String.format("%d project%s | %s overall | %s today",
-                    projectCount,
-                    (projectCount == 1) ? "" : "s",
-                    ProjectTime.formatSeconds(timeOverall),
-                    ProjectTime.formatSeconds(timeToday));
+                projectCount,
+                (projectCount == 1) ? "" : "s",
+                ProjectTime.formatSeconds(timeOverall),
+                ProjectTime.formatSeconds(timeToday));
         }
 
         this.lblOverall.setText(strStats);
@@ -449,18 +449,18 @@ public class JTimeSchedFrame extends JFrame {
             itemToggleProject.setEnabled(false);
         } else {
             this.itemToggleProject.setLabel(
-                    (this.currentProject.isRunning() ? "Pause" : "Start") +
-                            " \"" + this.currentProject.getTitle() + "\"");
+                (this.currentProject.isRunning() ? "Pause" : "Start") +
+                    " \"" + this.currentProject.getTitle() + "\"");
             itemToggleProject.setEnabled(true);
         }
     }
 
     public void handleStartPause(Project prj) {
         JTimeSchedApp.getLogger().info(String.format("%s project '%s' (time overall: %s, time today: %s)",
-                (prj.isRunning()) ? "Pausing" : "Starting",
-                prj.getTitle(),
-                ProjectTime.formatSeconds(prj.getSecondsOverall()),
-                ProjectTime.formatSeconds(prj.getSecondsToday())));
+            (prj.isRunning()) ? "Pausing" : "Starting",
+            prj.getTitle(),
+            ProjectTime.formatSeconds(prj.getSecondsOverall()),
+            ProjectTime.formatSeconds(prj.getSecondsToday())));
 
         try {
             if (prj.isRunning()) {
@@ -551,9 +551,9 @@ public class JTimeSchedFrame extends JFrame {
 
             if (!strCurrentDay.equals(strStartDay)) {
                 JTimeSchedApp.getLogger().info(String.format("Resetting project '%s' (previous time: %s; checked: %s)",
-                        p.getTitle(),
-                        ProjectTime.formatSeconds(p.getSecondsToday()),
-                        (p.isChecked() ? "yes" : "no")));
+                    p.getTitle(),
+                    ProjectTime.formatSeconds(p.getSecondsToday()),
+                    (p.isChecked() ? "yes" : "no")));
 
                 p.resetToday();            // reset time today
                 p.setChecked(false);    // uncheck project
@@ -570,14 +570,14 @@ public class JTimeSchedFrame extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog(JTimeSchedFrame.this,
-                            "<html><big>jTimeSched</big><br/>Version " +
-                                    JTimeSchedApp.getAppVersion() + "<br/><br/>" +
-                                    "written by Dominik D. Geyer<br/>" +
-                                    "&lt;code@dominik-geyer.de&gt;<br/><br/>" +
-                                    "released under the GPLv3 license</html>",
-                            "About jTimeSched",
-                            JOptionPane.INFORMATION_MESSAGE,
-                            JTimeSchedFrame.getImageIcon("appicon/jTimeSched_on_64px.png"));
+                        "<html><big>jTimeSched</big><br/>Version " +
+                            JTimeSchedApp.getAppVersion() + "<br/><br/>" +
+                            "written by Dominik D. Geyer<br/>" +
+                            "&lt;code@dominik-geyer.de&gt;<br/><br/>" +
+                            "released under the GPLv3 license</html>",
+                        "About jTimeSched",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        JTimeSchedFrame.getImageIcon("appicon/jTimeSched_on_64px.png"));
                 }
             };
 
@@ -819,10 +819,10 @@ public class JTimeSchedFrame extends JFrame {
                     case ProjectTableModel.COLUMN_TIMEOVERALL:
                     case ProjectTableModel.COLUMN_TIMETODAY:
                         String input = JOptionPane.showInputDialog(JTimeSchedFrame.this,
-                                "Enter new quota for time " +
-                                        (column == ProjectTableModel.COLUMN_TIMEOVERALL ? "overall" : "today") + ":",
-                                ProjectTime.formatSeconds(
-                                        (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getQuotaOverall() : prj.getQuotaToday()));
+                            "Enter new quota for time " +
+                                (column == ProjectTableModel.COLUMN_TIMEOVERALL ? "overall" : "today") + ":",
+                            ProjectTime.formatSeconds(
+                                (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getQuotaOverall() : prj.getQuotaToday()));
 
                         if (input != null) {
                             int newSeconds = 0;
@@ -838,9 +838,9 @@ public class JTimeSchedFrame extends JFrame {
                                 tstm.fireTableRowsUpdated(row, row);
                             } catch (ParseException pe) {
                                 JOptionPane.showMessageDialog(JTimeSchedFrame.this,
-                                        "Invalid seconds-string, keeping previous value.",
-                                        "Invalid input",
-                                        JOptionPane.ERROR_MESSAGE);
+                                    "Invalid seconds-string, keeping previous value.",
+                                    "Invalid input",
+                                    JOptionPane.ERROR_MESSAGE);
                             }
                         }
                         break;
@@ -1019,8 +1019,8 @@ public class JTimeSchedFrame extends JFrame {
         public void publish(LogRecord lr) {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             String line = String.format("%s %s%n",
-                    sdf.format(new Date(lr.getMillis())),
-                    lr.getMessage());
+                sdf.format(new Date(lr.getMillis())),
+                lr.getMessage());
             this.logArea.append(line);
         }
     }

@@ -46,14 +46,14 @@ public class TimeCellRenderer extends JLabel implements TableCellRenderer {
             case ProjectTableModel.COLUMN_TIMETODAY:
                 tcc = new TimeCellComponent(prj.getSecondsToday(), prj.getQuotaToday());
                 tcc.setToolTipText(prj.getQuotaToday() > 0 ?
-                        String.format("Quota today: %s", ProjectTime.formatSeconds(prj.getQuotaToday())) :
-                        null);
+                    String.format("Quota today: %s", ProjectTime.formatSeconds(prj.getQuotaToday())) :
+                    null);
                 break;
             case ProjectTableModel.COLUMN_TIMEOVERALL:
                 tcc = new TimeCellComponent(prj.getSecondsOverall(), prj.getQuotaOverall());
                 tcc.setToolTipText(prj.getQuotaOverall() > 0 ?
-                        String.format("Quota overall: %s", ProjectTime.formatSeconds(prj.getQuotaOverall())) :
-                        null);
+                    String.format("Quota overall: %s", ProjectTime.formatSeconds(prj.getQuotaOverall())) :
+                    null);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + modelColumn);

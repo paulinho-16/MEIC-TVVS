@@ -39,7 +39,7 @@ public class ProjectTableModel extends AbstractTableModel {
     public static final int COLUMN_ACTION_STARTPAUSE = 7;
 
     private String[] columnNames = new String[]{
-            "", "", "Title", "", "Created", "Time Overall", "Time Today", "",
+        "", "", "Title", "", "Created", "Time Overall", "Time Today", "",
     };
 
 
@@ -153,15 +153,15 @@ public class ProjectTableModel extends AbstractTableModel {
             case ProjectTableModel.COLUMN_CHECK:
                 Boolean checked = (Boolean) value;
                 JTimeSchedApp.getLogger().info(String.format("%s check for project '%s'",
-                        (checked) ? "Set" : "Unset",
-                        prj.getTitle()));
+                    (checked) ? "Set" : "Unset",
+                    prj.getTitle()));
                 prj.setChecked(checked);
                 break;
             case ProjectTableModel.COLUMN_TITLE:
                 String title = (String) value;
                 JTimeSchedApp.getLogger().info(String.format("Renamed project '%s' to '%s'",
-                        prj.getTitle(),
-                        title));
+                    prj.getTitle(),
+                    title));
                 prj.setTitle(title);
                 break;
             case ProjectTableModel.COLUMN_COLOR:
@@ -169,9 +169,9 @@ public class ProjectTableModel extends AbstractTableModel {
                 break;
             case ProjectTableModel.COLUMN_CREATED:
                 JTimeSchedApp.getLogger().info(String.format("Manually set create date for project '%s' from %s to %s",
-                        prj.getTitle(),
-                        ProjectTime.formatDate(prj.getTimeCreated()),
-                        ProjectTime.formatDate((Date) value)));
+                    prj.getTitle(),
+                    ProjectTime.formatDate(prj.getTimeCreated()),
+                    ProjectTime.formatDate((Date) value)));
                 prj.setTimeCreated((Date) value);
                 break;
             case ProjectTableModel.COLUMN_TIMEOVERALL:
@@ -179,10 +179,10 @@ public class ProjectTableModel extends AbstractTableModel {
                 int oldSeconds = (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getSecondsOverall() : prj.getSecondsToday();
                 int newSeconds = ((Integer) value).intValue();
                 JTimeSchedApp.getLogger().info(String.format("Manually set time %s for project '%s' from %s to %s",
-                        (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? "overall" : "today",
-                        prj.getTitle(),
-                        ProjectTime.formatSeconds(oldSeconds),
-                        ProjectTime.formatSeconds(newSeconds)));
+                    (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? "overall" : "today",
+                    prj.getTitle(),
+                    ProjectTime.formatSeconds(oldSeconds),
+                    ProjectTime.formatSeconds(newSeconds)));
 
                 if (column == ProjectTableModel.COLUMN_TIMEOVERALL)
                     prj.setSecondsOverall(newSeconds);
@@ -209,8 +209,8 @@ public class ProjectTableModel extends AbstractTableModel {
         this.fireTableRowsDeleted(row, row);
 
         JTimeSchedApp.getLogger().info(String.format("Removed project '%s' (time overall: %s, time today: %s)",
-                p.getTitle(),
-                ProjectTime.formatSeconds(p.getSecondsOverall()),
-                ProjectTime.formatSeconds(p.getSecondsToday())));
+            p.getTitle(),
+            ProjectTime.formatSeconds(p.getSecondsOverall()),
+            ProjectTime.formatSeconds(p.getSecondsToday())));
     }
 }
