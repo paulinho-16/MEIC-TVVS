@@ -707,16 +707,31 @@ public class JTimeSchedFrame extends JFrame {
         FileInputStream fis = null;
         FileOutputStream fos = null;
 
-        fis = new FileInputStream(file);
-        fos = new FileOutputStream(new File(JTimeSchedApp.PRJ_FILE_BACKUP));
+        try {
+            fis = new FileInputStream(file);
+            fos = new FileOutputStream(JTimeSchedApp.PRJ_FILE_BACKUP);
 
-        byte[] buf = new byte[1024];
-        int i = 0;
-        while ((i = fis.read(buf)) != -1) {
-            fos.write(buf, 0, i);
+            byte[] buf = new byte[1024];
+            int i = 0;
+            while ((i = fis.read(buf)) != -1) {
+                fos.write(buf, 0, i);
+            }
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        fis.close();
-        fos.close();
     }
 
     protected void loadSettings() throws FileNotFoundException, Exception {

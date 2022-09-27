@@ -285,6 +285,12 @@ Dizer que reduziu para 18 erros.
 
 5.
 
+![OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE bug found by SpotBugs](./images/spotbugs_bug5.png)
+
+Explicar o porquê deste erro acontecer, e explicar como a nossa solução resolve isso
+
+Dizer que terminamos com apenas 16 erros.
+
 -----
 
 #### Group 10
@@ -296,3 +302,4 @@ Dizer que reduziu para 18 erros.
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/recitations/recitation-1.pdf)
 - [What is Static Testing? What is a Testing Review? - Guru99](https://www.guru99.com/testing-review.html)
+- [Bug Descriptions - SpotBugs](https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html)
