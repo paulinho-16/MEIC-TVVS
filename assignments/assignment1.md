@@ -152,7 +152,7 @@ if (button == MouseEvent.BUTTON1) {    // left button
 
 4.
 
-![CustomImport Order bug found by Checkstyle](./images/checkstyle_bug4.png)
+![CustomImportOrder bug found by Checkstyle](./images/checkstyle_bug4.png)
 
 File -> Settings -> CodeStyle -> Java -> Imports
 Mudar valores class count e name count para 500
@@ -163,7 +163,25 @@ Gerar novo report bla bla bla
 
 5.
 
+![ModifierOrder bug found by Checkstyle](./images/checkstyle_bug5.png)
 
+Variable declaration order different from the TLS suggestions, such as:
+- `static public` in place of `public static`
+- `static private` in place of `private static`
+
+This issues can be easily fixed by using the IntelIJ replace command `CTRL+SHIFT+R` on the entire `src` directory.
+
+Before:
+```java
+    static public final String LOG_FILE = CONF_PATH + "jTimeSched.log";
+    static private Logger LOGGER;
+```
+
+After:
+```java
+    public static final String LOG_FILE = CONF_PATH + "jTimeSched.log";
+    private static Logger LOGGER;
+```
 
 #### Bugs Fixes
 

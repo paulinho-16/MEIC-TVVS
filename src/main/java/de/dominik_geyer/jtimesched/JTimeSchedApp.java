@@ -32,16 +32,16 @@ import javax.swing.JOptionPane;
  * Main class of the application.
  */
 public class JTimeSchedApp {
-    static public final String DATA_PATH = "data/";
-    static public final String IMAGES_PATH = DATA_PATH + "img/";
-    static public final String CONF_PATH = "conf/";
-    static public final String PRJ_FILE = CONF_PATH + "jTimeSched.projects";
-    static public final String PRJ_FILE_BACKUP = JTimeSchedApp.PRJ_FILE + ".backup";
-    static public final String SETTINGS_FILE = CONF_PATH + "jTimeSched.settings";
-    static public final String LOCK_FILE = CONF_PATH + "jTimeSched.lock";
-    static public final String LOG_FILE = CONF_PATH + "jTimeSched.log";
+    public static final String DATA_PATH = "data/";
+    public static final String IMAGES_PATH = DATA_PATH + "img/";
+    public static final String CONF_PATH = "conf/";
+    public static final String PRJ_FILE = CONF_PATH + "jTimeSched.projects";
+    public static final String PRJ_FILE_BACKUP = JTimeSchedApp.PRJ_FILE + ".backup";
+    public static final String SETTINGS_FILE = CONF_PATH + "jTimeSched.settings";
+    public static final String LOCK_FILE = CONF_PATH + "jTimeSched.lock";
+    public static final String LOG_FILE = CONF_PATH + "jTimeSched.log";
 
-    static private Logger LOGGER;
+    private static Logger LOGGER;
 
     /**
      * Application's entry point.
