@@ -73,7 +73,7 @@ metemos o max size da LineLength a 200 em vez de 100, explicar que tinha alguams
 
 // TODO: 
 
-#### Bugs Found
+#### Bugs & Fixes
 
 1. 
 
@@ -100,19 +100,19 @@ Dizer que Reformat Code até eliminou mais warnings do que o esperado, relaciona
 
 Before:
 ```java
-public static String getAppVersion()
-    {
-        String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
-        return (appVersion != null) ? appVersion : "unknown";
-    }
+  public static String getAppVersion()
+      {
+          String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
+          return (appVersion != null) ? appVersion : "unknown";
+      }
 ```
 
 After:
 ```java
-public static String getAppVersion() {
-        String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
-        return (appVersion != null) ? appVersion : "unknown";
-    }
+  public static String getAppVersion() {
+          String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
+          return (appVersion != null) ? appVersion : "unknown";
+      }
 ```
 
 3.
@@ -123,31 +123,31 @@ Procuramos formas de corrigir o problema de uma só vez, mas após não encontra
 
 Before:
 ```java
-if (button == MouseEvent.BUTTON1) {    // left button
-    switch (column) {
-        case ProjectTableModel.COLUMN_ACTION_DELETE:
-            if (e.getClickCount() == 2)
-                handleDelete(tstm, prj, row);
-            break;
-        case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
-            handleStartPause(prj);
-            break;
-    }
-}
+  if (button == MouseEvent.BUTTON1) {    // left button
+      switch (column) {
+          case ProjectTableModel.COLUMN_ACTION_DELETE:
+              if (e.getClickCount() == 2)
+                  handleDelete(tstm, prj, row);
+              break;
+          case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+              handleStartPause(prj);
+              break;
+      }
+  }
 ```
 
 After:
 ```java
-if (button == MouseEvent.BUTTON1) {    // left button
-    switch (column) {
-        case ProjectTableModel.COLUMN_ACTION_DELETE:
-            {...}
-        case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
-            {...}
-        default:
-            throw new IllegalStateException("Unexpected value: " + column);
-    }
-}
+  if (button == MouseEvent.BUTTON1) {    // left button
+      switch (column) {
+          case ProjectTableModel.COLUMN_ACTION_DELETE:
+              {...}
+          case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+              {...}
+          default:
+              throw new IllegalStateException("Unexpected value: " + column);
+      }
+  }
 ```
 
 4.
@@ -173,17 +173,15 @@ This issues can be easily fixed by using the IntelIJ replace command `CTRL+SHIFT
 
 Before:
 ```java
-    static public final String LOG_FILE = CONF_PATH + "jTimeSched.log";
-    static private Logger LOGGER;
+  static public final String LOG_FILE = CONF_PATH + "jTimeSched.log";
+  static private Logger LOGGER;
 ```
 
 After:
 ```java
-    public static final String LOG_FILE = CONF_PATH + "jTimeSched.log";
-    private static Logger LOGGER;
+  public static final String LOG_FILE = CONF_PATH + "jTimeSched.log";
+  private static Logger LOGGER;
 ```
-
-#### Bugs Fixes
 
 ## SpotBugs
 
@@ -199,9 +197,39 @@ After:
 
 // TODO
 
-#### Bugs Found
+Dizer que após corrigir erros do Checkstyle, demos build ao projeto (`mvn package`) e ao gerar o report verificamos que tem apenas 25 erros comparados aos 32 do report gerado antes da correção dos erros do Checkstyle.
+Portanto, concluir que alguns erros eram comuns.
 
-#### Bug Fixes
+#### Bugs & Fixes
+
+1.
+
+![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug1.png)
+
+Explicar o porquê do erro e explicar fix, e dizer que reduziu para 24 bugs.
+
+Before:
+```java
+  File dirConf = new File(JTimeSchedApp.CONF_PATH);
+  if (!dirConf.isDirectory())
+    dirConf.mkdir();
+```
+
+After:
+```java
+  File dirConf = new File(JTimeSchedApp.CONF_PATH);
+  if (!dirConf.isDirectory())
+    if (!dirConf.mkdir())
+      throw new IOException("Unable to create path");
+```
+
+2.
+
+3.
+
+4.
+
+5.
 
 -----
 

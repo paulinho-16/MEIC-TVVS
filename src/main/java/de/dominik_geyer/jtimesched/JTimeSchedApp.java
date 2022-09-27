@@ -21,6 +21,7 @@ package de.dominik_geyer.jtimesched;
 import de.dominik_geyer.jtimesched.gui.JTimeSchedFrame;
 import de.dominik_geyer.jtimesched.misc.PlainTextFormatter;
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 import java.util.logging.FileHandler;
@@ -48,11 +49,12 @@ public class JTimeSchedApp {
      *
      * @param args Command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // FIXME: allow custom configuration path via command-line argument [#22]
         File dirConf = new File(JTimeSchedApp.CONF_PATH);
         if (!dirConf.isDirectory())
-            dirConf.mkdir();
+            if (!dirConf.mkdir())
+                throw new IOException("Unable to create path");
 
         // request lock
         if (!JTimeSchedApp.lockInstance()) {
