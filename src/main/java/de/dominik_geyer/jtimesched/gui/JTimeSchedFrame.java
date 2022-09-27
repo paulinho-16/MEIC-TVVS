@@ -18,6 +18,13 @@
 
 package de.dominik_geyer.jtimesched.gui;
 
+import de.dominik_geyer.jtimesched.JTimeSchedApp;
+import de.dominik_geyer.jtimesched.gui.table.ProjectTable;
+import de.dominik_geyer.jtimesched.project.Project;
+import de.dominik_geyer.jtimesched.project.ProjectException;
+import de.dominik_geyer.jtimesched.project.ProjectSerializer;
+import de.dominik_geyer.jtimesched.project.ProjectTableModel;
+import de.dominik_geyer.jtimesched.project.ProjectTime;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -53,7 +60,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -69,18 +75,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.RowSorter.SortKey;
-
-import de.dominik_geyer.jtimesched.JTimeSchedApp;
-import de.dominik_geyer.jtimesched.gui.table.ProjectTable;
-import de.dominik_geyer.jtimesched.project.Project;
-import de.dominik_geyer.jtimesched.project.ProjectException;
-import de.dominik_geyer.jtimesched.project.ProjectSerializer;
-import de.dominik_geyer.jtimesched.project.ProjectTableModel;
-import de.dominik_geyer.jtimesched.project.ProjectTime;
 
 
 @SuppressWarnings("serial")
@@ -978,7 +976,7 @@ public class JTimeSchedFrame extends JFrame {
 
             ProjectTableModel ptm = (ProjectTableModel) tblSched.getModel();
             Project p = ptm.getProjectAt(row);
-            
+
             switch (keyCode) {
                 case KeyEvent.VK_SPACE:
                     handleStartPause(p);

@@ -146,6 +146,15 @@ if (button == MouseEvent.BUTTON1) {    // left button
 
 4.
 
+![CustomImport Order bug found by Checkstyle](./images/checkstyle_bug4.png)
+
+File -> Settings -> CodeStyle -> Java -> Imports
+Mudar valores class count e name count para 500
+Packages to Use Import with * -> Eliminar todas as linhas
+Import layout -> meter imagem e explicar
+Após as alterações, fazer Reformat Code para as aplicar
+Gerar novo report bla bla bla
+
 5.
 
 #### Bugs Fixes

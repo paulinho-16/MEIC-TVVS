@@ -18,15 +18,13 @@
 
 package de.dominik_geyer.jtimesched.gui.table;
 
+import de.dominik_geyer.jtimesched.project.Project;
+import de.dominik_geyer.jtimesched.project.ProjectTableModel;
 import java.awt.Component;
-
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
-
-import de.dominik_geyer.jtimesched.project.Project;
-import de.dominik_geyer.jtimesched.project.ProjectTableModel;
 
 
 @SuppressWarnings("serial")

@@ -18,19 +18,17 @@
 
 package de.dominik_geyer.jtimesched.gui.table;
 
+import de.dominik_geyer.jtimesched.gui.ColorDialog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
-
-import de.dominik_geyer.jtimesched.gui.ColorDialog;
 
 
 @SuppressWarnings("serial")

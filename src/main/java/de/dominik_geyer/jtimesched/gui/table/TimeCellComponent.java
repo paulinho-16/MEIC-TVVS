@@ -18,13 +18,11 @@
 
 package de.dominik_geyer.jtimesched.gui.table;
 
+import de.dominik_geyer.jtimesched.project.ProjectTime;
 import java.awt.Color;
 import java.awt.Graphics;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import de.dominik_geyer.jtimesched.project.ProjectTime;
 
 @SuppressWarnings("serial")
 public class TimeCellComponent extends JLabel {

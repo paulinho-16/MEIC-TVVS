@@ -18,16 +18,14 @@
 
 package de.dominik_geyer.jtimesched.gui.table;
 
+import de.dominik_geyer.jtimesched.project.Project;
+import de.dominik_geyer.jtimesched.project.ProjectTableModel;
 import java.awt.Color;
 import java.awt.Component;
-
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.TableCellRenderer;
-
-import de.dominik_geyer.jtimesched.project.Project;
-import de.dominik_geyer.jtimesched.project.ProjectTableModel;
 
 
 @SuppressWarnings("serial")

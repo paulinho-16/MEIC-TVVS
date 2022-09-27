@@ -18,16 +18,14 @@
 
 package de.dominik_geyer.jtimesched.gui.table;
 
+import de.dominik_geyer.jtimesched.project.ProjectTime;
 import java.awt.Component;
 import java.text.ParseException;
 import java.util.Date;
-
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import de.dominik_geyer.jtimesched.project.ProjectTime;
 
 
 @SuppressWarnings("serial")

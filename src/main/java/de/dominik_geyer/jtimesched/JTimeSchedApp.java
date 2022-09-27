@@ -18,17 +18,15 @@
 
 package de.dominik_geyer.jtimesched;
 
+import de.dominik_geyer.jtimesched.gui.JTimeSchedFrame;
+import de.dominik_geyer.jtimesched.misc.PlainTextFormatter;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
-
-import de.dominik_geyer.jtimesched.gui.JTimeSchedFrame;
-import de.dominik_geyer.jtimesched.misc.PlainTextFormatter;
 
 /**
  * Main class of the application.

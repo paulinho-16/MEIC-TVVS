@@ -18,13 +18,11 @@
 
 package de.dominik_geyer.jtimesched.project;
 
+import de.dominik_geyer.jtimesched.JTimeSchedApp;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Date;
-
 import javax.swing.table.AbstractTableModel;
-
-import de.dominik_geyer.jtimesched.JTimeSchedApp;
 
 
 @SuppressWarnings("serial")

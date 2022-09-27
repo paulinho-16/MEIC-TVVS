@@ -18,22 +18,20 @@
 
 package de.dominik_geyer.jtimesched.gui.table;
 
+import de.dominik_geyer.jtimesched.gui.JTimeSchedFrame;
+import de.dominik_geyer.jtimesched.project.Project;
+import de.dominik_geyer.jtimesched.project.ProjectTableModel;
+import de.dominik_geyer.jtimesched.project.ProjectTime;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.TableCellRenderer;
-
-import de.dominik_geyer.jtimesched.gui.JTimeSchedFrame;
-import de.dominik_geyer.jtimesched.project.Project;
-import de.dominik_geyer.jtimesched.project.ProjectTableModel;
-import de.dominik_geyer.jtimesched.project.ProjectTime;
 
 
 @SuppressWarnings("serial")
