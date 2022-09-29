@@ -64,8 +64,8 @@ It can check many aspects of your source code, namely class or method design pro
 Since it is a very configurable tool, we decided to configure it according to the Google coding conventions from [Google Java Style](https://google.github.io/styleguide/javaguide.html).
 Although, after analysing the project code, we modified some of those checks, namely:
 
-- Changed the value of the property `braceAdjustment` of the module `Indentation`. This property specifies how far a braces should be indented when on the next line. We changed it from 2 to 0 since the source code presented no indentation on these cases and it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). However, this modification  became useless as soon as we fixed the bug number 2 (LeftCurly) by positioning the braces on the end of the line instead of the following line.
-- Changed the value of the property `arrayInitIndent` of the module `Indentation`. This property specifies how far an array initialisation should be indented when on next line. We changed it from 2 to 4 as it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). This discarded some of the initial warnings.
+- Changed the value of the property `braceAdjustment` of the module `Indentation`. This property specifies how far a brace should be indented when on the next line. We changed it from 2 to 0 since the source code presented no indentation on these cases and it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). However, this modification became useless as soon as we fixed the bug number 2 (LeftCurly) by positioning the braces on the end of the line instead of the following line.
+- Changed the value of the property `arrayInitIndent` of the module `Indentation`. This property specifies how far an array initialisation should be indented when on the next line. We changed it from 2 to 4 as it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). This discarded some of the initial warnings.
 - Changed the value of the property `max` of the module `LineLength`. This property specifies the maximum line length allowed. We changed it from 100 to 200 since the first value resulted in many warnings that did not make sense in our context. For example, it occurred in some comments whose line separation would not be advantageous.
 
 #### Report
@@ -80,28 +80,38 @@ The file with the most warnings is `JTimeSchedFrame.java`, with 1557 found, and 
 The following section presents some of the explored bugs and the solutions we came up with to fix them. Notice that we avoided solving problems manually on a case-by-case basis, always trying to find automated ways to solve them using the IntelliJ IDE's potential.
 This way, fixing similar bugs becomes much faster, approaching real-life contexts.
 
-1. 
+**1. *FileTabCharacter* (whitespace) & *Indentation* (indentation)**
 
-![FileTabCharacter bug found by Checkstyle](./images/checkstyle_bug1.png)
+![FileTabCharacter & Indentation bugs found by Checkstyle](./images/checkstyle_bug1.png)
 
-![FileTabCharacter bug fix](./images/checkstyle_fix1.png)
+We noticed that these two bugs were always associated and, since they constituted the majority of the warnings accused, we decided to solve them first.
+FileTabCharacter simply says that there should be no tab characters ('\t') in the source code, whereas Indentation highlights violations of the correct indentation of Java code.
 
-This bug caused a plentiful amount of warnings related to tabs being used instead of empty spaces.
-By fixing this issue, we reduced the amount of warnings from 4150 to 611 (then 603 after lowering the bracket indentation from 2 to 0).
+First, we configured the IDE to not use the tab character with `File -> Settings -> Code Style -> Java -> Use Tab character off`, leaving those configurations as the following image shows.
 
-File -> Settings -> Code Style -> Java -> Use Tab off
-CTRL + SHIFT + R -> using Regex, replace [\t] by four empty spaces, only in the `src` directory
+![FileTabCharacter & Indentation bug fixes](./images/checkstyle_fix1-1.png)
 
-Nota: dizer que corrigimos outros problemas da categoria "indentation", como por ex. a indentação dos arrayInitIndent
+These configurations also fixed some other indentation warnings, like *arrayInitIndent*.
 
-2.
+Then, we got rid of all the tab characters by replacing every tab with four whitespaces, with `CTRL + SHIFT + R -> using Regex, replace [\t] by four empty spaces`, only in the `src` directory, and then click `Replace All`.
+
+![FileTabCharacter & Indentation bug fixes](./images/checkstyle_fix1-2.png)
+
+By fixing these issues, we drastically reduced the number of warnings from 4150 to 603, as we can see in the following image.
+
+![Checkstyle report after the first bug fix](./images/checkstyle_report_fix1.png)
+
+**2. *LeftCurly* (blocks)**
 
 ![LeftCurly bug found by Checkstyle](./images/checkstyle_bug2.png)
 
-File -> Settings -> Code Style -> Java -> Brace Adjustement all options to End of line
-Then, right click on the `src` directory and click "Reformat Code", to apply settings to ...
-Tinha 4 bugs deste tipo.
-Dizer que Reformat Code até eliminou mais warnings do que o esperado, relacionados com linhas vazias
+This bug accused four violations of the placement of left curly braces (`{`) for code blocks, which should be placed at the end of the line with the function signature.
+
+To fix that, we first changed the IntelliJ's configuration of the braces placement by going to the menu `File -> Settings -> Code Style -> Java -> Wrapping and Braces -> Braces placement` and setting all options to `End of line`, as the following image shows.
+
+![LeftCurly bug fix](./images/checkstyle_fix2.png)
+
+Then, to actually apply those settings, right-click on the `src` directory and click `Reformat Code`. This procedure by the IntelliJ IDE changes the code according to the requirements specified, and it even eliminated more warnings than expected, related to empty lines.
 
 Before:
 ```java
@@ -120,11 +130,17 @@ After:
       }
 ```
 
-3.
+This procedure reduced the number of warnings from 603 to 321, as we can see in the following image.
+
+![Checkstyle report after the second bug fix](./images/checkstyle_report_fix2.png)
+
+**3. *MissingSwitchDefault* (coding)**
 
 ![MissingSwitchDefault bug found by Checkstyle](./images/checkstyle_bug3.png)
 
-Procuramos formas de corrigir o problema de uma só vez, mas após não encontrarmos soluções, acabamos por corrigir manualmente, já que eram apenas 7 situações no código.
+This bug, a control-flow problem, results from a clause that checks that every switch statement has a default clause.
+
+As for the other bugs, we searched for ways to fix the problem automatically at once, but after not finding any solutions, we ended up fixing it manually, as there were only seven situations in the code.
 
 Before:
 ```java
@@ -155,26 +171,53 @@ After:
   }
 ```
 
-4.
+As a result, these fixes reduced the number of warnings from 321 to 314.
 
-![CustomImportOrder bug found by Checkstyle](./images/checkstyle_bug4.png)
+![Checkstyle report after the third bug fix](./images/checkstyle_report_fix3.png)
 
-File -> Settings -> CodeStyle -> Java -> Imports
-Mudar valores class count e name count para 500
-Packages to Use Import with * -> Eliminar todas as linhas
-Import layout -> meter imagem e explicar
-Após as alterações, fazer Reformat Code para as aplicar
-Gerar novo report bla bla bla
+**4. *CustomImportOrder* (imports) & *AvoidStarImport* (imports)**
 
-5.
+![CustomImportOrder blank lines bugs found by Checkstyle](./images/checkstyle_bug4-1.png)
+
+This bug presents a variety of descriptions according to the warning at hand, but in general, it is related to the order of the import declarations or empty lines between some of them.
+
+To solve the warnings related to the empty lines between imports, we headed to the menu `File -> Settings -> CodeStyle -> Java -> Imports` and in the section `Import Layout` we deleted the blank lines between the different imports, highlighted in the following image.
+
+![CustomImportOrder blank lines bugs fix](./images/checkstyle_fix4-1.png)
+
+Then, to solve the bugs about the order of the imports, we started by analyzing the error descriptions, shown in the next figure.
+
+![CustomImportOrder import order bugs found by Checkstyle](./images/checkstyle_bug4-2.png)
+
+After this analysis, we configurated the `Import Layout` section by reordering the types of imports there. The following image shows the final order which fixed the remaining *CustomImportOrder* warnings.
+
+![CustomImportOrder import order bugs fix](./images/checkstyle_fix4-2.png)
+
+We also noticed another bug of this category, the *AvoidStarImport* warning, that accuses import statements that use the `*` notation which may lead to tight coupling between packages or classes and might lead to problems when a new version of a library introduces name clashes. The following image shows occurrences of this type of bug.
+
+![AvoidStarImport bugs found by Checkstyle](./images/checkstyle_bug4-3.png)
+
+To fix them, we erased every entry on the grid of the section `Packages to Use Import with '*'` and changed the values of the inputs `Class count to use import with '*'` and `Names count to use static import with '*'` to 500, a high enough value that guarantees that the `*` notation will never be used. The following image shows the final configuration of these menus.
+
+![AvoidStarImport bugs fix](./images/checkstyle_fix4-3.png)
+
+After these changes, we must do the `Reformat Code` procedure previously explained to actually apply them to the code.
+
+Upon generating a new report, we noticed that these fixes reduced the number of warnings from 314 to 159, as the following image shows.
+
+![Checkstyle report after the fourth bug fix](./images/checkstyle_report_fix4.png)
+
+**5. *ModifierOrder* (modifier)**
 
 ![ModifierOrder bug found by Checkstyle](./images/checkstyle_bug5.png)
 
-Variable declaration order different from the TLS suggestions, such as:
-- `static public` in place of `public static`
-- `static private` in place of `private static`
+This bug happens when the order of the class modifiers differs from the suggestions in the [Java Language specification](https://docs.oracle.com/javase/specs/jls/se16/preview/specs/sealed-classes-jls.html). Having a standard order of the modifiers improves the code readability.
 
-This issues can be easily fixed by using the IntelIJ replace command `CTRL+SHIFT+R` on the entire `src` directory.
+The nine occurrences of this warning consisted of a wrong order of the modifiers `static`/`public` and `static`/`private`.
+
+As we just needed to swap these modifiers, these issues could be easily fixed by using the IntelliJ replace command `CTRL + SHIFT + R` on the entire `src` directory, as the following image shows.
+
+![ModifierOrder bug fix](./images/checkstyle_fix5.png)
 
 Before:
 ```java
@@ -245,7 +288,7 @@ Reduziu de 20 para 19 bugs
 
 Using static classes when possible has two effects on improving performance:
 - Fewer null checks because a static method invocation does not require a null check on the receiver
-- Fewer allocations which leads to less memory pressure and time spent in GC (Garbage Collector).
+- Fewer allocations which lead to less memory pressure and time spent in GC (Garbage Collector).
 
 > sources
 > https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance
