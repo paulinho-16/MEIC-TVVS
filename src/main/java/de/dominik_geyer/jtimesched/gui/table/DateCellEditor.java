@@ -46,8 +46,7 @@ public class DateCellEditor extends DefaultCellEditor {
 
         if (strDate.isEmpty()) {
             newDate = new Date();
-        }
-        else {
+        } else {
             try {
                 newDate = ProjectTime.parseDate(strDate);
             } catch (ParseException e) {

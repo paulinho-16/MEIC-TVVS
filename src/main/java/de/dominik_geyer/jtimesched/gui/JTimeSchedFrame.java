@@ -116,8 +116,7 @@ public class JTimeSchedFrame extends JFrame {
         // create tray-icon and set default close-behavior
         if (this.setupTrayIcon()) {
             this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        }
-        else {
+        } else {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 
@@ -655,8 +654,7 @@ public class JTimeSchedFrame extends JFrame {
                     // into tray steels the focus.
                     if (!isVisible() /*|| !isActive()*/) {
                         setVisible(true);
-                    }
-                    else {
+                    } else {
                         setVisible(false);
                     }
                 }
@@ -858,8 +856,7 @@ public class JTimeSchedFrame extends JFrame {
 
                                 if (column == ProjectTableModel.COLUMN_TIMEOVERALL) {
                                     prj.setQuotaOverall(newSeconds);
-                                }
-                                else {
+                                } else {
                                     prj.setQuotaToday(newSeconds);
                                 }
 

@@ -45,8 +45,7 @@ public class TimeCellEditor extends DefaultCellEditor {
 
         if (strTime.isEmpty() || strTime.equals("0")) {
             newSeconds = 0;
-        }
-        else {
+        } else {
             try {
                 newSeconds = ProjectTime.parseSeconds(strTime);
             } catch (ParseException e) {

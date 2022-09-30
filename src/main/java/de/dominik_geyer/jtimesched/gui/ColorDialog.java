@@ -154,8 +154,7 @@ public class ColorDialog extends JDialog implements ActionListener {
 
             if (chosenColor != null) {
                 this.selectedColor = chosenColor;
-            }
-            else {
+            } else {
                 this.selectedColor = this.currentColor;
             }
         } else {

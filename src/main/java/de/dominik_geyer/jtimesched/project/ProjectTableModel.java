@@ -186,8 +186,7 @@ public class ProjectTableModel extends AbstractTableModel {
 
                 if (column == ProjectTableModel.COLUMN_TIMEOVERALL) {
                     prj.setSecondsOverall(newSeconds);
-                }
-                else {
+                } else {
                     prj.adjustSecondsToday(newSeconds);
                 }
                 break;

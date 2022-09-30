@@ -68,6 +68,7 @@ Although, after analysing the project code, we modified some of those checks, na
 - Changed the value of the property `arrayInitIndent` of the module `Indentation`. This property specifies how far an array initialisation should be indented when on the next line. We changed it from 2 to 4 as it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). This discarded some of the initial warnings.
 - Changed the value of the property `max` of the module `LineLength`. This property specifies the maximum line length allowed. We changed it from 100 to 200 since the first value resulted in many warnings that did not make sense in our context. For example, it occurred in some comments whose line separation would not be advantageous.
 - Changed the value of the property `format` of the module `PackageName`. This property specifies valid identifiers for the packages names. This was causing a warning related to the package that contains the name "dominik_geyer", so we added the character `_` to the regex expression according to the Checkstyle standards.
+- Changed the value of the property `allowedAbbreviationLength` of the module `AbbreviationAsWordInName`. This property indicates the number of consecutive capital letters allowed in targeted identifiers. We changed it from 0 to 3 to allow names including "GUI" in the name, like the method `updateGUI()`.
 
 #### Report
 
