@@ -234,13 +234,15 @@ After:
 ## SpotBugs
 
 #### Description
-SpotBugs is a program which uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns with thoroughly documented descriptions.
+[SpotBugs](https://spotbugs.github.io/) is a program which uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns with thoroughly documented [descriptions](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html).
 
 #### Configuration
 Não sei propriamente o que dizer aqui, dado que não fizemos assim grandes alterações de configurações.
 (Achas relevante falar sobre o facto de termos que adicionar os plugins e de termos experimentado utilizar as configruações de remover um falso positivo ou de alterar a ordem de prioridades?)
 
 > TODO
+
+Even though the final version of the assignment did not end up containing any SpotBugs configurations, 
 
 #### Report
 
@@ -254,7 +256,7 @@ Therefore, when we first ran the program, it contained 25 bugs among 40 classes,
 
 #### Bugs & Fixes
 
-1.
+1. **RV_RETURN_VALUE_IGNORED_BAD_PRACTICE (Bad Practice)**
 
 ![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug1.png)
 This bug occurred only once and represented a violation for lacking the verification of the `mkdir()` method.
@@ -281,14 +283,14 @@ Therefore, after applying the aforementioned fix, the number of bugs was reduced
 
 > TODO: Verificar se isto está bem porque não sei se estamos tecnicamente a dar fix porque pode haver erros do diretório já existir quiepodem causar bosta e nos estamos só a lançar excepção
 > Perguntar ao stor
-2.
+
+2. **EI_EXPOSE_REP and EI_EXPOSE_REP2 (Malicious Code)**
 
 ![EI_EXPOSE_REP and EI_EXPOSE_REP2 bugs found by SpotBugs](./images/spotbugs_bug2.png)
 
 This vulnerability exposes a private variable, allowing someone from the outside to modify the instance unintentionally.
-This can be fixed by creating a `Deep Copy` of the object.
 
-To fix this issue, we replaced the getters and setters for the Date variables for Deep Copies.
+This can be avoided by creating a `Deep Copy` of the object, which was done by replacing the *getters* and *setters* for the Date variables for *Deep Copies*.
 
 
 Before:
@@ -297,6 +299,7 @@ Before:
 public Date getTimeStart() {
     return timeStart; 
 }
+```
 
 ```java
 public void setTimeStart(Date timeStart) {
@@ -316,17 +319,17 @@ public void setTimeStart(Date timeStart) {
     this.timeStart = new Date(timeStart.getTime());
 }
 ```
-This fix was done to 2 variables, timeStart and TimeCreated, which contained an error both in the getters and setters therefore we reduced the number of errors by 4, making the remaining error count 20.
+This fix was done to 2 variables, *timeStart* and *TimeCreated*, which contained an error both in the *getters* and *setters* therefore we reduced the number of errors by 4, making the remaining error count 20.
 
 > Source (https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
 
-3.
+3. **SIC_INNER_SHOULD_BE_STATIC (Performance)**
 
 ![SIC_INNER_SHOULD_BE_STATIC bug found by SpotBugs](./images/spotbugs_bug3.png)
 
 The Spotbugs tool indicated that the JTimeSchedGUILogHandler could be turned into a static class, in order to improve performance.
 
-This is achieved given that static classes when possible have two effects on improving performance:
+This is achieved given that the usage of static classes, when possible, have two effects on improving performance:
 - Fewer null checks because a static method invocation does not require a null check on the receiver
 - Fewer allocations which lead to less memory pressure and time spent in GC (Garbage Collector).
 
@@ -341,6 +344,7 @@ After:
 ```java
   static class JTimeSchedGUILogHandler extends Handler {...}
 ```
+
 This fixed reduced the number of errors from 20 to 19, slightly improving the program's performance.
 
 
@@ -348,7 +352,7 @@ This fixed reduced the number of errors from 20 to 19, slightly improving the pr
 > https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance
 > https://stackoverflow.com/questions/12279438/performance-of-static-methods-vs-instance-methods
 
-4.
+4. **BC_UNCONFIRMED_CAST (Style)**
 
 ![BC_UNCONFIRMED_CAST bug found by SpotBugs](./images/spotbugs_bug4.png)
 
@@ -376,8 +380,9 @@ This fix now reduced the error count by 1, to 18.
 
 > TODO: Nã deviamos dar launch a uma exception em caso de erro? Senão soma e segue sem nenhuma mensagem de erro :/
 
->source https://stackoverflow.com/questions/4862960/explicit-casting-from-super-class-to-subclass
-
+ 
+> https://stackoverflow.com/questions/4862960/explicit-casting-from-super-class-to-subclass
+> https://stackoverflow.com/questions/22722281/findbugs-bc-unconfirmed-cast-warning
 5.
 
 ![OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE bug found by SpotBugs](./images/spotbugs_bug5.png)
