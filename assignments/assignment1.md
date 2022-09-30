@@ -273,8 +273,8 @@ This segment of code ended up being removed, although it still taught us how to 
 
 #### Report
 
-The Spotbugs error fixes were only done after fixing the Checkstyle bugs.
-Given that the amount of Spotbugs warnings was reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
+The SpotBugs error fixes were only done after fixing the Checkstyle bugs.
+Given that the amount of SpotBugs warnings was reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
 
 Therefore, the [initial report](./reports/spotbugs_initial.pdf) contained 25 bugs among 40 classes.
 The [final report](./reports/spotbugs_final.pdf) ended up with 16 bugs, which we pretend to eliminate in the future.
