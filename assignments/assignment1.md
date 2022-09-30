@@ -341,7 +341,6 @@ public void setTimeStart(Date timeStart) {
 ```
 This fix was done to 2 variables, *timeStart* and *TimeCreated*, which contained an error both in the *getters* and *setters* therefore we reduced the number of errors by 4, making the remaining error count 20.
 
-> Source (https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
 
 **3. *SIC_INNER_SHOULD_BE_STATIC* (Performance)**
 
@@ -366,11 +365,6 @@ After:
 ```
 
 This fixed reduced the number of errors from 20 to 19, slightly improving the program's performance.
-
-
-> sources
-> https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance
-> https://stackoverflow.com/questions/12279438/performance-of-static-methods-vs-instance-methods
 
 **4. *BC_UNCONFIRMED_CAST* (Style)**
 
@@ -399,9 +393,6 @@ After:
 This fix now reduced the error count by 1, to 18.
 
 
- 
-> https://stackoverflow.com/questions/4862960/explicit-casting-from-super-class-to-subclass
-> https://stackoverflow.com/questions/22722281/findbugs-bc-unconfirmed-cast-warning
 
 **5. *OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE* (Experimental)**
 
@@ -455,3 +446,15 @@ This fix reduced the number of bugs by 2, reaching the final amount of 16 errors
 - [What is Static Testing? What is a Testing Review? - Guru99](https://www.guru99.com/testing-review.html)
 - [Checkstyle](https://checkstyle.sourceforge.io/)
 - [Bug Descriptions - SpotBugs](https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html)
+- [SpotBugs](https://spotbugs.github.io/)
+
+#### Stack Overflow Help
+
+- [SpotBugs Bug 2 - Community Help](https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
+- [SpotBugs Bug 3 - Community Help](https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance)
+- [SpotBugs Bug 3 - Community Help 2](https://stackoverflow.com/questions/12279438/performance-of-static-methods-vs-instance-methods)
+- [SpotBugs Bug 4 - Community Help](https://stackoverflow.com/questions/4862960/explicit-casting-from-super-class-to-subclass)
+- [SpotBugs Bug 4 - Community Help 2](https://stackoverflow.com/questions/22722281/findbugs-bc-unconfirmed-cast-warning)
+
+
+
