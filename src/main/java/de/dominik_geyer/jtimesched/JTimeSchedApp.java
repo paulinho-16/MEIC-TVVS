@@ -52,9 +52,11 @@ public class JTimeSchedApp {
     public static void main(String[] args) throws IOException {
         // FIXME: allow custom configuration path via command-line argument [#22]
         File dirConf = new File(JTimeSchedApp.CONF_PATH);
-        if (!dirConf.isDirectory())
-            if (!dirConf.mkdir())
+        if (!dirConf.isDirectory()) {
+            if (!dirConf.mkdir()) {
                 throw new IOException("Unable to create path");
+            }
+        }
 
         // request lock
         if (!JTimeSchedApp.lockInstance()) {

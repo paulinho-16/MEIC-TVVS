@@ -287,22 +287,24 @@ In the initial case shown below, it is only verified if the dirConf file is not 
 
 Before:
 ```java
-  File dirConf = new File(JTimeSchedApp.CONF_PATH);
-  if (!dirConf.isDirectory())
-    dirConf.mkdir();
+File dirConf = new File(JTimeSchedApp.CONF_PATH);
+if (!dirConf.isDirectory())
+  dirConf.mkdir();
 ```
 
 The way we fixed this problem was by making the method throw an exception in case the file fails to be created.
 
 After:
 ```java
-  File dirConf = new File(JTimeSchedApp.CONF_PATH);
-  if (!dirConf.isDirectory())
-    if (!dirConf.mkdir())
+File dirConf = new File(JTimeSchedApp.CONF_PATH);
+  if (!dirConf.isDirectory()) {
+    if (!dirConf.mkdir()) {
       throw new IOException("Unable to create path");
+    }
+  }
 ```
-Therefore, after applying the aforementioned fix, the number of bugs was reduced to 24
 
+Therefore, after applying the aforementioned fix, the number of bugs was reduced to 24
 
 **2. *EI_EXPOSE_REP* and *EI_EXPOSE_REP2* (Malicious Code)**
 

@@ -66,6 +66,8 @@ public class CustomCellRenderer extends JLabel implements TableCellRenderer {
                     } else {
                         this.setBorder(null);
                     }
+                } else {
+                    throw new ClassCastException("Wrong cast type to ProjectTable variable");
                 }
 
                 if (!prj.getNotes().isEmpty()) {
