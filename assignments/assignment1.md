@@ -244,9 +244,9 @@ After:
 
 Even though the final version of the assignment did not end up containing any SpotBugs configuration changes, we experimented a bit with the matching configuration.
 
-For instance, we attempted to remove a false positive *BC_UNCONFIRMED_CAST* (bug 4) warning which we later realized was a bug that could be fixed.
+For instance, we attempted to remove a false positive *BC_UNCONFIRMED_CAST* warning (bug 4) which we later realized was a bug that could be fixed.
 
-```java
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter xmlns="http://findbugs.sourceforge.net/filter/3.0.0"
@@ -339,14 +339,14 @@ public void setTimeStart(Date timeStart) {
     this.timeStart = new Date(timeStart.getTime());
 }
 ```
-This fix was done to 2 variables, *timeStart* and *TimeCreated*, which contained an error both in the *getters* and *setters* therefore we reduced the number of errors by 4, making the remaining error count 20.
+This fix was done to 2 variables, `timeStart` and `TimeCreated`, which contained an error both in the `getters` and `setters`. Therefore we reduced the number of errors by 4, making the remaining error count 20.
 
 
 **3. *SIC_INNER_SHOULD_BE_STATIC* (Performance)**
 
 ![SIC_INNER_SHOULD_BE_STATIC bug found by SpotBugs](./images/spotbugs_bug3.png)
 
-The Spotbugs tool indicated that the JTimeSchedGUILogHandler could be turned into a static class, to improve performance.
+The Spotbugs tool indicated that the `JTimeSchedGUILogHandler` class could be turned into a static class, to improve performance.
 
 This is achieved given that the usage of static classes, when possible, has two effects on improving performance:
 - Fewer null checks because a static method invocation does not require a null check on the receiver
@@ -448,7 +448,7 @@ This fix reduced the number of bugs by 2, reaching the final amount of 16 errors
 - [Bug Descriptions - SpotBugs](https://spotbugs.readthedocs.io/en/stable/bugDescriptions.html)
 - [SpotBugs](https://spotbugs.github.io/)
 
-#### Stack Overflow Help
+#### StackOverflow Help
 
 - [SpotBugs Bug 2 - Community Help](https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
 - [SpotBugs Bug 3 - Community Help](https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance)
