@@ -49,7 +49,7 @@ Some main reasons to perform static testing are:
 
 ## Tools, Reports and Bugs
 
-For this first assignment, we chose to use [Checkstyle](https://checkstyle.sourceforge.io/) and [Spotbugs](https://spotbugs.github.io/) as tools to detect and fix bugs in the source code.
+For this first assignment, we chose to use [Checkstyle](https://checkstyle.sourceforge.io/) and [SpotBugs](https://spotbugs.github.io/) as tools to detect and fix bugs in the source code.
 For each of these tools, we present its description, configuration, a summary of the report produced by them, five discovered bugs and our solution to fix them.
 
 ### Checkstyle
@@ -67,13 +67,13 @@ Although, after analysing the project code, we modified some of those checks, na
 - Changed the value of the property `braceAdjustment` of the module `Indentation`. This property specifies how far a brace should be indented when on the next line. We changed it from 2 to 0 since the source code presented no indentation on these cases and it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). However, this modification became useless as soon as we fixed the bug number 2 (LeftCurly) by positioning the braces on the end of the line instead of the following line.
 - Changed the value of the property `arrayInitIndent` of the module `Indentation`. This property specifies how far an array initialisation should be indented when on the next line. We changed it from 2 to 4 as it is the default value according to [Checkstyle documentation](https://checkstyle.sourceforge.io/apidocs/com/puppycrawl/tools/checkstyle/checks/indentation/IndentationCheck.html). This discarded some of the initial warnings.
 - Changed the value of the property `max` of the module `LineLength`. This property specifies the maximum line length allowed. We changed it from 100 to 200 since the first value resulted in many warnings that did not make sense in our context. For example, it occurred in some comments whose line separation would not be advantageous.
-- Changed the value of the property `format` of the module `PackageName`. This property specifies valid identifiers for the packages names. This was causing a warning related to the package that contains the name "dominik_geyer", so we added the character `_` to the regex expression according to the Checkstyle standards.
+- Changed the value of the property `format` of the module `PackageName`. This property specifies valid identifiers for the package names. This was causing a warning related to the package that contains the name "dominik_geyer", so we added the character `_` to the regex expression according to the Checkstyle standards.
 - Changed the value of the property `allowedAbbreviationLength` of the module `AbbreviationAsWordInName`. This property indicates the number of consecutive capital letters allowed in targeted identifiers. We changed it from 0 to 3 to allow names including "GUI" in the name, like the method `updateGUI()`.
 
 #### Report
 
 The [initial report](./reports/checkstyle_initial.pdf) produced by Checkstyle identified 1450 warnings and 0 errors.
-The file with the most warnings is `JTimeSchedFrame.java`, with 1557 found, and the rules with the most violations are `FileTabCharacter`, with 2275, and `Indentation`, with 1511. We decided to explore bugs of different categories, them being **whitespace**, **indentation**, **blocks**, **coding**, **imports** and **modifier**.
+The file with the most warnings is `JTimeSchedFrame.java`, with 1557 found, and the rules with the most violations are *FileTabCharacter*, with 2275, and *Indentation*, with 1511. We decided to explore bugs of different categories, them being **whitespace**, **indentation**, **blocks**, **coding**, **imports** and **modifier**.
 We fixed numerous warnings in addition to those described here, so the [final report](./reports/checkstyle_final.pdf) ended up with only 50 bugs, all of which are related to documentation (**javadoc** category).
 
 #### Bugs & Fixes
@@ -86,7 +86,7 @@ This way, fixing similar bugs becomes much faster, approaching real-life context
 ![FileTabCharacter & Indentation bugs found by Checkstyle](./images/checkstyle_bug1.png)
 
 We noticed that these two bugs were always associated and, since they constituted the majority of the warnings accused, we decided to solve them first.
-FileTabCharacter simply says that there should be no tab characters ('\t') in the source code, whereas Indentation highlights violations of the correct indentation of Java code.
+*FileTabCharacter* simply says that there should be no tab characters ('\t') in the source code, whereas *Indentation* highlights violations of the correct indentation of Java code.
 
 Developers should not need to configure the tab width of their text editors in order to be able to read source code, hence the need to fix these warnings.
 
@@ -146,7 +146,7 @@ This bug, a control-flow problem, results from a clause that checks that every s
 By introducing a `default` case in every switch statement, the code is protected against later changes, like the introduction of new types in an enumeration type.
 
 As for the other bugs, we searched for ways to fix the problem automatically at once, but after not finding any solutions, we ended up fixing it manually, as there were only seven situations in the code.
-In almost every situation, we throw an exception of type IllegalStateException, but in the following code segments we just do a `break` statement because that function is a handler, receiving mouse inputs all the time and sometimes falling on that `default` clause, and we don't want to be seeing exceptions all the time.
+In almost every situation, we throw an exception of type IllegalStateException, but in the following code segments, we just do a `break` statement because that function is a handler, receiving mouse inputs all the time and sometimes falling on that `default` clause, and we don't want to be seeing exceptions all the time.
 
 Before:
 ```java
@@ -274,7 +274,7 @@ This segment of code ended up being removed, although it still taught us how to 
 #### Report
 
 The Spotbugs error fixes were only done after fixing the Checkstyle bugs.
-Given that the amount of Spotbugs warnings were reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
+Given that the amount of Spotbugs warnings was reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
 
 Therefore, the [initial report](./reports/spotbugs_initial.pdf) contained 25 bugs among 40 classes.
 The [final report](./reports/spotbugs_final.pdf) ended up with 16 bugs, which we pretend to eliminate in the future.
@@ -286,7 +286,7 @@ The [final report](./reports/spotbugs_final.pdf) ended up with 16 bugs, which we
 ![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug1.png)
 This bug occurred only once and represented a violation for lacking the verification of the `mkdir()` method.
 
-In the initial case shown below, it is only verified if the dirConf file is not a directory, which does not ensure that a subdirectory can be successfully created.
+In the initial case shown below, it is only verified if the `dirConf` file is not a directory, which does not ensure that a subdirectory can be successfully created.
 
 Before:
 ```java
@@ -308,7 +308,7 @@ File dirConf = new File(JTimeSchedApp.CONF_PATH);
   }
 ```
 
-Therefore, after applying the aforementioned fix, the number of bugs was reduced to 24
+Therefore, after applying the aforementioned fix, the number of bugs was reduced to 24.
 
 **2. *EI_EXPOSE_REP* and *EI_EXPOSE_REP2* (Malicious Code)**
 
@@ -316,7 +316,7 @@ Therefore, after applying the aforementioned fix, the number of bugs was reduced
 
 This vulnerability exposes a private variable, allowing someone from the outside to modify the instance unintentionally.
 
-This can be avoided by creating a `Deep Copy` of the object, which was done by replacing the *getters* and *setters* for the Date variables for *Deep Copies*.
+This can be avoided by creating a *deep copy* of the object, which was done by replacing the *getters* and *setters* for the Date variables for *Deep Copies*.
 
 
 Before:
@@ -347,18 +347,15 @@ public void setTimeStart(Date timeStart) {
 ```
 This fix was done to 2 variables, `timeStart` and `TimeCreated`, which contained an error both in the `getters` and `setters`. Therefore we reduced the number of errors by 4, making the remaining error count 20.
 
-
 **3. *SIC_INNER_SHOULD_BE_STATIC* (Performance)**
 
 ![SIC_INNER_SHOULD_BE_STATIC bug found by SpotBugs](./images/spotbugs_bug3.png)
 
-The Spotbugs tool indicated that the `JTimeSchedGUILogHandler` class could be turned into a static class, to improve performance.
+The SpotBugs tool indicated that the `JTimeSchedGUILogHandler` class could be turned into a static class, to improve performance.
 
 This is achieved given that the usage of static classes, when possible, has two effects on improving performance:
 - Fewer null checks because a static method invocation does not require a null check on the receiver
 - Fewer allocations which lead to less memory pressure and time spent in GC (Garbage Collector).
-
-
 
 Before:
 ```java
@@ -396,9 +393,7 @@ if (table instanceof ProjectTable) {
 }
 ```
 
-This fix now reduced the error count by 1, to 18.
-
-
+This fix now reduced the error count by one, to 18.
 
 **5. *OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE* (Experimental)**
 
@@ -406,13 +401,7 @@ This fix now reduced the error count by 1, to 18.
 
 This bug was detected, given that there were `FileInputStreams` and `FileOutputStreams` that were not ensured to close.
 
-Even though the initial code contained the methods for closing both streams, 
-
-```java
-fis.close();
-fos.close();
-```
-There was no guarantee that these methods would be called, given that exceptions could occur in previous code segments after the streams were opened.
+Even though the initial code contained the methods for closing both streams, there was no guarantee that these methods would be called, given that exceptions could occur in previous code segments after the streams were opened.
 
 This was fixed by placing the streams' `read` and `write` methods inside a `try` `catch` statement, and placing the stream closing methods inside the `finally` block, which ensures its execution in the presence of errors in the statement.
 
