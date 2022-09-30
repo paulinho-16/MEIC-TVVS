@@ -585,7 +585,7 @@ public class JTimeSchedFrame extends JFrame {
                 }
             };
 
-            ActionListener exitListener = new ActionListener() {
+            final ActionListener exitListener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
@@ -611,7 +611,7 @@ public class JTimeSchedFrame extends JFrame {
                 }
             };
 
-            ActionListener toggleProjectListener = new ActionListener() {
+            final ActionListener toggleProjectListener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (JTimeSchedFrame.this.currentProject != null) {
@@ -927,7 +927,6 @@ public class JTimeSchedFrame extends JFrame {
                             updateSchedTable();
                         }
                     }
-                    ;
 
                     JMenuItem itemCheck = new JMenuItem("Check all");
                     itemCheck.addActionListener(new CheckActionListener(true));

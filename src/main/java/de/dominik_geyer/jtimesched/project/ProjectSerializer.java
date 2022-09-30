@@ -56,7 +56,7 @@ public class ProjectSerializer {
     public synchronized void writeXml(List<Project> projects) throws TransformerConfigurationException, SAXException, IOException {
         OutputStreamWriter out = new OutputStreamWriter(
             new FileOutputStream(this.filename), "UTF8");
-        StreamResult streamResult = new StreamResult(out);
+        final StreamResult streamResult = new StreamResult(out);
         SAXTransformerFactory tf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
 
         // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6296446
