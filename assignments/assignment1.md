@@ -238,13 +238,13 @@ After:
 ## SpotBugs
 
 #### Description
-[SpotBugs](https://spotbugs.github.io/) is a program which uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns with thoroughly documented [descriptions](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html).
+[SpotBugs](https://spotbugs.github.io/) is a program that uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns with thoroughly documented [descriptions](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html).
 
 #### Configuration
 
 Even though the final version of the assignment did not end up containing any SpotBugs configuration changes, we experimented a bit with the matching configuration.
 
-For instance, we attempted to remove a false positive *BC_UNCONFIRMED_CAST* (bug 4) warning which we later realized that was actually a bug that could be fixed.
+For instance, we attempted to remove a false positive *BC_UNCONFIRMED_CAST* (bug 4) warning which we later realized was a bug that could be fixed.
 
 ```java
 <?xml version="1.0" encoding="UTF-8"?>
@@ -269,7 +269,7 @@ This segment of code ended up being removed, although it still taught us how to 
 #### Report
 
 The Spotbugs error fixes were only done after fixing the Checkstyle bugs.
-Given that the amount of Spotbugs warnings was reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
+Given that the amount of Spotbugs warnings were reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
 
 Therefore, when we first ran the program, it contained 25 bugs among 40 classes, which is shown in the following image
 
@@ -283,7 +283,7 @@ Therefore, when we first ran the program, it contained 25 bugs among 40 classes,
 ![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug1.png)
 This bug occurred only once and represented a violation for lacking the verification of the `mkdir()` method.
 
-In the initial case shown bellow, it is only verified if the dirConf file is not a directory, which does not ensure that a subdirectory can be successfully created.
+In the initial case shown below, it is only verified if the dirConf file is not a directory, which does not ensure that a subdirectory can be successfully created.
 
 Before:
 ```java
@@ -347,9 +347,9 @@ This fix was done to 2 variables, *timeStart* and *TimeCreated*, which contained
 
 ![SIC_INNER_SHOULD_BE_STATIC bug found by SpotBugs](./images/spotbugs_bug3.png)
 
-The Spotbugs tool indicated that the JTimeSchedGUILogHandler could be turned into a static class, in order to improve performance.
+The Spotbugs tool indicated that the JTimeSchedGUILogHandler could be turned into a static class, to improve performance.
 
-This is achieved given that the usage of static classes, when possible, have two effects on improving performance:
+This is achieved given that the usage of static classes, when possible, has two effects on improving performance:
 - Fewer null checks because a static method invocation does not require a null check on the receiver
 - Fewer allocations which lead to less memory pressure and time spent in GC (Garbage Collector).
 
@@ -377,7 +377,7 @@ This fixed reduced the number of errors from 20 to 19, slightly improving the pr
 ![BC_UNCONFIRMED_CAST bug found by SpotBugs](./images/spotbugs_bug4.png)
 
 The `ProjectTable` class is a subclass of `JTable`.
-In the initial code segment, it is assumed that an object from the parent class is in fact the `ProjectTable` class, which is done through a Type Cast which does not go through any verification.
+In the initial code segment, it is assumed that an object from the parent class is the `ProjectTable` class, which is done through a Type Cast that does not go through any verification.
 
 
 Before:
@@ -414,9 +414,9 @@ Even though the initial code contained the methods for closing both streams,
     fis.close();
     fos.close();
 ```
-There was no guarantee that these methods would be called, given that exceptions could ocurr in previous code segments after the streams being opened.
+There was no guarantee that these methods would be called, given that exceptions could occur in previous code segments after the streams were opened.
 
-The was fixed by placing the streams' `read` and `write` methods inside a try catch statement, and placing the stream closing methods inside the finnally block, which ensures its execution in the presence of errors in the statement.
+This was fixed by placing the streams' `read` and `write` methods inside a `try` `catch` statement, and placing the stream closing methods inside the `finally` block, which ensures its execution in the presence of errors in the statement.
 
 ```java
 finally {
@@ -436,7 +436,7 @@ finally {
     }
 ```
 
-Some null constraints were also required in case the streams were unsucessfully created.
+Some null constraints were also required in case the streams were unsuccessfully created.
 
 This fix reduced the number of bugs by 2, reaching the final amount of 16 errors.
 
