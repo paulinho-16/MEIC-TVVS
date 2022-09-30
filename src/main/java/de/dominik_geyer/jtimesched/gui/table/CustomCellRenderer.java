@@ -77,9 +77,9 @@ public class CustomCellRenderer extends JLabel implements TableCellRenderer {
                         .replaceAll(" ", "&nbsp;")
                         .replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 
-                    this.setToolTipText("<html><strong><u>Notes:</u></strong><br/><br/>" +
-                        tooltip +
-                        "</html>");
+                    this.setToolTipText("<html><strong><u>Notes:</u></strong><br/><br/>"
+                        + tooltip
+                        + "</html>");
                 } else {
                     this.setToolTipText(null);
                 }

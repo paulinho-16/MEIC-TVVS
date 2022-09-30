@@ -146,11 +146,11 @@ public class JTimeSchedFrame extends JFrame {
             JTimeSchedApp.getLogger().severe("Error loading projects file: " + e.getMessage());
 
             JOptionPane.showMessageDialog(this,
-                "An error occurred while loading the projects file.\n" +
-                    "Details: \"" + e.getMessage() + "\"\n\n" +
-                    "Please correct or remove the file '" + JTimeSchedApp.PRJ_FILE + "' " +
-                    "(or replace it with the backup file '" + JTimeSchedApp.PRJ_FILE_BACKUP + "', if present).\n\n" +
-                    "JTimeSched will quit now to avoid data corruption.",
+                "An error occurred while loading the projects file.\n"
+                    + "Details: \"" + e.getMessage() + "\"\n\n"
+                    + "Please correct or remove the file '" + JTimeSchedApp.PRJ_FILE + "' "
+                    + "(or replace it with the backup file '" + JTimeSchedApp.PRJ_FILE_BACKUP + "', if present).\n\n"
+                    + "JTimeSched will quit now to avoid data corruption.",
                 "Error loading projects file",
                 JOptionPane.ERROR_MESSAGE);
 
@@ -452,8 +452,8 @@ public class JTimeSchedFrame extends JFrame {
             itemToggleProject.setEnabled(false);
         } else {
             this.itemToggleProject.setLabel(
-                (this.currentProject.isRunning() ? "Pause" : "Start") +
-                    " \"" + this.currentProject.getTitle() + "\"");
+                (this.currentProject.isRunning() ? "Pause" : "Start")
+                    + " \"" + this.currentProject.getTitle() + "\"");
             itemToggleProject.setEnabled(true);
         }
     }
@@ -574,11 +574,11 @@ public class JTimeSchedFrame extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog(JTimeSchedFrame.this,
-                        "<html><big>jTimeSched</big><br/>Version " +
-                            JTimeSchedApp.getAppVersion() + "<br/><br/>" +
-                            "written by Dominik D. Geyer<br/>" +
-                            "&lt;code@dominik-geyer.de&gt;<br/><br/>" +
-                            "released under the GPLv3 license</html>",
+                        "<html><big>jTimeSched</big><br/>Version "
+                            + JTimeSchedApp.getAppVersion() + "<br/><br/>"
+                            + "written by Dominik D. Geyer<br/>"
+                            + "&lt;code@dominik-geyer.de&gt;<br/><br/>"
+                            + "released under the GPLv3 license</html>",
                         "About jTimeSched",
                         JOptionPane.INFORMATION_MESSAGE,
                         JTimeSchedFrame.getImageIcon("appicon/jTimeSched_on_64px.png"));
@@ -844,8 +844,8 @@ public class JTimeSchedFrame extends JFrame {
                     case ProjectTableModel.COLUMN_TIMEOVERALL:
                     case ProjectTableModel.COLUMN_TIMETODAY:
                         String input = JOptionPane.showInputDialog(JTimeSchedFrame.this,
-                            "Enter new quota for time " +
-                                (column == ProjectTableModel.COLUMN_TIMEOVERALL ? "overall" : "today") + ":",
+                            "Enter new quota for time "
+                                + (column == ProjectTableModel.COLUMN_TIMEOVERALL ? "overall" : "today") + ":",
                             ProjectTime.formatSeconds(
                                 (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getQuotaOverall() : prj.getQuotaToday()));
 
