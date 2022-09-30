@@ -234,27 +234,27 @@ After:
 ## SpotBugs
 
 #### Description
-
-// TODO
+SpotBugs is a program which uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns
 
 #### Configuration
+Não sei propriamente o que dizer aqui, dado que não fizemos assim grandes alterações de configurações.
+(Achas relevante falar sobre o facto de termos que adicionar os plugins e de termos experimentado utilizar as configruações de remover um falso positivo ou de alterar a ordem de prioridades?)
 
-// TODO
+> TODO
 
 #### Report
 
-// TODO
+The Spotbugs error fixes were only done after fixing the Checkstyle bugs.
+Given that the amount of Spotbugs warnings was reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
 
-Dizer que após corrigir erros do Checkstyle, demos build ao projeto (`mvn package`) e ao gerar o report verificamos que tem apenas 25 erros comparados aos 32 do report gerado antes da correção dos erros do Checkstyle.
-Portanto, concluir que alguns erros eram comuns.
 
 #### Bugs & Fixes
 
 1.
 
 ![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug1.png)
-
-Explicar o porquê do erro e explicar fix, e dizer que reduziu para 24 bugs.
+This bug occurred only once in the code and represented a violation for lacking the verification of the `mkdir()` method.
+In the initial case show bellow, it is only checked if the dirConf file is not a directory, which does not ensure that a subdirectory can be successfully created.
 
 Before:
 ```java
@@ -263,6 +263,8 @@ Before:
     dirConf.mkdir();
 ```
 
+The way we fixed this problem was by making the method throw an exception in case the file fails to be created.
+
 After:
 ```java
   File dirConf = new File(JTimeSchedApp.CONF_PATH);
@@ -270,29 +272,60 @@ After:
     if (!dirConf.mkdir())
       throw new IOException("Unable to create path");
 ```
+Therefore, after applying the aforementioned fix, the number of bugs was reduced to 24
 
+> TODO: Verificar se isto está bem porque não sei se estamos tecnicamente a dar fix porque pode haver erros do diretório já existir quiepodem causar bosta e nos estamos só a lançar excepção
+> Perguntar ao stor
 2.
 
 ![EI_EXPOSE_REP and EI_EXPOSE_REP2 bugs found by SpotBugs](./images/spotbugs_bug2.png)
 
-Explicar o porquê dos erros, e dizer a solução (https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
-Explicar como criamos a cópia da Date...
-Dizer que resolvemos estes 4 erros , reduzindo para 20 erros.
+This vulnerability exposes a private variable, allowing someone from the outside to modify the instance unintentionally.
+This can be fixed by creating a `Deep Copy` of the object.
+
+To fix this issue, we replaced the getters and setters for the Date variables for Deep Copies.
+
+
+Before:
+
+```java
+public Date getTimeStart() {
+    return timeStart; 
+}
+
+```java
+public void setTimeStart(Date timeStart) {
+    this.timeStart = timeStart;
+}
+```
+
+After:
+```java
+public Date getTimeStart() {
+    return new Date(timeStart.getTime());
+}
+```
+
+```java
+public void setTimeStart(Date timeStart) {
+    this.timeStart = new Date(timeStart.getTime());
+}
+```
+This fix was done to 2 variables, timeStart and TimeCreated, which contained an error both in the getters and setters therefore we reduced the number of errors by 4, making the remaining error count 20.
+
+> Source (https://stackoverflow.com/questions/18954873/malicious-code-vulnerability-may-expose-internal-representation-by-incorporati)
 
 3.
 
 ![SIC_INNER_SHOULD_BE_STATIC bug found by SpotBugs](./images/spotbugs_bug3.png)
 
-Explicar o porquê de tornar a classe static aumentar a performance
-Reduziu de 20 para 19 bugs
+The Spotbugs tool indicated that the JTimeSchedGUILogHandler could be turned into a static class, in order to improve performance.
 
-Using static classes when possible has two effects on improving performance:
+This is achieved given that static classes when possible have two effects on improving performance:
 - Fewer null checks because a static method invocation does not require a null check on the receiver
 - Fewer allocations which lead to less memory pressure and time spent in GC (Garbage Collector).
 
-> sources
-> https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance
-> https://stackoverflow.com/questions/12279438/performance-of-static-methods-vs-instance-methods
+
 
 Before:
 ```java
@@ -303,13 +336,20 @@ After:
 ```java
   static class JTimeSchedGUILogHandler extends Handler {...}
 ```
+This fixed reduced the number of errors from 20 to 19, slightly improving the program's performance.
+
+
+> sources
+> https://stackoverflow.com/questions/29595175/how-does-heavy-usage-of-static-classes-and-methods-offer-better-performance
+> https://stackoverflow.com/questions/12279438/performance-of-static-methods-vs-instance-methods
 
 4.
 
 ![BC_UNCONFIRMED_CAST bug found by SpotBugs](./images/spotbugs_bug4.png)
 
 The `ProjectTable` class is a subclass of `JTable`.
-In the initial code segment, it is assumed that an object from the parent class is in fact the `ProjectTable` class.
+In the initial code segment, it is assumed that an object from the parent class is in fact the `ProjectTable` class, which is done through a Type Cast which does not go through any verification.
+
 
 Before:
 ```java
@@ -327,7 +367,9 @@ After:
   }
 ```
 
-Dizer que reduziu para 18 erros.
+This fix now reduced the error count by 1, to 18.
+
+> TODO: Nã deviamos dar launch a uma exception em caso de erro? Senão soma e segue sem nenhuma mensagem de erro :/
 
 >source https://stackoverflow.com/questions/4862960/explicit-casting-from-super-class-to-subclass
 
@@ -335,9 +377,40 @@ Dizer que reduziu para 18 erros.
 
 ![OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE bug found by SpotBugs](./images/spotbugs_bug5.png)
 
-Explicar o porquê deste erro acontecer, e explicar como a nossa solução resolve isso
+This bug was detected, given that there were `FileInputStreams` and `FileOutputStreams` that were not ensured to close.
 
-Dizer que terminamos com apenas 16 erros.
+Even though the initial code contained the methods for closing both streams, 
+
+```java
+    fis.close();
+    fos.close();
+```
+There was no guarantee that these methods would be called, given that exceptions could ocurr in previous code segments after the streams being opened.
+
+The was fixed by placing the streams' `read` and `write` methods inside a try catch statement, and placing the stream closing methods inside the finnally block, which ensures its execution in the presence of errors in the statement.
+
+```java
+finally {
+    if (fis != null) {
+        try {
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    if (fos != null) {
+        try {
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+```
+
+Some null constraints were also required in case the streams were unsucessfully created.
+
+This fix reduced the number of bugs by 2, reaching the final amount of 16 errors.
+
 
 -----
 
