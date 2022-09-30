@@ -114,10 +114,12 @@ public class JTimeSchedFrame extends JFrame {
 
 
         // create tray-icon and set default close-behavior
-        if (this.setupTrayIcon())
+        if (this.setupTrayIcon()) {
             this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        else
+        }
+        else {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        }
 
 
         // add handler for GUI log
@@ -416,8 +418,9 @@ public class JTimeSchedFrame extends JFrame {
         ProjectTableModel tstm = (ProjectTableModel) tblSched.getModel();
 
         int rowCount = tstm.getRowCount();
-        if (rowCount > 0)
+        if (rowCount > 0) {
             tstm.fireTableRowsUpdated(0, rowCount - 1);
+        }
     }
 
     protected void updateStatsLabel() {
@@ -499,8 +502,9 @@ public class JTimeSchedFrame extends JFrame {
 //        if (response != JOptionPane.YES_OPTION)
 //            return;
 
-        if (this.currentProject == prj)
+        if (this.currentProject == prj) {
             this.currentProject = null;
+        }
 
         tstm.removeProject(modelRow);
 
@@ -599,8 +603,9 @@ public class JTimeSchedFrame extends JFrame {
                     JTimeSchedFrame.this.setVisible(false);
                     JTimeSchedFrame.this.dispose();
 
-                    if (SystemTray.isSupported())
+                    if (SystemTray.isSupported()) {
                         SystemTray.getSystemTray().remove(JTimeSchedFrame.this.trayIcon);
+                    }
 
                     System.exit(0);
                 }
@@ -648,10 +653,12 @@ public class JTimeSchedFrame extends JFrame {
                     // FIXME: bring to front if not foreground-window [#5]
                     // isActive() doesn't work on MS-Windows because click
                     // into tray steels the focus.
-                    if (!isVisible() /*|| !isActive()*/)
+                    if (!isVisible() /*|| !isActive()*/) {
                         setVisible(true);
-                    else
+                    }
+                    else {
                         setVisible(false);
+                    }
                 }
             };
 
@@ -799,14 +806,16 @@ public class JTimeSchedFrame extends JFrame {
     class TimeSchedTableMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (tblSched.getRowCount() == 0)
+            if (tblSched.getRowCount() == 0) {
                 return;
+            }
 
             int selRow = tblSched.rowAtPoint(e.getPoint());
             int selColumn = tblSched.columnAtPoint(e.getPoint());
 
-            if (selRow == -1 || selColumn == -1)
+            if (selRow == -1 || selColumn == -1) {
                 return;
+            }
 
             int row = tblSched.convertRowIndexToModel(selRow);
             int column = tblSched.convertColumnIndexToModel(selColumn);
@@ -818,14 +827,15 @@ public class JTimeSchedFrame extends JFrame {
             if (button == MouseEvent.BUTTON1) {    // left button
                 switch (column) {
                     case ProjectTableModel.COLUMN_ACTION_DELETE:
-                        if (e.getClickCount() == 2)
+                        if (e.getClickCount() == 2) {
                             handleDelete(tstm, prj, row);
+                        }
                         break;
                     case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
                         handleStartPause(prj);
                         break;
                     default:
-                        throw new IllegalStateException("Unexpected value: " + column);
+                        break;
                 }
             } else if (button == MouseEvent.BUTTON2) {    // middle button
                 handleStartPause(prj);
@@ -842,13 +852,16 @@ public class JTimeSchedFrame extends JFrame {
                         if (input != null) {
                             int newSeconds = 0;
                             try {
-                                if (!input.isEmpty())
+                                if (!input.isEmpty()) {
                                     newSeconds = ProjectTime.parseSeconds(input);
+                                }
 
-                                if (column == ProjectTableModel.COLUMN_TIMEOVERALL)
+                                if (column == ProjectTableModel.COLUMN_TIMEOVERALL) {
                                     prj.setQuotaOverall(newSeconds);
-                                else
+                                }
+                                else {
                                     prj.setQuotaToday(newSeconds);
+                                }
 
                                 tstm.fireTableRowsUpdated(row, row);
                             } catch (ParseException pe) {
@@ -887,8 +900,9 @@ public class JTimeSchedFrame extends JFrame {
         }
 
         private void showPopup(MouseEvent e) {
-            if (!e.isPopupTrigger())
+            if (!e.isPopupTrigger()) {
                 return;
+            }
 
             Point p = e.getPoint();
             int selColumn = tblSched.getTableHeader().columnAtPoint(p);
@@ -984,8 +998,9 @@ public class JTimeSchedFrame extends JFrame {
             }
 
             int selRow = tblSched.getSelectedRow();
-            if (selRow == -1)
+            if (selRow == -1) {
                 return;
+            }
 
             int row = tblSched.convertRowIndexToModel(selRow);
 

@@ -145,14 +145,16 @@ This bug, a control-flow problem, results from a clause that checks that every s
 By introducing a `default` case in every switch statement, the code is protected against later changes, like the introduction of new types in an enumeration type.
 
 As for the other bugs, we searched for ways to fix the problem automatically at once, but after not finding any solutions, we ended up fixing it manually, as there were only seven situations in the code.
+In almost every situation, we throw an exception of type IllegalStateException, but in the following code segments we just do a `break` statement because that function is a handler, receiving mouse inputs all the time and sometimes falling on that `default` clause, and we don't want to be seeing exceptions all the time.
 
 Before:
 ```java
   if (button == MouseEvent.BUTTON1) {    // left button
       switch (column) {
           case ProjectTableModel.COLUMN_ACTION_DELETE:
-              if (e.getClickCount() == 2)
-                  handleDelete(tstm, prj, row);
+              if (e.getClickCount() == 2){
+                handleDelete(tstm,prj,row);
+              }
               break;
           case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
               handleStartPause(prj);
@@ -170,7 +172,7 @@ After:
           case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
               {...}
           default:
-              throw new IllegalStateException("Unexpected value: " + column);
+              break;
       }
   }
 ```

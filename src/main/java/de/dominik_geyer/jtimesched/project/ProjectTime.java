@@ -38,8 +38,9 @@ public class ProjectTime {
         Pattern p = Pattern.compile("(\\d+):([0-5]?\\d):([0-5]?\\d)");    // 0:00:00
         Matcher m = p.matcher(strTime);
 
-        if (!m.matches())
+        if (!m.matches()) {
             throw new ParseException("Invalid seconds-string", 0);
+        }
 
         int hours = Integer.parseInt(m.group(1));
         int minutes = Integer.parseInt(m.group(2));

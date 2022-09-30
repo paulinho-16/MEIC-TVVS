@@ -156,20 +156,25 @@ public class ProjectTable extends JTable {
         for (Object[] cp : columnProps) {
             TableColumn tc = tcm.getColumn((Integer) cp[0]);
 
-            if ((Integer) cp[1] > 0)
+            if ((Integer) cp[1] > 0) {
                 tc.setPreferredWidth((Integer) cp[1]);
+            }
 
-            if ((Integer) cp[2] > 0)
+            if ((Integer) cp[2] > 0) {
                 tc.setMinWidth((Integer) cp[2]);
+            }
 
-            if ((Integer) cp[3] > 0)
+            if ((Integer) cp[3] > 0) {
                 tc.setMaxWidth((Integer) cp[3]);
+            }
 
-            if ((TableCellRenderer) cp[4] != null)
+            if ((TableCellRenderer) cp[4] != null) {
                 tc.setCellRenderer((TableCellRenderer) cp[4]);
+            }
 
-            if ((TableCellEditor) cp[5] != null)
+            if ((TableCellEditor) cp[5] != null) {
                 tc.setCellEditor((TableCellEditor) cp[5]);
+            }
         }
     }
 

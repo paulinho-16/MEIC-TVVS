@@ -43,8 +43,9 @@ public class TimeCellEditor extends DefaultCellEditor {
         String strTime = this.tfEdit.getText();
         int newSeconds = this.oldSeconds;
 
-        if (strTime.isEmpty() || strTime.equals("0"))
+        if (strTime.isEmpty() || strTime.equals("0")) {
             newSeconds = 0;
+        }
         else {
             try {
                 newSeconds = ProjectTime.parseSeconds(strTime);

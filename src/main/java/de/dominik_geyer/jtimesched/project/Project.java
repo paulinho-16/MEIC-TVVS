@@ -110,16 +110,18 @@ public class Project {
     }
 
     protected int getElapsedSeconds() throws ProjectException {
-        if (!this.isRunning())
+        if (!this.isRunning()) {
             throw new ProjectException("Timer not running");
+        }
 
         Date currentTime = new Date();
         return (int) ((currentTime.getTime() - this.timeStart.getTime()) / 1000);
     }
 
     public void start() throws ProjectException {
-        if (this.isRunning())
+        if (this.isRunning()) {
             throw new ProjectException("Timer already running");
+        }
 
         // save current time
         this.timeStart = new Date();
@@ -128,8 +130,9 @@ public class Project {
     }
 
     public void pause() throws ProjectException {
-        if (!this.isRunning())
+        if (!this.isRunning()) {
             throw new ProjectException("Timer not running");
+        }
 
         int secondsElapsed = this.getElapsedSeconds();
         this.secondsOverall += secondsElapsed;
@@ -153,12 +156,13 @@ public class Project {
     public int getSecondsToday() {
         int seconds = this.secondsToday;
 
-        if (this.isRunning())
+        if (this.isRunning()) {
             try {
                 seconds += this.getElapsedSeconds();
             } catch (ProjectException e) {
                 e.printStackTrace();
             }
+        }
 
         return seconds;
     }
@@ -166,33 +170,37 @@ public class Project {
     public int getSecondsOverall() {
         int seconds = this.secondsOverall;
 
-        if (this.isRunning())
+        if (this.isRunning()) {
             try {
                 seconds += this.getElapsedSeconds();
             } catch (ProjectException e) {
                 e.printStackTrace();
             }
+        }
 
         return seconds;
     }
 
     public void setSecondsOverall(int secondsOverall) {
-        if (secondsOverall < 0)
+        if (secondsOverall < 0) {
             secondsOverall = 0;
+        }
 
         this.secondsOverall = secondsOverall;
     }
 
     public void setSecondsToday(int secondsToday) {
-        if (secondsToday < 0)
+        if (secondsToday < 0) {
             secondsToday = 0;
+        }
 
         this.secondsToday = secondsToday;
     }
 
     public void adjustSecondsToday(int secondsToday) {
-        if (secondsToday < 0)
+        if (secondsToday < 0) {
             secondsToday = 0;
+        }
 
         int secondsDelta = secondsToday - this.secondsToday;
 

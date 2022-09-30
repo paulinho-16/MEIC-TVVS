@@ -184,10 +184,12 @@ public class ProjectTableModel extends AbstractTableModel {
                     ProjectTime.formatSeconds(oldSeconds),
                     ProjectTime.formatSeconds(newSeconds)));
 
-                if (column == ProjectTableModel.COLUMN_TIMEOVERALL)
+                if (column == ProjectTableModel.COLUMN_TIMEOVERALL) {
                     prj.setSecondsOverall(newSeconds);
-                else
+                }
+                else {
                     prj.adjustSecondsToday(newSeconds);
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + column);

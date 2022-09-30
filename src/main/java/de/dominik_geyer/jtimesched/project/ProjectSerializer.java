@@ -201,8 +201,9 @@ public class ProjectSerializer {
     }
 
     protected static void startXmlElement(TransformerHandler hd, String element, AttributesImpl atts) throws SAXException {
-        if (atts == null)
+        if (atts == null) {
             atts = new AttributesImpl();
+        }
         hd.startElement("", "", element, atts);
     }
 
@@ -211,8 +212,9 @@ public class ProjectSerializer {
     }
 
     protected static void addXmlElement(TransformerHandler hd, String element, AttributesImpl atts, Object data) throws SAXException {
-        if (atts == null)
+        if (atts == null) {
             atts = new AttributesImpl();
+        }
         hd.startElement("", "", element, atts);
         if (data != null) {
             String strData = data.toString();

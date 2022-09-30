@@ -44,8 +44,9 @@ public class DateCellEditor extends DefaultCellEditor {
         String strDate = this.tfEdit.getText();
         Date newDate = this.oldDate;
 
-        if (strDate.isEmpty())
+        if (strDate.isEmpty()) {
             newDate = new Date();
+        }
         else {
             try {
                 newDate = ProjectTime.parseDate(strDate);

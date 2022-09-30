@@ -153,10 +153,12 @@ public class ColorDialog extends JDialog implements ActionListener {
                 "Choose a custom color",
                 ColorDialog.this.currentColor);
 
-            if (chosenColor != null)
+            if (chosenColor != null) {
                 this.selectedColor = chosenColor;
-            else
+            }
+            else {
                 this.selectedColor = this.currentColor;
+            }
         } else {
             this.selectedColor = btn.getBackground();
         }
