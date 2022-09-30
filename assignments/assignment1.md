@@ -72,14 +72,13 @@ Although, after analysing the project code, we modified some of those checks, na
 
 #### Report
 
-The initial report produced by Checkstyle identified 1450 warnings and 0 errors.
+The [initial report](./reports/checkstyle_initial.pdf) produced by Checkstyle identified 1450 warnings and 0 errors.
 The file with the most warnings is `JTimeSchedFrame.java`, with 1557 found, and the rules with the most violations are `FileTabCharacter`, with 2275, and `Indentation`, with 1511. We decided to explore bugs of different categories, them being **whitespace**, **indentation**, **blocks**, **coding**, **imports** and **modifier**.
-
-![Initial report of Checkstyle](./images/checkstyle_report.png)
+We fixed numerous warnings in addition to those described here, so the [final report](./reports/checkstyle_final.pdf) ended up with only 50 bugs, all of which are related to documentation (**javadoc** category).
 
 #### Bugs & Fixes
 
-The following section presents some of the explored bugs and the solutions we came up with to fix them. Notice that we avoided solving problems manually on a case-by-case basis, always trying to find automated ways to solve them using the IntelliJ IDE's potential.
+The following section presents some of the explored bugs, and the solutions we came up with to fix them. Notice that we avoided solving problems manually on a case-by-case basis, always trying to find automated ways to solve them using the IntelliJ IDE's potential.
 This way, fixing similar bugs becomes much faster, approaching real-life contexts.
 
 **1. *FileTabCharacter* (whitespace) & *Indentation* (indentation)**
@@ -119,19 +118,19 @@ Then, to actually apply those settings, right-click on the `src` directory and c
 
 Before:
 ```java
-  public static String getAppVersion()
-      {
-          String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
-          return (appVersion != null) ? appVersion : "unknown";
-      }
+public static String getAppVersion()
+{
+    String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
+    return (appVersion != null) ? appVersion : "unknown";
+}
 ```
 
 After:
 ```java
-  public static String getAppVersion() {
-          String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
-          return (appVersion != null) ? appVersion : "unknown";
-      }
+public static String getAppVersion() {
+  String appVersion = Package.getPackage("de.dominik_geyer.jtimesched").getImplementationVersion();
+  return (appVersion != null) ? appVersion : "unknown";
+}
 ```
 
 This procedure reduced the number of warnings from 603 to 321, as we can see in the following image.
@@ -151,32 +150,32 @@ In almost every situation, we throw an exception of type IllegalStateException, 
 
 Before:
 ```java
-  if (button == MouseEvent.BUTTON1) {    // left button
-      switch (column) {
-          case ProjectTableModel.COLUMN_ACTION_DELETE:
-              if (e.getClickCount() == 2){
-                handleDelete(tstm,prj,row);
-              }
-              break;
-          case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
-              handleStartPause(prj);
-              break;
-      }
-  }
+if (button == MouseEvent.BUTTON1) {    // left button
+    switch (column) {
+        case ProjectTableModel.COLUMN_ACTION_DELETE:
+            if (e.getClickCount() == 2) {
+              handleDelete(tstm,prj,row);
+            }
+            break;
+        case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+            handleStartPause(prj);
+            break;
+    }
+}
 ```
 
 After:
 ```java
-  if (button == MouseEvent.BUTTON1) {    // left button
-      switch (column) {
-          case ProjectTableModel.COLUMN_ACTION_DELETE:
-              {...}
-          case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
-              {...}
-          default:
-              break;
-      }
-  }
+if (button == MouseEvent.BUTTON1) {    // left button
+    switch (column) {
+        case ProjectTableModel.COLUMN_ACTION_DELETE:
+            {...}
+        case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+            {...}
+        default:
+            break;
+    }
+}
 ```
 
 As a result, these fixes reduced the number of warnings from 321 to 314.
@@ -229,15 +228,17 @@ As we just needed to swap these modifiers, these issues could be easily fixed by
 
 Before:
 ```java
-  static public final String LOG_FILE = CONF_PATH + "jTimeSched.log";
-  static private Logger LOGGER;
+static public final String LOG_FILE = CONF_PATH + "jTimeSched.log";
+static private Logger LOGGER;
 ```
 
 After:
 ```java
-  public static final String LOG_FILE = CONF_PATH + "jTimeSched.log";
-  private static Logger LOGGER;
+public static final String LOG_FILE = CONF_PATH + "jTimeSched.log";
+private static Logger LOGGER;
 ```
+
+By fixing these and other bugs, we reached a final number of 50 warnings, as shown in the [final report](./reports/checkstyle_final.pdf).
 
 ## SpotBugs
 
@@ -275,10 +276,8 @@ This segment of code ended up being removed, although it still taught us how to 
 The Spotbugs error fixes were only done after fixing the Checkstyle bugs.
 Given that the amount of Spotbugs warnings were reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
 
-Therefore, when we first ran the program, it contained 25 bugs among 40 classes, which is shown in the following image
-
-![Initial report Spotbugs](./images/spotbugs_report.png)
-
+Therefore, the [initial report](./reports/spotbugs_initial.pdf) contained 25 bugs among 40 classes.
+The [final report](./reports/spotbugs_final.pdf) ended up with 16 bugs, which we pretend to eliminate in the future.
 
 #### Bugs & Fixes
 
@@ -292,8 +291,9 @@ In the initial case shown below, it is only verified if the dirConf file is not 
 Before:
 ```java
 File dirConf = new File(JTimeSchedApp.CONF_PATH);
-if (!dirConf.isDirectory())
+if (!dirConf.isDirectory()) {
   dirConf.mkdir();
+}
 ```
 
 The way we fixed this problem was by making the method throw an exception in case the file fails to be created.
@@ -323,26 +323,26 @@ Before:
 
 ```java
 public Date getTimeStart() {
-    return timeStart; 
+  return timeStart; 
 }
 ```
 
 ```java
 public void setTimeStart(Date timeStart) {
-    this.timeStart = timeStart;
+  this.timeStart = timeStart;
 }
 ```
 
 After:
 ```java
 public Date getTimeStart() {
-    return new Date(timeStart.getTime());
+  return new Date(timeStart.getTime());
 }
 ```
 
 ```java
 public void setTimeStart(Date timeStart) {
-    this.timeStart = new Date(timeStart.getTime());
+  this.timeStart = new Date(timeStart.getTime());
 }
 ```
 This fix was done to 2 variables, `timeStart` and `TimeCreated`, which contained an error both in the `getters` and `setters`. Therefore we reduced the number of errors by 4, making the remaining error count 20.
@@ -362,12 +362,12 @@ This is achieved given that the usage of static classes, when possible, has two 
 
 Before:
 ```java
-  class JTimeSchedGUILogHandler extends Handler {...}
+class JTimeSchedGUILogHandler extends Handler {...}
 ```
 
 After:
 ```java
-  static class JTimeSchedGUILogHandler extends Handler {...}
+static class JTimeSchedGUILogHandler extends Handler {...}
 ```
 
 This fixed reduced the number of errors from 20 to 19, slightly improving the program's performance.
@@ -382,18 +382,18 @@ In the initial code segment, it is assumed that an object from the parent class 
 
 Before:
 ```java
-  ProjectTable pt = (ProjectTable) table;
-  (...)
+ProjectTable pt = (ProjectTable) table;
+(...)
 ```
 
 Therefore, a class verification should be added before the cast, to ensure it will succeed.
 
 After:
 ```java
-  if (table instanceof ProjectTable) {
-    ProjectTable pt=(ProjectTable)table;
-    (...)
-  }
+if (table instanceof ProjectTable) {
+  ProjectTable pt=(ProjectTable)table;
+  (...)
+}
 ```
 
 This fix now reduced the error count by 1, to 18.
@@ -409,8 +409,8 @@ This bug was detected, given that there were `FileInputStreams` and `FileOutputS
 Even though the initial code contained the methods for closing both streams, 
 
 ```java
-    fis.close();
-    fos.close();
+fis.close();
+fos.close();
 ```
 There was no guarantee that these methods would be called, given that exceptions could occur in previous code segments after the streams were opened.
 
@@ -418,26 +418,26 @@ This was fixed by placing the streams' `read` and `write` methods inside a `try`
 
 ```java
 finally {
-    if (fis != null) {
-        try {
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  if(fis!=null) {
+    try {
+      fis.close();
+    } catch(IOException e) {
+      e.printStackTrace();
     }
-    if (fos != null) {
-        try {
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  }
+  if(fos!=null) {
+    try {
+      fos.close();
+    } catch(IOException e) {
+      e.printStackTrace();
     }
+  }
+}
 ```
 
 Some null constraints were also required in case the streams were unsuccessfully created.
 
-This fix reduced the number of bugs by 2, reaching the final amount of 16 errors.
-
+This fix reduced the number of bugs by 2, reaching the final amount of 16 errors, as shown in the [final report](./reports/spotbugs_final.pdf).
 
 -----
 
