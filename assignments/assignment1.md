@@ -234,7 +234,7 @@ After:
 ## SpotBugs
 
 #### Description
-SpotBugs is a program which uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns
+SpotBugs is a program which uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns with thoroughly documented descriptions.
 
 #### Configuration
 Não sei propriamente o que dizer aqui, dado que não fizemos assim grandes alterações de configurações.
@@ -247,14 +247,19 @@ Não sei propriamente o que dizer aqui, dado que não fizemos assim grandes alte
 The Spotbugs error fixes were only done after fixing the Checkstyle bugs.
 Given that the amount of Spotbugs warnings was reduced after applying the Checkstyle fixes, we can conclude that both tools had some errors in common.
 
+Therefore, when we first ran the program, it contained 25 bugs among 40 classes, which is shown in the following image
+
+![Initial report Spotbugs](./images/spotbugs_report.png)
+
 
 #### Bugs & Fixes
 
 1.
 
 ![RV_RETURN_VALUE_IGNORED_BAD_PRACTICE bug found by SpotBugs](./images/spotbugs_bug1.png)
-This bug occurred only once in the code and represented a violation for lacking the verification of the `mkdir()` method.
-In the initial case show bellow, it is only checked if the dirConf file is not a directory, which does not ensure that a subdirectory can be successfully created.
+This bug occurred only once and represented a violation for lacking the verification of the `mkdir()` method.
+
+In the initial case shown bellow, it is only verified if the dirConf file is not a directory, which does not ensure that a subdirectory can be successfully created.
 
 Before:
 ```java
