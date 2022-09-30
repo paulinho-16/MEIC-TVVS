@@ -238,15 +238,15 @@ public class JTimeSchedFrame extends JFrame {
         this.btnLogToggle = new JToggleButton(JTimeSchedFrame.getImageIcon("log-toggle.png"));
         this.btnLogToggle.setToolTipText("toggle log area");
         this.btnLogToggle.addActionListener(new ActionListener() {
-                                                @Override
-                                                public void actionPerformed(ActionEvent arg0) {
-                                                    Boolean isVisible = spLog.isVisible();
-                                                    setSize(getWidth(), getHeight() + JTimeSchedFrame.LOGAREA_HEIGHT * (isVisible ? -1 : 1));
-                                                    spLog.setVisible(!isVisible);
-                                                    spLog.doLayout();
-                                                    doLayout();
-                                                }
-                                            }
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                Boolean isVisible = spLog.isVisible();
+                setSize(getWidth(), getHeight() + JTimeSchedFrame.LOGAREA_HEIGHT * (isVisible ? -1 : 1));
+                spLog.setVisible(!isVisible);
+                spLog.doLayout();
+                doLayout();
+            }
+        }
         );
         panelBottom.add(this.btnLogToggle);
 
@@ -493,14 +493,14 @@ public class JTimeSchedFrame extends JFrame {
 
 
     public void handleDelete(ProjectTableModel tstm, Project prj, int modelRow) {
-//        int response = JOptionPane.showConfirmDialog(
-//                this,
-//                "Remove project \"" + prj.getTitle() + "\" from list?",
-//                "Remove project?",
-//                JOptionPane.YES_NO_OPTION);
-//        
-//        if (response != JOptionPane.YES_OPTION)
-//            return;
+        //  int response = JOptionPane.showConfirmDialog(
+        //  this,
+        //  "Remove project \"" + prj.getTitle() + "\" from list?",
+        //  "Remove project?",
+        //  JOptionPane.YES_NO_OPTION);
+        //
+        //  if (response != JOptionPane.YES_OPTION)
+        //      return;
 
         if (this.currentProject == prj) {
             this.currentProject = null;

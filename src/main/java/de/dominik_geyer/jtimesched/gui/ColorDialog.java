@@ -127,14 +127,13 @@ public class ColorDialog extends JDialog implements ActionListener {
         // exit on key ESC
         final KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true);
         getRootPane().registerKeyboardAction(new ActionListener() {
-                                                 @Override
-                                                 public void actionPerformed(ActionEvent e) {
-                                                     ColorDialog.this.selectedColor = ColorDialog.this.currentColor;
-
-                                                     ColorDialog.this.setVisible(false);
-                                                     ColorDialog.this.dispose();
-                                                 }
-                                             },
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ColorDialog.this.selectedColor = ColorDialog.this.currentColor;
+                ColorDialog.this.setVisible(false);
+                ColorDialog.this.dispose();
+            }
+        },
             keyStroke,
             JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
