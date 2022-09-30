@@ -87,6 +87,8 @@ This way, fixing similar bugs becomes much faster, approaching real-life context
 We noticed that these two bugs were always associated and, since they constituted the majority of the warnings accused, we decided to solve them first.
 FileTabCharacter simply says that there should be no tab characters ('\t') in the source code, whereas Indentation highlights violations of the correct indentation of Java code.
 
+Developers should not need to configure the tab width of their text editors in order to be able to read source code, hence the need to fix these warnings.
+
 First, we configured the IDE to not use the tab character with `File -> Settings -> Code Style -> Java -> Use Tab character off`, leaving those configurations as the following image shows.
 
 ![FileTabCharacter & Indentation bug fixes](./images/checkstyle_fix1-1.png)
@@ -139,6 +141,8 @@ This procedure reduced the number of warnings from 603 to 321, as we can see in 
 ![MissingSwitchDefault bug found by Checkstyle](./images/checkstyle_bug3.png)
 
 This bug, a control-flow problem, results from a clause that checks that every switch statement has a default clause.
+
+By introducing a `default` case in every switch statement, the code is protected against later changes, like the introduction of new types in an enumeration type.
 
 As for the other bugs, we searched for ways to fix the problem automatically at once, but after not finding any solutions, we ended up fixing it manually, as there were only seven situations in the code.
 
@@ -237,12 +241,30 @@ After:
 [SpotBugs](https://spotbugs.github.io/) is a program which uses static analysis to look for bugs in Java code, which checks more than 400 bug patterns with thoroughly documented [descriptions](https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html).
 
 #### Configuration
-Não sei propriamente o que dizer aqui, dado que não fizemos assim grandes alterações de configurações.
-(Achas relevante falar sobre o facto de termos que adicionar os plugins e de termos experimentado utilizar as configruações de remover um falso positivo ou de alterar a ordem de prioridades?)
 
-> TODO
+Even though the final version of the assignment did not end up containing any SpotBugs configuration changes, we experimented a bit with the matching configuration.
 
-Even though the final version of the assignment did not end up containing any SpotBugs configurations, 
+For instance, we attempted to remove a false positive *BC_UNCONFIRMED_CAST* (bug 4) warning which we later realized that was actually a bug that could be fixed.
+
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="http://findbugs.sourceforge.net/filter/3.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://findbugs.sourceforge.net/filter/3.0.0 https://findbugs.googlecode.com/git/findbugs/etc/findbugsfilter.xsd">
+
+    <Not>
+        <Match>
+            <Class name="de.dominik_geyer.jtimesched.gui.table.CustomCellRenderer" />
+            <Method name="getTableCellRendererComponent" />
+            <Bug pattern="BC_UNCONFIRMED_CAST" />
+        </Match>
+    </Not>
+
+</FindBugsFilter>
+```
+
+This segment of code ended up being removed, although it still taught us how to remove false positive warnings, as well as to distinguish an actual bug from a false positive.
 
 #### Report
 
@@ -281,8 +303,6 @@ After:
 ```
 Therefore, after applying the aforementioned fix, the number of bugs was reduced to 24
 
-> TODO: Verificar se isto está bem porque não sei se estamos tecnicamente a dar fix porque pode haver erros do diretório já existir quiepodem causar bosta e nos estamos só a lançar excepção
-> Perguntar ao stor
 
 2. **EI_EXPOSE_REP and EI_EXPOSE_REP2 (Malicious Code)**
 
@@ -378,7 +398,6 @@ After:
 
 This fix now reduced the error count by 1, to 18.
 
-> TODO: Nã deviamos dar launch a uma exception em caso de erro? Senão soma e segue sem nenhuma mensagem de erro :/
 
  
 > https://stackoverflow.com/questions/4862960/explicit-casting-from-super-class-to-subclass
