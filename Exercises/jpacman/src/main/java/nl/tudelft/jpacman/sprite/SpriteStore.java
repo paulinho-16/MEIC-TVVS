@@ -57,7 +57,7 @@ public class SpriteStore {
      * @throws IOException
      *             When the resource could not be loaded.
      */
-    private Sprite loadSpriteFromResource(String resource) throws IOException {
+    public Sprite loadSpriteFromResource(String resource) throws IOException {
         try (InputStream input = SpriteStore.class.getResourceAsStream(resource)) {
             if (input == null) {
                 throw new IOException("Unable to load " + resource + ", resource does not exist.");

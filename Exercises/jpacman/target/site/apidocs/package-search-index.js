@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"nl.tudelft.jpacman"},{"l":"nl.tudelft.jpacman.board"},{"l":"nl.tudelft.jpacman.game"},{"l":"nl.tudelft.jpacman.level"},{"l":"nl.tudelft.jpacman.npc"},{"l":"nl.tudelft.jpacman.npc.ghost"},{"l":"nl.tudelft.jpacman.sprite"},{"l":"nl.tudelft.jpacman.ui"}]

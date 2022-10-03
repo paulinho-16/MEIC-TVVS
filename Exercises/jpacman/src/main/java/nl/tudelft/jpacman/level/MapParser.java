@@ -142,7 +142,7 @@ public class MapParser {
      * @param ghost the newly created ghost to be placed
      * @return a square with the ghost on it.
      */
-    protected Square makeGhostSquare(List<Ghost> ghosts, Ghost ghost) {
+    public Square makeGhostSquare(List<Ghost> ghosts, Ghost ghost) {
         Square ghostSquare = boardCreator.createGround();
         ghosts.add(ghost);
         ghost.occupy(ghostSquare);

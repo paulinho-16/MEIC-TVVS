@@ -20,7 +20,7 @@ public class Board {
      *            The grid of squares with grid[x][y] being the square at column
      *            x, row y.
      */
-    Board(Square[][] grid) {
+    public Board(Square[][] grid) {
         assert grid != null;
         this.board = grid;
         assert invariant() : "Initial grid cannot contain null squares";
