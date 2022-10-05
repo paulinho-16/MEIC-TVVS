@@ -14,6 +14,8 @@ Next, we apply the **Category Partition** algorithm and describe the unit tests 
 We tried our best to follow a black-box testing approach, even though the [documentation](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/assignments/jtimesched-javadoc/index.html) of the project at hand is non-existent, limited only to the signature of the functions.
 For this reason, we were forced to resort to source code to understand the purpose of some functions, but even in these cases, we tried to just focus on their purpose and not on their functioning, to avoid being influenced when writing the tests.
 
+As for the naming of test methods, we follow a *MethodName_StateUnderTest_ExpectedBehaviour* approach.
+
 // TODO: apagar isto:
 1. Which functions have you selected for testing and why.
 1. What is the purpose of each function.
@@ -53,21 +55,91 @@ adjustSecondsToday(int secondsToday)
 
 // TODO: description of unit test and outcome
 
-### Function 3
-
-parseSeconds(String strTime)
+### 3) `public static int parseSeconds(String strTime) throws ParseException`
 
 #### Description
 
-// TODO: why this function and description
+This function of the `ProjectTime` class is called when the user edits the value of the "Time Overall" column, or the "Time Today" column of a given task/project, which correspond to the total time spent on that item, and the time spent on the current day, respectively.
+This action can be performed directly on the table by double-clicking with the left mouse button on the respective field, or via an input window that opens after a right mouse click on the field.
+
+Looking at its signature, we immediately deduced that it receives as input a string, coming from the user, and returns an int, which we believe is the total number of seconds taken by the task, due to the name of the function.
+Therefore, its purpose would be to receive a time in a given string format and return the corresponding total number of seconds, in order to be able to update the table values accordingly.
+
+That said, it is very important to test functions that receive user input, which we can never trust.
+They can result in values in formats that are not the ones expected by the application, leading to its downfall.
+
+After checking the format expected by the function (for this we had to resort to the source code, due to the lack of documentation), we thought of countless possibilities of inputs that could be categorized.
+This possibility, together with the importance of robustness in relation to user inputs, were the reasons why we chose this function.
 
 #### *Category-Partition* algorithm
 
-// TODO: apply algorithm
+1. This method has only one parameter:
+
+    - `strTime`: a string representing a given time
+    
+2. For each parameter we define the characteristics as:
+
+    - `strTime`: corresponds to a time representation, in the format `h:m:s`, where `h`, `m` and `s` are the hours, minutes and seconds of that time duration, respectively
+
+3. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
+   *Constraints*: the string `strTime` must conform to the time format `(\d+):([0-5]?\d):([0-5]?\d)`, other variations are not allowed.
+   Even in the case of following this format, it will be necessary to test certain values for the time units, such as invalid unit times like seconds exceeding the value 59 (must not be accepted) or units with leading zeros (should be accepted).
+
+4. After thinking about the possible categories of inputs, we get the following tests:
+    - `strTime` conforms to the time format
+        - `strTime` duration is zero
+        - `strTime` only has a non-zero value in the seconds time unit
+        - `strTime` only has a non-zero value in the minutes time unit
+        - `strTime` only has a non-zero value in the hours time unit
+        - `strTime` duration is less than 24 hours
+        - `strTime` duration exceeds 24 hours
+        - `strTime` time units have leading zeros
+    - `strTime` doesn't conform to the time format
+        - `strTime` is an empty string
+        - `strTime` uses a separator character other than `:`
+        - `strTime` uses more than two separators, to reference days, for example
+        - `strTime` uses only one separator, when the time does not exceed one hour, for example
+        - `strTime` doesn't use any separator, when the time does not exceed one minute, for example
+        - the time unit minutes of `strTime` exceeds the value 59
+        - the time unit seconds of `strTime` exceeds the value 59
+        - some time unit of `strTime` contains a negative number
+        - some time unit of `strTime` contains non-numeric characters
 
 #### Unit Tests
 
-// TODO: description of unit test and outcome
+The tests implemented for this function can be found in the `ProjectTimeTest.java` file, inside the `test` directory.
+We decided to create two test methods, one for each super-category: the cases where `strTime` conforms to the required format, and the cases where it does not.
+
+In the first case, the test just checks if the evaluated function returns the correct number of seconds for each input.
+As we want to execute a single test method multiple times with different parameters, we must resort to a parameterized test.
+We feed the function the various input-output pairs using the `@CsvSource` annotation.
+
+```java
+@ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds") 
+@CsvSource(value = {"0:0:0,0", "0:0:15,15", "0:17:0,1020", "20:0:0,72000", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
+public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int value) throws ParseException {
+    assertEquals(value, parseSeconds(format));
+}
+```
+
+As for the second case, the test must check whether the execution of the evaluated function throws an exception of type ParseException, as suggested by the function signature.
+Since we still need to execute a single test method multiple times with different parameters, we resorted to a parameterized test as well.
+Bearing in mind that now we only need to pass a single value to the test function (there is no output as in the first case), we use the `@ValueSource` annotation to feed the function the invalid values of `strTime`.
+
+```java
+@ParameterizedTest(name = "Test #{index} with input {arguments} throws exception")
+@ValueSource(strings = {"", "4.21.16", "1:11:11:11","1:11","1","00:60:00","24:00:60", "8:-42:09", "aa:bb:cc"})
+public void testParseSeconds_IncorrectDateFormat_ShouldThrowException(String format) {
+    assertThrows(ParseException.class, () -> parseSeconds(format));
+}
+```
+
+Additionally, we changed the text displayed during the tests' execution using the `name` attribute of the `@ParameterizedTest` annotation, in order to make it more readable.
+Note that we created an input-output pair for each subcategory numbered in the previous subsection.
+
+All the tests above pass successfully, although we think that some cases where the input does not have two `:` separators, like "5:14", should be accepted.
+
+![All tests of the method `parseSeconds` pass successfully](./images/cp_tests1.png)
 
 ### Function 4
 
@@ -112,3 +184,5 @@ writeXml(List<Project> projects)
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-2.pdf)
 - [Equivalence Class Partitioning - ArtOfTesting](https://artoftesting.com/equivalence-class-partitioning)
+- [Unit Test Naming Conventions](https://dzone.com/articles/7-popular-unit-test-naming)
+- [Parametrized Tests - Baeldung](https://www.baeldung.com/parameterized-tests-junit-5)

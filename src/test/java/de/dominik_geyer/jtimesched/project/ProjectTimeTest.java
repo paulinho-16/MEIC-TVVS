@@ -9,18 +9,15 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProjectTimeTest {
-
-    @ParameterizedTest
-    @CsvSource(value = {"4:21:16,15676", "0:0:0,0", "59:59:59,215999", "06:09:03,22143"})
-    public void testFormatSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int value) throws ParseException {
-        // Test correct time format
+    @ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds")
+    @CsvSource(value = {"0:0:0,0", "0:0:15,15", "0:17:0,1020", "20:0:0,72000", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
+    public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int value) throws ParseException {
         assertEquals(value, parseSeconds(format));
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"4.21.16", "1:11:11:11","1:11","1","00:60:00","24:00:60", "8:-42:09"})
-    public void testFormatSeconds_IncorrectDateFormat_ShouldReturnException(String format) {
-        // Test wrong time format with exception being thrown
+    @ParameterizedTest(name = "Test #{index} with input {arguments} throws exception")
+    @ValueSource(strings = {"", "4.21.16", "1:11:11:11","1:11","1","00:60:00","24:00:60", "8:-42:09", "aa:bb:cc"})
+    public void testParseSeconds_IncorrectDateFormat_ShouldThrowException(String format) {
         assertThrows(ParseException.class, () -> parseSeconds(format));
     }
 }
