@@ -23,37 +23,165 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 1. Brief description of the unit tests generated for each category.
 1. Brief description of the outcome of each unit test and whether any test results in a failure (and why)
 
-### Function 1
-
-start()
+### 1) `public void start() throws ProjectException` 
 
 #### Description
 
-// TODO: why this function and description
+This function of the `Project` class is called whenever the user starts running an existing project.
+
+This action can be performed by clicking the *Play* button in the project's final column, when the project is paused, resuming it.
+
+When the project starts running, the `Time Overall` and `Time Today` fields start counting up.
+
 
 #### *Category-Partition* algorithm
 
-// TODO: apply algorithm
+1. This method has no parameters.
+1. Given there are no paremeters, no characteristics can be derived.
+1. There are no paremeters or characteristics, so we don't need to be defining testable combinations of features.
+*Constraints*: A project that is already running cannot be started.
+1. Considering these two situations, we get the following tests:
+   - attempting to start a paused project; 
+   - attempting to start a running project;
 
 #### Unit Tests
 
+The tests implemented for this function can be found in the `ProjectTest.java` file, inside the `test` directory.
+
+We decided to create two test methods. The first one for ensuring a created project that is initially paused starts running after the `start()` method is called. The second one for ensuring an exception is raised when the `start` method is called upon a projetct that is already running.
+
+In the first case, we start be creating a new `Project` variable, which is paused by default, and we verify if the value of the `running` variable is actually false.
+
+Afterwards, we call the `start` method, and we check if the `running` variable's value has changed to true.
+
+Besides, we also verify if the `timeStart` variable is similar to the time of the project's creation, meaning that its value has changed during the test execution.
+
+```java
+@Test
+public void testStart_IdleProject_ShouldStart() throws ProjectException {
+   // Create new Project
+   Project prj = new Project("Test project");
+   // Project should not be running before it is started
+   Assertions.assertFalse(prj.isRunning());
+   Date beforeStart = new Date();
+   // Starting project
+   prj.start();
+   // Project should be running after it is started
+   Assertions.assertTrue(prj.isRunning());
+   // Checking that the project start date has been set during the running test
+   Assertions.assertTrue(Math.abs(beforeStart.getTime() - prj.getTimeStart().getTime()) < 1000, "Dates aren't close enough to each other!");
+}
+```
+
+As for the second case, we started by creating a `Project`, and attempted to call the `start` method twice consecutively, verifying if a `ProjectException` is raised on the second method call.
+
+```java
+@Test
+public void testStart_RunningProject_ShouldReturnException() throws ProjectException {
+   // Create new Project
+   Project prj = new Project("Test project");
+   // Starting project
+   prj.start();
+   // Starting project again
+   assertThrows(ProjectException.class, prj::start);
+}
+```
+
+
+All the tests above passed successfully, as expected.
+
+*TODO: Take the image and add it to its path*
+![All tests of the method `parseSeconds` passed successfully](./images/cp_tests1.png)
+
+
+
 // TODO: description of unit test and outcome
 
-### Function 2
-
-adjustSecondsToday(int secondsToday)
+### 2) `public void adjustSecondsToday(int secondsToday)`
 
 #### Description
 
-// TODO: why this function and description
+This function of the `Project` class is called whenever the user edits the `Time Today` table field, adjusting the value from the `Time Overall` accordingly. This method tests the variations from the input values in comparison to the previously stored ones and makes the necessary adjustments to update the table
+
 
 #### *Category-Partition* algorithm
 
-// TODO: apply algorithm
+1. This methods has only one parameter:
+   - `secondsToday`: an int representing the provided seconds in the table field.
+1. For each parameter we define the characteristics as:
+   - `secondsToday`: corresponds to the amount of seconds of the user input variable
+1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
+   *Constraints*: the `secondsToday` variable must be an integer
+   Even in the case of the only restiction being integer values, several combinations of values must be tested, such as a negative input from the seconds and different combinations the `secondsToday` parameter being smaller or larger than the previous value of the `secondsToday` variable.
+1. After thinking about the possible categories of inputs, we get the following tests:
+   - `secondsToday` is larger than previous value
+   - `secondsToday` is lower than previous value 
+   - `secondsToday` is negative
+
 
 #### Unit Tests
 
-// TODO: description of unit test and outcome
+The tests implemented for this function can be found in the `ProjectTest.java` file, inside the test directory. We decided to create three test methods for different input values of the `secondsToday` parameter.
+
+All tests have the follwing steps:
+1. Creating a new `Project` variable.
+1. Setting the project's `secondsToday` and `secondsOverall` variables to a specificic value
+1. Calling the `adjustSecondsToday` method with a specific value in its argument
+1. Veryfing the final values for the `secondsToday` and `secondsOverall` variables after the method has been called, expecting a predetermined output using the `assertEquals` method from the `junit` library
+
+The tests only differ on the values provided for the steps 2 and 3.
+
+In the first case, the value initially set on the `secondsToday` variable before the method call is lower than the one afterwards. This results in an increased expected output of the `secondsOverall` variable after the method call.
+
+```java
+@Test
+public void testAdjustSecondsToday_LargerInput_ShouldIncreaseOverallTime() {
+   Project proj = new Project("Test Project");
+   proj.setSecondsToday(10);
+   proj.setSecondsOverall(50);
+   proj.adjustSecondsToday(20);
+
+   assertEquals(20,proj.getSecondsToday());
+   assertEquals(60,proj.getSecondsOverall());
+}
+```
+
+
+In the second case, the value initially set on the `secondsToday` variable before the method call is larger than the one afterwards. This results in an lowered expected output of the `secondsOverall` variable after the method call.
+```java
+@Test
+public void testAdjustSecondsToday_SmallerInput_ShouldReduceOverallTime() {
+   Project proj = new Project("Test Project");
+   proj.setSecondsToday(20);
+   proj.setSecondsOverall(50);
+   proj.adjustSecondsToday(10);
+
+   assertEquals(10,proj.getSecondsToday());
+   assertEquals(40,proj.getSecondsOverall());
+}
+```
+
+In the third and last case, the value initially set on the `secondsToday` variable is arbitrary and the one provided in the method call is negative. Given the provided parameter is negative, it is parsed as 0 and the method updates the `secondsToday`and `secondsOverall` not considering the variations provided by the method. 
+
+```java
+@Test
+public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero() {
+   Project proj = new Project("Test Project");
+   proj.setSecondsToday(10);
+   proj.setSecondsOverall(50);
+   proj.adjustSecondsToday(-10);
+
+   assertEquals(0,proj.getSecondsToday());
+   assertEquals(40,proj.getSecondsOverall());
+}
+```
+
+
+All the tests above passed successfully, as expected.
+
+*TODO: Take the image and add it to its path*
+![All tests of the method `adjustSeconds` passed successfully](./images/cp_tests4.png)
+
 
 ### 3) `public static int parseSeconds(String strTime) throws ParseException`
 
@@ -76,14 +204,14 @@ This possibility, together with the importance of robustness in relation to user
 1. This method has only one parameter:
     - `strTime`: a string representing a given time
     
-2. For each parameter we define the characteristics as:
+1. For each parameter we define the characteristics as:
     - `strTime`: corresponds to a time representation, in the format `h:m:s`, where `h`, `m` and `s` are the hours, minutes and seconds of that time duration, respectively
 
-3. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
+1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: the string `strTime` must conform to the time format `(\d+):([0-5]?\d):([0-5]?\d)`, other variations are not allowed.
    Even in the case of following this format, it will be necessary to test certain values for the time units, such as invalid unit times like seconds exceeding the value 59 (must not be accepted) or units with leading zeros (should be accepted).
 
-4. After thinking about the possible categories of inputs, we get the following tests:
+1. After thinking about the possible categories of inputs, we get the following tests:
     - `strTime` conforms to the time format
         - `strTime` duration is zero
         - `strTime` only has a non-zero value in the seconds time unit
@@ -172,13 +300,13 @@ This convenience, together with the importance of the function, were the reasons
 1. This method has only one parameter:
    - `projects`: a list of the existing tasks/projects
 
-2. For each parameter we define the characteristics as:
+1. For each parameter we define the characteristics as:
    - `projects`: the list must contain objects of type `Project`, which gather all the information of a given project, and can be empty if there are no projects registered.
 
-3. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
+1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: the `projects` parameter cannot be null.
 
-4. After thinking about the possible categories of inputs, we get the following tests:
+1. After thinking about the possible categories of inputs, we get the following tests:
    - `projects` parameter is null
    - `projects` is an empty list
    - `projects` contains at least one project
