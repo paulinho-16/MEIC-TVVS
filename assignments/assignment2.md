@@ -74,11 +74,9 @@ This possibility, together with the importance of robustness in relation to user
 #### *Category-Partition* algorithm
 
 1. This method has only one parameter:
-
     - `strTime`: a string representing a given time
     
 2. For each parameter we define the characteristics as:
-
     - `strTime`: corresponds to a time representation, in the format `h:m:s`, where `h`, `m` and `s` are the hours, minutes and seconds of that time duration, respectively
 
 3. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
@@ -122,7 +120,7 @@ public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format
 }
 ```
 
-As for the second case, the test must check whether the execution of the evaluated function throws an exception of type ParseException, as suggested by the function signature.
+As for the second case, the test must check whether the execution of the evaluated function throws an exception of type *ParseException*, as suggested by the function signature.
 Since we still need to execute a single test method multiple times with different parameters, we resorted to a parameterized test as well.
 Bearing in mind that now we only need to pass a single value to the test function (there is no output as in the first case), we use the `@ValueSource` annotation to feed the function the invalid values of `strTime`.
 
@@ -139,7 +137,7 @@ Note that we created an input-output pair for each subcategory numbered in the p
 
 All the tests above pass successfully, although we think that some cases where the input does not have two `:` separators, like "5:14", should be accepted.
 
-![All tests of the method `parseSeconds` pass successfully](./images/cp_tests1.png)
+![All tests of the method `parseSeconds` pass successfully](./images/cp_tests3.png)
 
 ### Function 4
 
@@ -157,21 +155,148 @@ setValueAt(Object value, int row, int column)
 
 // TODO: description of unit test and outcome
 
-### Function 5
-
-writeXml(List<Project> projects)
+### 5) `public void writeXml(List<Project> projects) throws TransformerConfigurationException, SAXException, IOException`
 
 #### Description
 
-// TODO: why this function and description
+Looking at the signature of this function of the `ProjectSerializer` class, we easily deduced that its purpose was to store information about existing tasks/projects in an XML file.
+Therefore, it receives as input a list of existing projects, and its objective will be to write all the data to the XML file so that, in the next execution of the program, it can restore the state of the application upon reading this file.
+It is called as soon as the user clicks the *Exit* button, which ends the application. In addition, it is also called periodically through a timer with each passing minute, to avoid losing information after unexpected program terminations.
+
+That said, it is a fundamental function, which prevents the loss of user information between different executions of the program, hence it is important to test it.
+Furthermore, it is a function that can be tested via Black-box techniques despite the lack of documentation, since we could only look at an XML file resulting from our execution of the program and estimate which aspects of the writing should be evaluated, completely refraining from analyzing the source code.
+This convenience, together with the importance of the function, were the reasons why we decided to test it.
 
 #### *Category-Partition* algorithm
 
-// TODO: apply algorithm
+1. This method has only one parameter:
+   - `projects`: a list of the existing tasks/projects
+
+2. For each parameter we define the characteristics as:
+   - `projects`: the list must contain objects of type `Project`, which gather all the information of a given project, and can be empty if there are no projects registered.
+
+3. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
+   *Constraints*: the `projects` parameter cannot be null.
+
+4. After thinking about the possible categories of inputs, we get the following tests:
+   - `projects` parameter is null
+   - `projects` is an empty list
+   - `projects` contains at least one project
 
 #### Unit Tests
 
-// TODO: description of unit test and outcome
+The tests implemented for this function can be found in the `ProjectSerializerTest.java` file, inside the `test` directory.
+We created three test methods, one for each category, and created a helper function that just parses the XML file and retrieves a `Document` object, to avoid redundant code in the tests.
+The tests will be applied to a file called `WriteXmlTest.xml`, in the `test/resources` directory.
+
+```java
+public Document readXml() throws ParserConfigurationException, IOException, SAXException {
+   DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+   DocumentBuilder builder = factory.newDocumentBuilder();
+   return builder.parse(new File(filename));
+}
+```
+
+In the first case, the test just checks whether the execution of the evaluated function throws an exception of type *NullPointerException*.
+
+```java
+@Test
+public void testWriteXml_NullParameter_ShouldThrowException() {
+    assertThrows(NullPointerException.class, () -> ps.writeXml(null));
+}
+```
+
+As for the second case, where `projects` is an empty list, the test must verify that the method does not actually write project information to the file.
+We did this by collapsing all document nodes with the "project" tag into a list, and checking that the size of that list is zero.
+
+```java
+@Test
+public void testWriteXml_EmptyList_ShouldWriteNoProjects() throws TransformerConfigurationException, IOException, SAXException, ParserConfigurationException {
+   List<Project> projects = new ArrayList<>();
+   ps.writeXml(projects);
+   
+   Document document = readXml();
+   
+   Element root = document.getDocumentElement();
+   NodeList nl = root.getElementsByTagName("project");
+   assertEquals(0, nl.getLength());
+}
+```
+
+Finally, for the third case, we created three projects and changed their attributes, namely:
+   - For project 1:
+      - started the project (changes its *running* state)
+      - changed its notes
+   - For project 2:
+      - set the project as checked
+      - set a new colour
+   - For project 3:
+      - set the *SecondsToday* time
+      - set the *SecondsOverall* time
+      - set the *TimeCreated* time
+
+We gathered these projects into a list, and invoked the `writeXml` method.
+After that, we manually parse the XML file, comparing the attributes written with the ones that were initially created.
+
+```java
+public void testWriteXml_ProjectList_ShouldWriteAllProjects() throws TransformerConfigurationException, IOException, SAXException, ParserConfigurationException, ProjectException {
+    (...)
+    
+    // There is actually three projects in the XML file
+    assertEquals(3, nl.getLength());
+    
+    // Project 1 (running)
+    Element e = (Element) nl.item(0);
+    String running = e.getElementsByTagName("running").item(0).getFirstChild().getNodeValue();
+    // Even though project has started, the program writes "no" to the XML file, because in a new execution every project must be paused
+    assertEquals("no", running);
+
+    String notes = e.getElementsByTagName("notes").item(0).getFirstChild().getNodeValue();
+    assertEquals("A quick note", notes);
+
+    // Project 2 (checked)
+    e = (Element) nl.item(1);
+
+    String checked = e.getElementsByTagName("checked").item(0).getFirstChild().getNodeValue();
+    assertEquals("yes", checked);
+
+    NodeList pnl = e.getElementsByTagName("color");
+    if (pnl.getLength() != 0) {
+    e = (Element) pnl.item(0);
+    int r = Integer.parseInt(e.getAttribute("red"));
+    int g = Integer.parseInt(e.getAttribute("green"));
+    int b = Integer.parseInt(e.getAttribute("blue"));
+    int a = Integer.parseInt(e.getAttribute("alpha"));
+
+    assertEquals(new Color(r, g, b, a), new Color(3, 145, 255));
+    }
+
+    // Project 3 (times)
+    e = (Element) nl.item(2);
+
+    int secondsToday = Integer.parseInt(((Element) e.getElementsByTagName("time").item(0)).getAttribute("today"));
+    int secondsOverall = Integer.parseInt(((Element) e.getElementsByTagName("time").item(0)).getAttribute("overall"));
+
+    assertEquals(440, secondsToday);
+    assertEquals(3600, secondsOverall);
+
+    long created = Long.parseLong(e.getElementsByTagName("created").item(0).getFirstChild().getNodeValue());
+    assertEquals(Date.from(Instant.parse("2018-10-16T00:00:00.000Z")), new Date(created));
+}
+```
+
+After writing this code for the first time, we found that one of the situations failed: for the first project, which we started, the program wrote "no" in the "running" tag.
+The reason for this came from the source code, namely this line, in which the author had commented on the functioning that we consider normal, and always considered the value "no" for this tag.
+
+```java
+addXmlElement(hd, "running", null, "no" /*p.isRunning() ? "yes" : "no"*/);
+```
+
+Upon thinking a little about why he would do this, we came to the conclusion that it would be so that, in a new execution of the program, all projects would start in a paused state, even if the end of the previous execution had occurred while one of them was running.
+With that in mind, we changed our test to check for a "no" on this tag, so at this point all tests pass.
+However, we recommend removing the "running" tag from the XML logic, taking into account that the program, when reading the projects from the file, may simply consider its state as paused.
+
+![All tests of the method `writeXml` pass successfully](./images/cp_tests5.png)
 
 -----
 

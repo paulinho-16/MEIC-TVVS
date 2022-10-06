@@ -16,8 +16,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProjectSerializerTest {
     private final String filename = "src/test/resources/WriteXmlTest.xml";
@@ -27,6 +27,11 @@ public class ProjectSerializerTest {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         return builder.parse(new File(filename));
+    }
+
+    @Test
+    public void testWriteXml_NullParameter_ShouldThrowException() {
+        assertThrows(NullPointerException.class, () -> ps.writeXml(null));
     }
 
     @Test
@@ -57,8 +62,6 @@ public class ProjectSerializerTest {
         prj3.setSecondsToday(440);
         prj3.setSecondsOverall(3600);
         prj3.setTimeCreated(Date.from(Instant.parse("2018-10-16T00:00:00.000Z")));
-
-        assertTrue(prj1.isRunning());
 
         // Write the Projects to the XML files
         projects.add(prj1);
