@@ -267,21 +267,129 @@ All the tests above pass successfully, although we think that some cases where t
 
 ![All tests of the method `parseSeconds` pass successfully](./images/cp_tests3.png)
 
-### Function 4
-
-setValueAt(Object value, int row, int column)
+### 4) public boolean isCellEditable(int row, int column)
 
 #### Description
 
-// TODO: why this function and description
+This function of the `isCellEditable` class is called when the user edits any column field from any project in the table, verifying if the user is allowed to edit the selected table cell.
 
 #### *Category-Partition* algorithm
 
-// TODO: apply algorithm
+1. This method has 2 paremeters
+   - row: an integer value to select the table row to edit. This effectively selects which project the user wants to edit. 
+   - column: and integer value to select the table column to edit. This effectively selects which value of the project the user whiches to edit   
+1. For each parameter we define the characteristics as:
+   - row: must be an integer value lower or equal to the amount of existing projects. 
+   - column: must be an integer value from 0 to 7, representing the project column the user wishes to edit.
+   
+   It represents the following constants:
+   ```java
+   public static final int COLUMN_ACTION_DELETE = 0;
+   public static final int COLUMN_CHECK = 1;
+   public static final int COLUMN_TITLE = 2;
+   public static final int COLUMN_COLOR = 3;
+   public static final int COLUMN_CREATED = 4;
+   public static final int COLUMN_TIMEOVERALL = 5;
+   public static final int COLUMN_TIMETODAY = 6;
+   public static final int COLUMN_ACTION_STARTPAUSE = 7;
+   ``` 
+1. 
+   *Constraints*: 
+   - the integer `row` must be a non-negative value lower than the amount of existing projects
+   - the integer `column` must be a value between 0 and 7
+   
+1. After thinking about the possible categories of inputs, we get the following tests:
+   - row
+      - Row value is 0, which means the first created project is selected
+      - allowed values for column
+         - ProjectTableModel.COLUMN_CHECK,
+         - ProjectTableModel.COLUMN_TITLE,
+         - ProjectTableModel.COLUMN_COLOR,
+         - ProjectTableModel.COLUMN_CREATED,
+         - ProjectTableModel.COLUMN_TIMEOVERALL,
+         - ProjectTableModel.COLUMN_TIMETODAY
+      - invalid values for column
+         - ProjectTableModel.COLUMN_ACTION_DELETE,
+         - ProjectTableModel.COLUMN_TIMEOVERALL,
+         - ProjectTableModel.COLUMN_TIMETODAY,
+         - ProjectTableModel.COLUMN_ACTION_STARTPAUSE
+
 
 #### Unit Tests
 
-// TODO: description of unit test and outcome
+The tests implemented for this function can be found in the `ProjectTableModelTest.java` file, inside the `test` directory.
+We decided to create three test methods, the first two related to allowed and prohibited cells to edit, respectively, and the last one to exceptions raised for out of bounds and illegal inputs.
+
+The first two tests use `@ParameterizedTest` with a `@ValueSource` list of values for the `columns` variable. In these cases, the `row` value is equal to 0, as we are creating a single project and checking the fields for that single project as an example.
+
+The third case uses `@ParameterizedTest` with `@CsvSource` lists of `row` and `columns`combinations of values to check for invalid inputs.
+
+
+
+In the first case, the test just instantiates a `Project` and checks if all fields allowed to be edited return true when the `isEditable` method is called upon the project.
+
+```java
+@ParameterizedTest
+@ValueSource (ints = {
+   ProjectTableModel.COLUMN_CHECK,
+   ProjectTableModel.COLUMN_TITLE,
+   ProjectTableModel.COLUMN_COLOR,
+   ProjectTableModel.COLUMN_CREATED,
+   ProjectTableModel.COLUMN_TIMEOVERALL,
+   ProjectTableModel.COLUMN_TIMETODAY
+})
+
+public void testIsCellEditable_EditableCell_ShouldReturnTrue(int column) {
+   Project proj1 = new Project("Test Project");
+   ArrayList<Project> projects = new ArrayList<>();
+
+   projects.add(proj1);
+   ProjectTableModel tableModel = new ProjectTableModel(projects);
+
+   assertTrue(tableModel.isCellEditable(0, column));
+}
+```
+
+The second case, as an opposite, instantiates a `Project` and checks if all cells that are prohibited from being edited return false when the `isEditable` method is called. 
+
+```java
+
+@ParameterizedTest
+@ValueSource (ints = {
+   ProjectTableModel.COLUMN_ACTION_DELETE,
+   ProjectTableModel.COLUMN_TIMEOVERALL,
+   ProjectTableModel.COLUMN_TIMETODAY,
+   ProjectTableModel.COLUMN_ACTION_STARTPAUSE,
+})
+public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) throws ProjectException {
+   Project proj1 = new Project("Test Project");
+   proj1.start();
+
+   ArrayList<Project> projects = new ArrayList<>();
+
+   projects.add(proj1);
+   ProjectTableModel tableModel = new ProjectTableModel(projects);
+
+   assertFalse(tableModel.isCellEditable(0, column));
+}
+```
+
+The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such has negative `rows` and combinations for nonexisting projects.
+
+```java
+@ParameterizedTest
+@CsvSource(value = {"-1,2", "2,3"}) // , "0,-2"
+public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int column) {
+   Project proj1 = new Project("Test Project");
+   ArrayList<Project> projects = new ArrayList<>();
+
+   projects.add(proj1);
+   ProjectTableModel tableModel = new ProjectTableModel(projects);
+
+   assertThrows(IndexOutOfBoundsException.class, () -> tableModel.isCellEditable(row, column));
+}
+```
+
 
 ### 5) `public void writeXml(List<Project> projects) throws TransformerConfigurationException, SAXException, IOException`
 
