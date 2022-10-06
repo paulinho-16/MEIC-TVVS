@@ -9,8 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.Assert.assertThrows;
 
 public class ProjectTableModelTest {
-
-    @ParameterizedTest
+    @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
     @ValueSource (ints = {
         ProjectTableModel.COLUMN_CHECK,
         ProjectTableModel.COLUMN_TITLE,
@@ -29,7 +28,7 @@ public class ProjectTableModelTest {
         assertTrue(tableModel.isCellEditable(0, column));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Test #{index} with input {arguments} returns false")
     @ValueSource (ints = {
         ProjectTableModel.COLUMN_ACTION_DELETE,
         ProjectTableModel.COLUMN_TIMEOVERALL,
@@ -48,7 +47,7 @@ public class ProjectTableModelTest {
         assertFalse(tableModel.isCellEditable(0, column));
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
     @CsvSource(value = {"-1,2", "2,3"}) // , "0,-2"
     public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int column) {
         Project proj1 = new Project("Test Project");

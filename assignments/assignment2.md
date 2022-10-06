@@ -16,13 +16,6 @@ For this reason, we were forced to resort to source code to understand the purpo
 
 As for the naming of test methods, we follow a *MethodName_StateUnderTest_ExpectedBehaviour* approach.
 
-// TODO: apagar isto:
-1. Which functions have you selected for testing and why.
-1. What is the purpose of each function.
-1. Step-by-step of the ‘Category-Partition’ algorithm for each function.
-1. Brief description of the unit tests generated for each category.
-1. Brief description of the outcome of each unit test and whether any test results in a failure (and why)
-
 ### 1) `public void start() throws ProjectException` 
 
 #### Description
@@ -33,26 +26,25 @@ This action can be performed by clicking the *Play* button in the project's fina
 
 When the project starts running, the `Time Overall` and `Time Today` fields start counting up.
 
-
 #### *Category-Partition* algorithm
 
 1. This method has no parameters.
-1. Given there are no paremeters, no characteristics can be derived.
-1. There are no paremeters or characteristics, so we don't need to be defining testable combinations of features.
-*Constraints*: A project that is already running cannot be started.
+1. Given there are no parameters, no characteristics can be derived.
+1. There are no parameters or characteristics, so we don't need to be defining testable combinations of features.
+   *Constraints*: A project that is already running cannot be started.
 1. Considering these two situations, we get the following tests:
-   - attempting to start a paused project; 
+   - attempting to start a paused project;
    - attempting to start a running project;
 
 #### Unit Tests
 
 The tests implemented for this function can be found in the `ProjectTest.java` file, inside the `test` directory.
 
-We decided to create two test methods. The first one for ensuring a created project that is initially paused starts running after the `start()` method is called. The second one for ensuring an exception is raised when the `start` method is called upon a projetct that is already running.
+We decided to create two test methods. The first one for ensuring a created project that is initially paused starts running after the `start()` method is called. The second one for ensuring an exception is raised when the `start` method is called upon a project that is already running.
 
-In the first case, we start be creating a new `Project` variable, which is paused by default, and we verify if the value of the `running` variable is actually false.
+In the first case, we start by creating a new `Project` variable, which is paused by default, and we verify if the value of the `running` variable is actually false.
 
-Afterwards, we call the `start` method, and we check if the `running` variable's value has changed to true.
+Afterwards, we call the `start` method and we check if the `running` variable's value has changed to true.
 
 Besides, we also verify if the `timeStart` variable is similar to the time of the project's creation, meaning that its value has changed during the test execution.
 
@@ -87,22 +79,15 @@ public void testStart_RunningProject_ShouldReturnException() throws ProjectExcep
 }
 ```
 
-
 All the tests above passed successfully, as expected.
 
-*TODO: Take the image and add it to its path*
-![All tests of the method `parseSeconds` passed successfully](./images/cp_tests1.png)
-
-
-
-// TODO: description of unit test and outcome
+![All tests of the method `start` passed successfully](./images/cp_tests1.png)
 
 ### 2) `public void adjustSecondsToday(int secondsToday)`
 
 #### Description
 
 This function of the `Project` class is called whenever the user edits the `Time Today` table field, adjusting the value from the `Time Overall` accordingly. This method tests the variations from the input values in comparison to the previously stored ones and makes the necessary adjustments to update the table
-
 
 #### *Category-Partition* algorithm
 
@@ -117,8 +102,7 @@ This function of the `Project` class is called whenever the user edits the `Time
    - `secondsToday` is larger than previous value
    - `secondsToday` is lower than previous value 
    - `secondsToday` is negative
-
-
+   
 #### Unit Tests
 
 The tests implemented for this function can be found in the `ProjectTest.java` file, inside the test directory. We decided to create three test methods for different input values of the `secondsToday` parameter.
@@ -145,7 +129,6 @@ public void testAdjustSecondsToday_LargerInput_ShouldIncreaseOverallTime() {
    assertEquals(60,proj.getSecondsOverall());
 }
 ```
-
 
 In the second case, the value initially set on the `secondsToday` variable before the method call is larger than the one afterwards. This results in an lowered expected output of the `secondsOverall` variable after the method call.
 ```java
@@ -176,12 +159,9 @@ public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero() {
 }
 ```
 
-
 All the tests above passed successfully, as expected.
 
-*TODO: Take the image and add it to its path*
-![All tests of the method `adjustSeconds` passed successfully](./images/cp_tests4.png)
-
+![All tests of the method `adjustSecondsToday` passed successfully](./images/cp_tests2.png)
 
 ### 3) `public static int parseSeconds(String strTime) throws ParseException`
 
@@ -267,7 +247,7 @@ All the tests above pass successfully, although we think that some cases where t
 
 ![All tests of the method `parseSeconds` pass successfully](./images/cp_tests3.png)
 
-### 4) public boolean isCellEditable(int row, int column)
+### 4) `public boolean isCellEditable(int row, int column)`
 
 #### Description
 
@@ -275,7 +255,7 @@ This function of the `isCellEditable` class is called when the user edits any co
 
 #### *Category-Partition* algorithm
 
-1. This method has 2 paremeters
+1. This method has 2 parameters
    - row: an integer value to select the table row to edit. This effectively selects which project the user wants to edit. 
    - column: and integer value to select the table column to edit. This effectively selects which value of the project the user whiches to edit   
 1. For each parameter we define the characteristics as:
@@ -314,7 +294,6 @@ This function of the `isCellEditable` class is called when the user edits any co
          - ProjectTableModel.COLUMN_TIMETODAY,
          - ProjectTableModel.COLUMN_ACTION_STARTPAUSE
 
-
 #### Unit Tests
 
 The tests implemented for this function can be found in the `ProjectTableModelTest.java` file, inside the `test` directory.
@@ -324,12 +303,10 @@ The first two tests use `@ParameterizedTest` with a `@ValueSource` list of value
 
 The third case uses `@ParameterizedTest` with `@CsvSource` lists of `row` and `columns`combinations of values to check for invalid inputs.
 
-
-
 In the first case, the test just instantiates a `Project` and checks if all fields allowed to be edited return true when the `isEditable` method is called upon the project.
 
 ```java
-@ParameterizedTest
+@ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
 @ValueSource (ints = {
    ProjectTableModel.COLUMN_CHECK,
    ProjectTableModel.COLUMN_TITLE,
@@ -353,8 +330,7 @@ public void testIsCellEditable_EditableCell_ShouldReturnTrue(int column) {
 The second case, as an opposite, instantiates a `Project` and checks if all cells that are prohibited from being edited return false when the `isEditable` method is called. 
 
 ```java
-
-@ParameterizedTest
+@ParameterizedTest(name = "Test #{index} with input {arguments} returns false")
 @ValueSource (ints = {
    ProjectTableModel.COLUMN_ACTION_DELETE,
    ProjectTableModel.COLUMN_TIMEOVERALL,
@@ -374,11 +350,11 @@ public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) thr
 }
 ```
 
-The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such has negative `rows` and combinations for nonexisting projects.
+The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such has negative `rows` and combinations for nonexistent projects.
 
 ```java
-@ParameterizedTest
-@CsvSource(value = {"-1,2", "2,3"}) // , "0,-2"
+@ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
+@CsvSource(value = {"-1,2", "2,3"})
 public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int column) {
    Project proj1 = new Project("Test Project");
    ArrayList<Project> projects = new ArrayList<>();
@@ -390,6 +366,9 @@ public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int col
 }
 ```
 
+All tests above pass successfully, as expected.
+
+![All tests of the method `isCellEditable` pass successfully](./images/cp_tests4.png)
 
 ### 5) `public void writeXml(List<Project> projects) throws TransformerConfigurationException, SAXException, IOException`
 
