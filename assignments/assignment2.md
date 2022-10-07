@@ -194,9 +194,9 @@ This possibility, together with the importance of robustness in relation to user
 1. After thinking about the possible categories of inputs, we get the following tests:
     - `strTime` conforms to the time format
         - `strTime` duration is zero
-        - `strTime` only has a non-zero value in the seconds time unit
-        - `strTime` only has a non-zero value in the minutes time unit
-        - `strTime` only has a non-zero value in the hours time unit
+        - `strTime` only has a zero value in the seconds time unit
+        - `strTime` only has a zero value in the minutes time unit
+        - `strTime` only has a zero value in the hours time unit
         - `strTime` duration is less than 24 hours
         - `strTime` duration exceeds 24 hours
         - `strTime` time units have leading zeros
@@ -221,10 +221,10 @@ As we want to execute a single test method multiple times with different paramet
 We feed the function the various input-output pairs using the `@CsvSource` annotation.
 
 ```java
-@ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds") 
-@CsvSource(value = {"0:0:0,0", "0:0:15,15", "0:17:0,1020", "20:0:0,72000", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
+@ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds")
+@CsvSource(value = {"0:0:0,0", "12:15:0,44100", "7:0:9,25209", "20:02:0,72120", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
 public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int value) throws ParseException {
-    assertEquals(value, parseSeconds(format));
+   assertEquals(value, parseSeconds(format));
 }
 ```
 
@@ -273,10 +273,10 @@ This function of the `isCellEditable` class is called when the user edits any co
    public static final int COLUMN_TIMETODAY = 6;
    public static final int COLUMN_ACTION_STARTPAUSE = 7;
    ``` 
-1. 
+1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: 
    - the integer `row` must be a non-negative value lower than the amount of existing projects
-   - the integer `column` must be a value between 0 and 7
+   - the integer `column` must be a value between 0 and 7, according to the clickable columns in the interface
    
 1. After thinking about the possible categories of inputs, we get the following tests:
    - row
@@ -350,11 +350,11 @@ public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) thr
 }
 ```
 
-The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such has negative `rows` and combinations for nonexistent projects.
+The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such as negative `rows` and `columns` as well as values out of the allowed bounds, such as a `row` value for an inexisting project and a `column` value for field that doesn't exist.
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
-@CsvSource(value = {"-1,2", "2,3"})
+ @CsvSource(value = {"-1,2", "2,3", "0,-2", "0,9"})
 public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int column) {
    Project proj1 = new Project("Test Project");
    ArrayList<Project> projects = new ArrayList<>();
@@ -366,9 +366,10 @@ public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int col
 }
 ```
 
-All tests above pass successfully, as expected.
+The first two cases' tests all succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens, since there are only seven clickable columns. However, if a future feature allows manual insertion of a `column` value in the terminal, or a new column is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
 
-![All tests of the method `isCellEditable` pass successfully](./images/cp_tests4.png)
+// TODO: Change png
+![12 tests from `isCellEditable` pass successfully, 2 fail](./images/cp_tests4.png)
 
 ### 5) `public void writeXml(List<Project> projects) throws TransformerConfigurationException, SAXException, IOException`
 
