@@ -40,7 +40,7 @@ When the project starts running, the `Time Overall` and `Time Today` fields star
 
 The tests implemented for this function can be found in the `ProjectTest.java` file, inside the `test` directory.
 
-We decided to create two test methods. The first one for ensuring a created project that is initially paused starts running after the `start()` method is called. The second one for ensuring an exception is raised when the `start` method is called upon a project that is already running.
+We decided to create two test methods. The first one for ensuring a created project that is initially paused starts running after the `start` method is called. The second one for ensuring an exception is raised when the `start` method is called upon a project that is already running.
 
 In the first case, we start by creating a new `Project` variable, which is paused by default, and we verify if the value of the `running` variable is false.
 
@@ -290,9 +290,9 @@ This function of the `isCellEditable` class is called when the user edits any co
 The tests implemented for this function can be found in the `ProjectTableModelTest.java` file, inside the `test` directory.
 We decided to create three test methods, the first two related to allowed and prohibited cells to edit, respectively, and the last one to exceptions raised for out-of-bounds and illegal inputs.
 
-The first two tests use `@ParameterizedTest` with a `@ValueSource` list of values for the `columns` variable. In these cases, the `row` value is equal to zero, as we are creating a single project and checking the fields for that single project as an example.
+The first two tests use `@ParameterizedTest` with a `@ValueSource` list of values for the `column` variable. In these cases, the `row` value is equal to zero, as we are creating a single project and checking the fields for that single project as an example.
 
-The third case uses `@ParameterizedTest` with `@CsvSource` lists of `row` and `columns` combinations of values to check for invalid inputs.
+The third case uses `@ParameterizedTest` with `@CsvSource` lists of `row` and `column` combinations of values to check for invalid inputs.
 
 In the first case, the test just instantiates a `Project` and checks if all fields allowed to be edited return true when the `isEditable` method is called upon the project.
 
@@ -341,7 +341,7 @@ public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) thr
 }
 ```
 
-The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such as negative `rows` and `columns` as well as values out of the allowed bounds, such as a `row` value for a non-existent project and a `column` value for a field that doesn't exist.
+The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such as negative values for `row` and `column`, as well as values out of the allowed bounds, such as a `row` value for a non-existent project and a `column` value for a field that doesn't exist.
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
@@ -357,7 +357,7 @@ public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int col
 }
 ```
 
-The first two cases' tests succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens since there are only seven clickable columns. However, if a future feature allows the manual insertion of a `column` value in the terminal, or a new column is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
+The first two cases' tests succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens since there are only seven clickable columns. However, if a future feature allows the manual insertion of a `column` value in the terminal, or a new `column` is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
 
 ![12 tests from `isCellEditable` pass successfully, 2 fail](./images/cp_tests4.png)
 
