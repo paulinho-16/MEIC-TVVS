@@ -48,7 +48,7 @@ public class ProjectTableModelTest {
     }
 
     @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
-    @CsvSource(value = {"-1,2", "2,3"}) // , "0,-2"
+    @CsvSource(value = {"-1,2", "2,3", "0,-2", "0,9"})
     public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int column) {
         Project proj1 = new Project("Test Project");
         ArrayList<Project> projects = new ArrayList<>();
@@ -58,6 +58,4 @@ public class ProjectTableModelTest {
 
         assertThrows(IndexOutOfBoundsException.class, () -> tableModel.isCellEditable(row, column));
     }
-
-    // TODO: deixamos o caso 0,-2 e explicamos porque falha no relatório? Ou simplesmente removemos do teste?
 }

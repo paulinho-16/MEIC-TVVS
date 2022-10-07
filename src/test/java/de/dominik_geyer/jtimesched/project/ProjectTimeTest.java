@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProjectTimeTest {
     @ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds")
-    @CsvSource(value = {"0:0:0,0", "0:0:15,15", "0:17:0,1020", "20:0:0,72000", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
+    @CsvSource(value = {"0:0:0,0", "12:15:0,44100", "7:0:9,25209", "20:02:0,72120", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
     public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int value) throws ParseException {
         assertEquals(value, parseSeconds(format));
     }
