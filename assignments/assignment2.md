@@ -61,7 +61,7 @@ public void testStart_IdleProject_ShouldStart() throws ProjectException {
    // Project should be running after it is started
    Assertions.assertTrue(prj.isRunning());
    // Checking that the project start date has been set during the running test
-   Assertions.assertTrue(Math.abs(beforeStart.getTime() - prj.getTimeStart().getTime()) < 1000, "Dates aren't close enough to each other!");
+   Assertions.assertTrue(Math.abs(beforeStart.getTime() - prj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
 }
 ```
 
@@ -87,35 +87,36 @@ All the tests above passed successfully, as expected.
 
 #### Description
 
-This function of the `Project` class is called whenever the user edits the `Time Today` table field, adjusting the value from the `Time Overall` accordingly. This method tests the variations from the input values in comparison to the previously stored ones and makes the necessary adjustments to update the table
+This function of the `Project` class is called whenever the user edits the `Time Today` table field, arising the need to adjust the value from the `Time Overall` variable accordingly.
+This method evaluates the variations from the input values in comparison to the previously stored ones and makes the necessary adjustments to update the time variables.
 
 #### *Category-Partition* algorithm
 
-1. This methods has only one parameter:
+1. This method has only one parameter:
    - `secondsToday`: an int representing the provided seconds in the table field.
 1. For each parameter we define the characteristics as:
    - `secondsToday`: corresponds to the amount of seconds of the user input variable
 1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
-   *Constraints*: the `secondsToday` variable must be an integer
-   Even in the case of the only restiction being integer values, several combinations of values must be tested, such as a negative input from the seconds and different combinations the `secondsToday` parameter being smaller or larger than the previous value of the `secondsToday` variable.
+   *Constraints*: negative values for the variable `secondsToday` are not allowed.
+   Several combinations of values must be tested, such as a negative input from the seconds and different combinations the `secondsToday` parameter being smaller or larger than the previous value of the `secondsToday` variable.
 1. After thinking about the possible categories of inputs, we get the following tests:
-   - `secondsToday` is larger than previous value
-   - `secondsToday` is lower than previous value 
-   - `secondsToday` is negative
-   
+   - `secondsToday` input is larger than its previous value
+   - `secondsToday` input is smaller than its previous value 
+   - `secondsToday` input is negative
+
 #### Unit Tests
 
 The tests implemented for this function can be found in the `ProjectTest.java` file, inside the test directory. We decided to create three test methods for different input values of the `secondsToday` parameter.
 
-All tests have the follwing steps:
-1. Creating a new `Project` variable.
-1. Setting the project's `secondsToday` and `secondsOverall` variables to a specificic value
+All tests have the following steps:
+1. Creating a new `Project` variable
+1. Setting the project's `secondsToday` and `secondsOverall` variables to a specific value
 1. Calling the `adjustSecondsToday` method with a specific value in its argument
-1. Veryfing the final values for the `secondsToday` and `secondsOverall` variables after the method has been called, expecting a predetermined output using the `assertEquals` method from the `junit` library
+1. Verifying the final values for the `secondsToday` and `secondsOverall` variables after the method has been called, expecting a predetermined output using the `assertEquals` method
 
 The tests only differ on the values provided for the steps 2 and 3.
 
-In the first case, the value initially set on the `secondsToday` variable before the method call is lower than the one afterwards. This results in an increased expected output of the `secondsOverall` variable after the method call.
+In the first case, the value initially set on the `secondsToday` variable before the method call is smaller than the one afterwards. This results in an increased expected output of the `secondsOverall` variable after the method call.
 
 ```java
 @Test
@@ -144,7 +145,7 @@ public void testAdjustSecondsToday_SmallerInput_ShouldReduceOverallTime() {
 }
 ```
 
-In the third and last case, the value initially set on the `secondsToday` variable is arbitrary and the one provided in the method call is negative. Given the provided parameter is negative, it is parsed as 0 and the method updates the `secondsToday`and `secondsOverall` not considering the variations provided by the method. 
+In the third and last case, the value initially set on the `secondsToday` variable is 10 and the one provided in the method call is negative. Given the provided parameter is negative, it is parsed as zero and the method updates the `secondsToday`and `secondsOverall` considering this value and not the negative one.
 
 ```java
 @Test
@@ -255,12 +256,12 @@ This function of the `isCellEditable` class is called when the user edits any co
 
 #### *Category-Partition* algorithm
 
-1. This method has 2 parameters
-   - row: an integer value to select the table row to edit. This effectively selects which project the user wants to edit. 
-   - column: and integer value to select the table column to edit. This effectively selects which value of the project the user whiches to edit   
+1. This method has two parameters:
+   - `row`: an integer value to select the table row to edit. This effectively selects which project the user wants to edit.
+   - `column`: an integer value to select the table column to edit. This effectively selects which value of the project the user wishes to edit.
 1. For each parameter we define the characteristics as:
-   - row: must be an integer value lower or equal to the amount of existing projects. 
-   - column: must be an integer value from 0 to 7, representing the project column the user wishes to edit.
+   - `row`: must be an integer value lower or equal to the amount of existing projects. 
+   - `column`: must be an integer value from 0 to 7, representing the project column the user wishes to edit.
    
    It represents the following constants:
    ```java
@@ -275,33 +276,23 @@ This function of the `isCellEditable` class is called when the user edits any co
    ``` 
 1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: 
-   - the integer `row` must be a non-negative value lower than the amount of existing projects
+   - the integer `row` must be a non-negative value lower than the number of existing projects
    - the integer `column` must be a value between 0 and 7, according to the clickable columns in the interface
    
 1. After thinking about the possible categories of inputs, we get the following tests:
-   - row
-      - Row value is 0, which means the first created project is selected
-      - allowed values for column
-         - ProjectTableModel.COLUMN_CHECK,
-         - ProjectTableModel.COLUMN_TITLE,
-         - ProjectTableModel.COLUMN_COLOR,
-         - ProjectTableModel.COLUMN_CREATED,
-         - ProjectTableModel.COLUMN_TIMEOVERALL,
-         - ProjectTableModel.COLUMN_TIMETODAY
-      - invalid values for column
-         - ProjectTableModel.COLUMN_ACTION_DELETE,
-         - ProjectTableModel.COLUMN_TIMEOVERALL,
-         - ProjectTableModel.COLUMN_TIMETODAY,
-         - ProjectTableModel.COLUMN_ACTION_STARTPAUSE
+   - valid `row` value (corresponding to a given project) and `column` value that corresponds to an editable column
+   - valid `row` value (corresponding to a given project), but `column` value corresponds to a non-editable column
+   - invalid `row` value (negative or higher or equal to the number of existing projects)
+   - invalid `column` value (negative or higher than 7, which is the last column)
 
 #### Unit Tests
 
 The tests implemented for this function can be found in the `ProjectTableModelTest.java` file, inside the `test` directory.
-We decided to create three test methods, the first two related to allowed and prohibited cells to edit, respectively, and the last one to exceptions raised for out of bounds and illegal inputs.
+We decided to create three test methods, the first two related to allowed and prohibited cells to edit, respectively, and the last one to exceptions raised for out-of-bounds and illegal inputs.
 
-The first two tests use `@ParameterizedTest` with a `@ValueSource` list of values for the `columns` variable. In these cases, the `row` value is equal to 0, as we are creating a single project and checking the fields for that single project as an example.
+The first two tests use `@ParameterizedTest` with a `@ValueSource` list of values for the `columns` variable. In these cases, the `row` value is equal to zero, as we are creating a single project and checking the fields for that single project as an example.
 
-The third case uses `@ParameterizedTest` with `@CsvSource` lists of `row` and `columns`combinations of values to check for invalid inputs.
+The third case uses `@ParameterizedTest` with `@CsvSource` lists of `row` and `columns` combinations of values to check for invalid inputs.
 
 In the first case, the test just instantiates a `Project` and checks if all fields allowed to be edited return true when the `isEditable` method is called upon the project.
 
@@ -350,11 +341,11 @@ public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) thr
 }
 ```
 
-The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such as negative `rows` and `columns` as well as values out of the allowed bounds, such as a `row` value for an inexisting project and a `column` value for field that doesn't exist.
+The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such as negative `rows` and `columns` as well as values out of the allowed bounds, such as a `row` value for a non-existent project and a `column` value for field that doesn't exist.
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
- @CsvSource(value = {"-1,2", "2,3", "0,-2", "0,9"})
+@CsvSource(value = {"-1,2", "2,3", "0,-2", "0,9"})
 public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int column) {
    Project proj1 = new Project("Test Project");
    ArrayList<Project> projects = new ArrayList<>();
@@ -366,9 +357,8 @@ public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int col
 }
 ```
 
-The first two cases' tests all succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens, since there are only seven clickable columns. However, if a future feature allows manual insertion of a `column` value in the terminal, or a new column is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
+The first two cases' tests succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens, since there are only seven clickable columns. However, if a future feature allows manual insertion of a `column` value in the terminal, or a new column is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
 
-// TODO: Change png
 ![12 tests from `isCellEditable` pass successfully, 2 fail](./images/cp_tests4.png)
 
 ### 5) `public void writeXml(List<Project> projects) throws TransformerConfigurationException, SAXException, IOException`

@@ -22,7 +22,7 @@ public class ProjectTest {
             // Project should be running after it is started
             Assertions.assertTrue(prj.isRunning());
             // Checking that the project start date has been set during the running test
-            Assertions.assertTrue(Math.abs(beforeStart.getTime() - prj.getTimeStart().getTime()) < 1000, "Dates aren't close enough to each other!");
+            Assertions.assertTrue(Math.abs(beforeStart.getTime() - prj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
         }
 
         @Test
