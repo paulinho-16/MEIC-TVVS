@@ -2,7 +2,7 @@
 
 **Equivalence Class Partitioning** is a black-box testing technique in which we group the input data into logical partitions called equivalence classes.
 All the data items lying in an equivalence class are assumed to be processed in the same way by the software application to be tested when passed as input.
-So, instead of testing all the combinations of input test data, we can pick and pass any of the test data from a particular equivalence class to the application and assume that the application will behave in the same way for the other test data of that class.
+So, instead of testing all the combinations of input test data, we can pick and pass any of the test data from a particular equivalence class to the application and assume that the application will behave in the same way as the other test data of that class.
 This process greatly reduces the number of test cases maintaining the same test coverage, being, therefore, perfectly suitable for software projects with time and resource constraints.
 
 The **Category Partition** method consists of a systematic way of deriving these partitions, based on the characteristics of the input parameters.
@@ -42,9 +42,9 @@ The tests implemented for this function can be found in the `ProjectTest.java` f
 
 We decided to create two test methods. The first one for ensuring a created project that is initially paused starts running after the `start()` method is called. The second one for ensuring an exception is raised when the `start` method is called upon a project that is already running.
 
-In the first case, we start by creating a new `Project` variable, which is paused by default, and we verify if the value of the `running` variable is actually false.
+In the first case, we start by creating a new `Project` variable, which is paused by default, and we verify if the value of the `running` variable is false.
 
-Afterwards, we call the `start` method and we check if the `running` variable's value has changed to true.
+Afterward, we call the `start` method and we check if the `running` variable's value has changed to true.
 
 Besides, we also verify if the `timeStart` variable is similar to the time of the project's creation, meaning that its value has changed during the test execution.
 
@@ -95,10 +95,10 @@ This method evaluates the variations from the input values in comparison to the 
 1. This method has only one parameter:
    - `secondsToday`: an int representing the provided seconds in the table field.
 1. For each parameter we define the characteristics as:
-   - `secondsToday`: corresponds to the amount of seconds of the user input variable
+   - `secondsToday`: corresponds to the number of seconds of the user input variable
 1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: negative values for the variable `secondsToday` are not allowed.
-   Several combinations of values must be tested, such as a negative input from the seconds and different combinations the `secondsToday` parameter being smaller or larger than the previous value of the `secondsToday` variable.
+   Several combinations of values must be tested, such as a negative input from the seconds and different combinations of the `secondsToday` parameter being smaller or larger than the previous value of the `secondsToday` variable.
 1. After thinking about the possible categories of inputs, we get the following tests:
    - `secondsToday` input is larger than its previous value
    - `secondsToday` input is smaller than its previous value 
@@ -114,9 +114,9 @@ All tests have the following steps:
 1. Calling the `adjustSecondsToday` method with a specific value in its argument
 1. Verifying the final values for the `secondsToday` and `secondsOverall` variables after the method has been called, expecting a predetermined output using the `assertEquals` method
 
-The tests only differ on the values provided for the steps 2 and 3.
+The tests only differ on the values provided for steps 2 and 3.
 
-In the first case, the value initially set on the `secondsToday` variable before the method call is smaller than the one afterwards. This results in an increased expected output of the `secondsOverall` variable after the method call.
+In the first case, the value initially set on the `secondsToday` variable before the method call is smaller than the one afterward. This results in an increased expected output of the `secondsOverall` variable after the method call.
 
 ```java
 @Test
@@ -131,7 +131,7 @@ public void testAdjustSecondsToday_LargerInput_ShouldIncreaseOverallTime() {
 }
 ```
 
-In the second case, the value initially set on the `secondsToday` variable before the method call is larger than the one afterwards. This results in an lowered expected output of the `secondsOverall` variable after the method call.
+In the second case, the value initially set on the `secondsToday` variable before the method call is larger than the one afterward. This results in a lowered expected output of the `secondsOverall` variable after the method call.
 ```java
 @Test
 public void testAdjustSecondsToday_SmallerInput_ShouldReduceOverallTime() {
@@ -145,7 +145,7 @@ public void testAdjustSecondsToday_SmallerInput_ShouldReduceOverallTime() {
 }
 ```
 
-In the third and last case, the value initially set on the `secondsToday` variable is 10 and the one provided in the method call is negative. Given the provided parameter is negative, it is parsed as zero and the method updates the `secondsToday`and `secondsOverall` considering this value and not the negative one.
+In the third and last case, the value initially set on the `secondsToday` variable is 10 and the one provided in the method call is negative. Given the provided parameter is negative, it is parsed as zero and the method updates the `secondsToday` and `secondsOverall` considering this value and not the negative one.
 
 ```java
 @Test
@@ -172,13 +172,13 @@ This function of the `ProjectTime` class is called when the user edits the value
 This action can be performed directly on the table by double-clicking with the left mouse button on the respective field, or via an input window that opens after a right mouse click on the field.
 
 Looking at its signature, we immediately deduced that it receives as input a string, coming from the user, and returns an int, which we believe is the total number of seconds taken by the task, due to the name of the function.
-Therefore, its purpose would be to receive a time in a given string format and return the corresponding total number of seconds, in order to be able to update the table values accordingly.
+Therefore, its purpose would be to receive a time in a given string format and return the corresponding total number of seconds, to be able to update the table values accordingly.
 
 That said, it is very important to test functions that receive user input, which we can never trust.
 They can result in values in formats that are not the ones expected by the application, leading to its downfall.
 
 After checking the format expected by the function (for this we had to resort to the source code, due to the lack of documentation), we thought of countless possibilities of inputs that could be categorized.
-This possibility, together with the importance of robustness in relation to user inputs, were the reasons why we chose this function.
+This possibility, together with the importance of robustness concerning user inputs, were the reasons why we chose this function.
 
 #### *Category-Partition* algorithm
 
@@ -186,7 +186,7 @@ This possibility, together with the importance of robustness in relation to user
     - `strTime`: a string representing a given time
     
 1. For each parameter we define the characteristics as:
-    - `strTime`: corresponds to a time representation, in the format `h:m:s`, where `h`, `m` and `s` are the hours, minutes and seconds of that time duration, respectively
+    - `strTime`: corresponds to a time representation, in the format `h:m:s`, where `h`, `m` and `s` are the hours, minutes, and seconds of that time duration, respectively
 
 1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: the string `strTime` must conform to the time format `(\d+):([0-5]?\d):([0-5]?\d)`, other variations are not allowed.
@@ -241,7 +241,7 @@ public void testParseSeconds_IncorrectDateFormat_ShouldThrowException(String for
 }
 ```
 
-Additionally, we changed the text displayed during the tests' execution using the `name` attribute of the `@ParameterizedTest` annotation, in order to make it more readable.
+Additionally, we changed the text displayed during the tests' execution using the `name` attribute of the `@ParameterizedTest` annotation, to make it more readable.
 Note that we created an input-output pair for each subcategory numbered in the previous subsection.
 
 All the tests above pass successfully, although we think that some cases where the input does not have two `:` separators, like "5:14", should be accepted.
@@ -260,7 +260,7 @@ This function of the `isCellEditable` class is called when the user edits any co
    - `row`: an integer value to select the table row to edit. This effectively selects which project the user wants to edit.
    - `column`: an integer value to select the table column to edit. This effectively selects which value of the project the user wishes to edit.
 1. For each parameter we define the characteristics as:
-   - `row`: must be an integer value lower or equal to the amount of existing projects. 
+   - `row`: must be an integer value lower or equal to the number of existing projects. 
    - `column`: must be an integer value from 0 to 7, representing the project column the user wishes to edit.
    
    It represents the following constants:
@@ -341,7 +341,7 @@ public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) thr
 }
 ```
 
-The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such as negative `rows` and `columns` as well as values out of the allowed bounds, such as a `row` value for a non-existent project and a `column` value for field that doesn't exist.
+The third and last case includes the situations in which exceptions are expected to be thrown. There are several combinations explored, such as negative `rows` and `columns` as well as values out of the allowed bounds, such as a `row` value for a non-existent project and a `column` value for a field that doesn't exist.
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
@@ -357,7 +357,7 @@ public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int col
 }
 ```
 
-The first two cases' tests succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens, since there are only seven clickable columns. However, if a future feature allows manual insertion of a `column` value in the terminal, or a new column is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
+The first two cases' tests succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens since there are only seven clickable columns. However, if a future feature allows the manual insertion of a `column` value in the terminal, or a new column is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
 
 ![12 tests from `isCellEditable` pass successfully, 2 fail](./images/cp_tests4.png)
 
@@ -412,7 +412,7 @@ public void testWriteXml_NullParameter_ShouldThrowException() {
 }
 ```
 
-As for the second case, where `projects` is an empty list, the test must verify that the method does not actually write project information to the file.
+As for the second case, where `projects` is an empty list, the test must verify that the method does not write project information to the file.
 We did this by collapsing all document nodes with the "project" tag into a list, and checking that the size of that list is zero.
 
 ```java
@@ -435,13 +435,13 @@ Finally, for the third case, we created three projects and changed their attribu
       - changed its notes
    - For project 2:
       - set the project as checked
-      - set a new colour
+      - set a new color
    - For project 3:
       - set the *SecondsToday* time
       - set the *SecondsOverall* time
       - set the *TimeCreated* time
 
-We gathered these projects into a list, and invoked the `writeXml` method.
+We gathered these projects into a list and invoked the `writeXml` method.
 After that, we manually parse the XML file, comparing the attributes written with the ones that were initially created.
 
 ```java
@@ -498,8 +498,8 @@ The reason for this came from the source code, namely this line, in which the au
 addXmlElement(hd, "running", null, "no" /*p.isRunning() ? "yes" : "no"*/);
 ```
 
-Upon thinking a little about why he would do this, we came to the conclusion that it would be so that, in a new execution of the program, all projects would start in a paused state, even if the end of the previous execution had occurred while one of them was running.
-With that in mind, we changed our test to check for a "no" on this tag, so at this point all tests pass.
+Upon thinking a little about why he would do this, we concluded that it would be so that, in a new execution of the program, all projects would start in a paused state, even if the end of the previous execution had occurred while one of them was running.
+With that in mind, we changed our test to check for a "no" on this tag, so at this point, all tests pass.
 However, we recommend removing the "running" tag from the XML logic, taking into account that the program, when reading the projects from the file, may simply consider its state as paused.
 
 ![All tests of the method `writeXml` pass successfully](./images/cp_tests5.png)
