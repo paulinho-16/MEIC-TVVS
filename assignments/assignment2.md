@@ -357,7 +357,7 @@ public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int col
 }
 ```
 
-The first two cases' tests succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens since there are only seven clickable columns. However, if a future feature allows the manual insertion of a `column` value in the terminal, or a new `column` is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
+The first two cases' tests succeed, but there are two tests in the final case that fail. This occurs because there is no verification for the `column` value being out of bounds, given the author just assumes that this case never happens since there are only seven clickable columns. However, if a future feature allows the manual insertion of a `column` value in the terminal, or a new column is added, an error might occur. Therefore, this test was made to prevent future errors from being created, and we recommend handling these cases in the source code.
 
 ![12 tests from `isCellEditable` pass successfully, 2 fail](./images/cp_tests4.png)
 
