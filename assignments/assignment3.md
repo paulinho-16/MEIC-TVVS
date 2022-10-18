@@ -53,11 +53,8 @@ They can result in values in formats that are not the ones expected by the appli
 After checking the format expected by the function (for this we had to resort to the source code, due to the lack of documentation), we thought of countless possibilities of inputs that could be categorized.
 This possibility, together with the importance of robustness concerning user inputs, were the reasons why we chose this function.
 
-(TODO: Explicar o pq de a escolhermos)
-
 #### *Category-Partition* algorithm
 
-(TODO: Faltou falar sobre a NULL string)
 1. This method has only one parameter:
     - `strTime`: a string representing a given time
 
@@ -69,37 +66,99 @@ This possibility, together with the importance of robustness concerning user inp
    Even in the case of following this format, it will be necessary to test certain values for the time units, such as invalid unit times like seconds exceeding the value 59 (must not be accepted) or units with leading zeros (should be accepted).
 
 1. After thinking about the possible categories of inputs, we get the following tests:
-    - `strTime` conforms to the time format
-        - `strTime` duration is zero
-        - `strTime` only has a zero value in the seconds time unit
-        - `strTime` only has a zero value in the minutes time unit
-        - `strTime` only has a zero value in the hours time unit
-        - `strTime` duration is less than 24 hours
-        - `strTime` duration exceeds 24 hours
-        - `strTime` time units have leading zeros
-    - `strTime` doesn't conform to the time format
-        - `strTime` is an empty string
-        - `strTime` uses a separator character other than `:`
-        - `strTime` uses more than two separators, to reference days, for example
-        - `strTime` uses only one separator, when the time does not exceed one hour, for example
-        - `strTime` doesn't use any separator, when the time does not exceed one minute, for example
-        - the time unit minutes of `strTime` exceeds the value 59
-        - the time unit seconds of `strTime` exceeds the value 59
-        - some time unit of `strTime` contains a negative number
-        - some time unit of `strTime` contains non-numeric characters
+    - `strTime` is null (**E1**)
+    - `strTime` is not null and conforms to the time format (**E2**)
+        - `strTime` duration is zero (**S1**)
+        - `strTime` only has a zero value in the seconds time unit (**S2**)
+        - `strTime` only has a zero value in the minutes time unit (**S3**)
+        - `strTime` only has a zero value in the hours time unit (**S4**)
+        - `strTime` duration is less than 24 hours (**S5**)
+        - `strTime` duration exceeds 24 hours (**S6**)
+        - `strTime` time units have leading zeros (**S7**)
+    - `strTime` is not null, but doesn't conform to the time format (**E3**)
+        - `strTime` is an empty string (**S8**)
+        - `strTime` uses a separator character other than `:` (**S9**)
+        - `strTime` uses more than two separators, to reference days, for example (**S10**)
+        - `strTime` uses only one separator, when the time does not exceed one hour, for example (**S11**)
+        - `strTime` doesn't use any separator, when the time does not exceed one minute, for example (**S12**)
+        - the time unit minutes of `strTime` exceeds the value 59 (**S13**)
+        - the time unit seconds of `strTime` exceeds the value 59 (**S14**)
+        - some time unit of `strTime` contains a negative number (**S15**)
+        - some time unit of `strTime` contains non-numeric characters (**S16**)
 
 #### *Boundary Value Analysis*
 
-// TODO: fazer Boundary Value Analysis
+For the three main partitions, we get the following in-points, on-points and off-points:
+   - **E1**: the null value is both the in-point and on-point, and there are two off-points, each belonging to each of the other partitions (might be "0:0:0" and the empty string, for example)
+   - **E2**: both the in-point and on-point could be any of the examples belonging to this partition, let us choose "0:0:0" and "4:21:16", and there are two off-points, each belonging to each of the other partitions (null and the empty string, for example)
+   - **E3**: both the in-point and on-point could be any of the examples belonging to this partition, let us choose "8:-42:09" and the empty string, and there are two off-points, each belonging to each of the other partitions (null and "0:0:0", for example)
 
-1. String vazia?
-1. Limite dos segundos 0 <= s <= 59
-1. Limite dos minutos 0 <= m <= 59
-1. Limite das horas 0 <= h
+Accordingly, we will now define the test points for each of the sub-partitions.
+
+   - **S1**: both in-point and on-point can be "0:0:0", and the two off-points can be null and the empty string, for example
+   - **S2**: both in-point and on-point can be "12:15:0", and the two off-points can be null and the empty string, for example
+   - **S3**: both in-point and on-point can be "7:0:9", and the two off-points can be null and the empty string, for example
+   - **S4**: both in-point and on-point can be "0:17:05", and the two off-points can be null and the empty string, for example
+   - **S5**: both in-point and on-point can be "20:02:0", and the two off-points can be null and the empty string, for example
+   - **S6**: both in-point and on-point can be "59:59:59", and the two off-points can be null and the empty string, for example
+   - **S7**: both in-point and on-point can be "06:09:03", and the two off-points can be null and the empty string, for example
+
+
+   - **S8**: both in-point and on-point are the empty string, and the two off-points can be null and "0:0:0", for example
+   - **S9**: both in-point and on-point can be "4.21.16", and the two off-points can be null and "4:21:16", for example
+   - **S10**: both in-point and on-point can be "1:11:11:11", and the two off-points can be null and "59:59:59", for example
+   - **S11**: both in-point and on-point can be "1:11", and the two off-points can be null and "0:0:0", for example
+   - **S12**: both in-point and on-point can be "1", and the two off-points can be null and "0:0:0", for example
+   - **S13**: both in-point and on-point can be "00:60:00", and the two off-points can be null and "18:59:14", for example
+   - **S14**: both in-point and on-point can be "24:00:60", and the two off-points can be null and "9:21:59", for example
+   - **S15**: both in-points and on-points can be "-2:13:09", "8:-42:09" or "07:5:-15", and the two off-points can be null and "06:09:03", for example
+   - **S16**: both in-points and on-points can be "aa:19:23", "14:bb:34" or "04:25:cc", and the two off-points can be null and "0:17:05", for example
 
 #### Unit Tests
 
-// TODO: descrever unit tests e os seus outcomes
+The tests implemented for this function can be found in the `ProjectTimeTest.java` file, inside the `test` directory.
+We decided to create two test methods, one for each super-category: the cases where `strTime` is null, where `strTime` conforms to the required format, and where it does not.
+
+In the first case, the test just checks if the evaluated function throws an exception when it is called with a null parameter.
+
+```java
+@Test
+@DisplayName("Test with null input throws exception")
+public void testParseSeconds_NullInput_ShouldThrowException() {
+  assertThrows(NullPointerException.class, () -> parseSeconds(null));
+}
+```
+
+In the second case, the test just checks if the evaluated function returns the correct number of seconds for each input.
+As we want to execute a single test method multiple times with different parameters, we must resort to a parameterized test.
+We feed the function the various input-output pairs using the `@CsvSource` annotation.
+
+```java
+@ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds")
+@CsvSource(value = {"0:0:0,0", "12:15:0,44100", "7:0:9,25209", "0:17:05,1025", "20:02:0,72120", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
+public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int value) throws ParseException {
+  assertEquals(value, parseSeconds(format));
+}
+```
+
+As for the third case, the test must check whether the execution of the evaluated function throws an exception of type *ParseException*, as suggested by the function signature.
+Since we still need to execute a single test method multiple times with different parameters, we resorted to a parameterized test as well.
+Bearing in mind that now we only need to pass a single value to the test function (there is no output as in the first case), we use the `@ValueSource` annotation to feed the function the invalid values of `strTime`.
+
+```java
+@ParameterizedTest(name = "Test #{index} with input {arguments} throws exception")
+@ValueSource(strings = {"", "4.21.16", "1:11:11:11","1:11","1","00:60:00","24:00:60", "-2:13:09", "8:-42:09", "07:5:-15", "aa:19:23", "14:bb:34", "04:25:cc"})
+public void testParseSeconds_IncorrectDateFormat_ShouldThrowException(String format) {
+  assertThrows(ParseException.class, () -> parseSeconds(format));
+}
+```
+
+Note that each of these test functions corresponds to one of the super-categories. The sub-partitions are tested in the functions relative to the corresponding super-categories, through the input values.
+The chosen input values are intended to cover all test points that resulted from the *Boundary Value Analysis*.
+
+All the tests above pass successfully, although we think that some cases where the input does not have two `:` separators, like "5:14", should be accepted.
+
+![All tests of the method `parseSeconds` pass successfully](./images/bva_tests2.png)
 
 ### 3) `public boolean isCellEditable(int row, int column)`
 
