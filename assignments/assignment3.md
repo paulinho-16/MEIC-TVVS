@@ -2,18 +2,18 @@
 
 ### Introduction
 
-// TODO: definição de Boundary Value Analysis, introdução
+TODO: definição de Boundary Value Analysis, introdução
 
 Due to time and budget considerations, it is not possible to perform exhausting testing for each set of test data, especially when there is a large pool of input combinations.
 
 *Boundary Value Analysis* is a testing technique used as an easy way to intelligently select from the pool test case, such that all test case scenarios are covered.
 
 To try out this technique, we selected 3 out of the 5 functions from the 2nd Assignment.
-For each one, we selected its previously defined partitions and performed a Boundary Value Analysis
+For each one, we selected its previously defined partitions and performed a Boundary Value Analysis.
 
 ### Boundary Testing
 
-TODO: Falar mais dos inpoints e offpoints
+TODO: Falar mais dos inpoints e offpoints?
 
 *Boundary Testing* is a *Black-box* software testing technique where test cases utilize extreme ends or boundaries between partitions to test if they are valid.
 
@@ -74,7 +74,7 @@ Finally, the following image represents the tested input values for the `adjustS
 - On-Points: 0 and 4
 - Off-Points: -1 and 5
 - In-points: -2 , 2, and 4
-// TODO: Arranjar a forma de descrever esta imagem final de uma forma mais semelhante ás que o paulinho fez, apra ser consistente
+TODO: Arranjar a forma de descrever esta imagem final de uma forma mais semelhante ás que o paulinho fez, apra ser consistente
 
 #### Unit Tests
 
@@ -147,7 +147,7 @@ In the seconds and last case, the E1 partition is being tested, as the value ini
 
 All the tests above passed successfully, as expected.
 
-// TODO: Mudar o .png, eu tou a testar com o VSCode, convém ficar igual pelo intelIJ em todo o lado.
+TODO: Mudar o .png, eu tou a testar com o VSCode, convém ficar igual pelo intelIJ em todo o lado.
 ![All tests of the method `adjustSecondsToday` passed successfully](./images/cp_tests2.png)
 
 
