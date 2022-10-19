@@ -1,6 +1,34 @@
 # Assignment 3 - Boundary Value Analysis (Black-box Testing)
 
+### Introduction
+
 // TODO: definição de Boundary Value Analysis, introdução
+
+Due to time and budget considerations, it is not possible to perform exhausting testing for each set of test data, especially when there is a large pool of input combinations.
+
+*Boundary Value Analysis* is a testing technique used as an easy way to intelligently select from the pool test case, such that all test case scenarios are covered.
+
+To try out this technique, we selected 3 out of the 5 functions from the 2nd Assignment.
+For each one, we selected its previously defined partitions and performed a Boundary Value Analysis
+
+### Boundary Testing
+
+TODO: Falar mais dos inpoints e offpoints
+
+*Boundary Testing* is a *Black-box* software testing technique where test cases utilize extreme ends or boundaries between partitions to test if they are valid.
+
+The behaviour at the edge of the equivalence partition is more likely to be incorrect than the behaviour within the partition, therefore boundaries are in an area where testing is likely to yield more defects.
+
+The basic idea in normal value testing is to select input variables as their:
+1. Minimum value
+1. Just above the minimum
+1. A nominal value
+1. Just bellow the maximum
+1. Maximum value
+
+
+
+
 
 ### 1) `public void adjustSecondsToday(int secondsToday)`
 
@@ -27,11 +55,25 @@ This method evaluates the variations from the input values in comparison to the 
 
 #### *Boundary Value Analysis*
 
-// TODO: fazer Boundary Value Analysis
 
-1. Valor negativo
-1. Valor positivo
-1. Temos algum limite positivo? Se calhar comparar com cada 1 das categorias que definimos acima?
+Regarding the `secondsToday` variable, there are 3 possible partitions, where `previousValue` is the previous value of the `secondsToday` before method execution:
+
+1. E1: `secondsToday` <= 0
+1. E2: 0 < `secondsToday` < `previousValue` 
+1. E3: 0 < `previousValue` <  `secondsToday`
+
+Visually representing the partitions, we are faced with the following graphic:
+![AdjustSeconds domain](./images/domain_adjustSeconds.png)
+
+
+The three chosen test cases corresponding to in-points of each partition are -2, 2 and 6.
+
+Finally, the following image represents the tested input values for the `adjustSeconds` parameter, according to the tested situation (`previousValue` = 4)
+![AdjustSeconds points](./images/points_adjustSeconds.png)
+- previousValue = 4
+- On-Points: 0 and 4
+- Off-Points: -1 and 5
+- In-points: -2 , 2, and 4
 
 #### Unit Tests
 
