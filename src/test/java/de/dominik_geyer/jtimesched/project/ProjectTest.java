@@ -2,10 +2,13 @@ package de.dominik_geyer.jtimesched.project;
 
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class ProjectTest {
     @Nested
@@ -37,38 +40,34 @@ public class ProjectTest {
     }
 
     @Nested
-    class adjustSecondsTodayTest {
-        @Test
-        public void testAdjustSecondsToday_LargerInput_ShouldIncreaseOverallTime() {
-            Project proj = new Project("Test Project");
-            proj.setSecondsToday(10);
-            proj.setSecondsOverall(50);
-            proj.adjustSecondsToday(20);
+    public class adjustSecondsTodayTest {
+        Project proj;
+        
+        @BeforeEach
+        void setup() {
+            proj = new Project("Test Project");
 
-            assertEquals(20,proj.getSecondsToday());
-            assertEquals(60,proj.getSecondsOverall());
+            proj.setSecondsToday(4);
+            proj.setSecondsOverall(50);
         }
+        
+        @ParameterizedTest(name = "Test #{index} with Positive input {arguments}")
+        @ValueSource(ints = {1,2,5,6})
+        public void testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime(int value) {
+            
+            proj.adjustSecondsToday(value);
+            assertEquals(value,proj.getSecondsToday());
+            assertEquals(50 + value - 4,proj.getSecondsOverall());
+        } 
+       
 
-        @Test
-        public void testAdjustSecondsToday_SmallerInput_ShouldReduceOverallTime() {
-            Project proj = new Project("Test Project");
-            proj.setSecondsToday(20);
-            proj.setSecondsOverall(50);
-            proj.adjustSecondsToday(10);
+        @ParameterizedTest(name = "Test #{index} with Negative Input {arguments}")
+        @ValueSource(ints = {-2,-1,0})
+        public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero(int value) {
 
-            assertEquals(10,proj.getSecondsToday());
-            assertEquals(40,proj.getSecondsOverall());
-        }
-
-        @Test
-        public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero() {
-            Project proj = new Project("Test Project");
-            proj.setSecondsToday(10);
-            proj.setSecondsOverall(50);
-            proj.adjustSecondsToday(-10);
-
+            proj.adjustSecondsToday(value);
             assertEquals(0,proj.getSecondsToday());
-            assertEquals(40,proj.getSecondsOverall());
+            assertEquals(50 - 4,proj.getSecondsOverall());
         }
     }
 }
