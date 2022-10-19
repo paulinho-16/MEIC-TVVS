@@ -74,10 +74,82 @@ Finally, the following image represents the tested input values for the `adjustS
 - On-Points: 0 and 4
 - Off-Points: -1 and 5
 - In-points: -2 , 2, and 4
+// TODO: Arranjar a forma de descrever esta imagem final de uma forma mais semelhante ás que o paulinho fez, apra ser consistente
 
 #### Unit Tests
 
-// TODO: descrever unit tests e os seus outcomes
+The tests implemented for this function can be found in the `ProjectTest.java` file, inside the test directory. We decided to create two test methods for different input values of the `secondsToday` parameter.
+
+All tests have the following steps:
+1. Creating a new `Project` variable
+1. Setting the project's `secondsToday` variable to a specific value and `secondsOverall` variables to a specific value
+1. Calling the `adjustSecondsToday` method with a specific value in its argument
+1. Verifying the final values for the `secondsToday` and `secondsOverall` variables after the method has been called, expecting a predetermined output using the `assertEquals` method
+
+Using the `@BeforeEach` annotation, we manage to perform the first 2 steps immediately before every single test. Therefore, the tests only differ on the values provided for steps 3 and 4.
+
+We have decided to choose 4 as the previous value for the `secondsToday` variable before method call, which allows testing the borders as well as nominal values in the interval.
+The `secondsOverall` variable is set to 50, which is simply a fixed value used to ensure the method performs its expected operations.
+
+```java
+public class adjustSecondsTodayTest {
+    Project proj;
+    
+    @BeforeEach
+    void setup() {
+        proj = new Project("Test Project");
+
+        proj.setSecondsToday(4);
+        proj.setSecondsOverall(50);
+    }
+
+    // ... remaining tests ... 
+}
+```
+
+In the first case, there are two categories being tested, either when:
+1. The value initially set on the `secondsToday` variable before the method call is *smaller* than the given argument (Partition E2)
+2. The value initially set on the `secondsToday` variable before the method call is *greater* than the given argument (Partition E3)
+
+Both categories have two values being tested, the first being the closest off-point to the border, and the second being a nominal value in the provided interval.
+
+This results, respectively, in:
+1. An *increased* expected output of the `secondsOverall` variable after the method call;
+2. A *lowered* expected output of the `secondsOverall` variable after the method call;
+
+
+```java
+@ParameterizedTest(name = "Test #{index} with Positive input {arguments}")
+    @ValueSource(ints = {1,2,5,6})
+    public void testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime(int value) {
+        Project proj = new Project("Test Project");
+        proj.setSecondsToday(4);
+        proj.setSecondsOverall(50);
+        proj.adjustSecondsToday(value);
+
+        assertEquals(value,proj.getSecondsToday());
+        assertEquals(50 + value - 4,proj.getSecondsOverall());
+    } 
+```
+
+In the seconds and last case, the E1 partition is being tested, as the value initially set on the `secondsToday` variable is positive and the one provided in the method call is not positive. In the situation, the parameter is parsed as zero and the method updates the `secondsToday` and `secondsOverall` variables accordingly.
+
+```java
+@ParameterizedTest(name = "Test #{index} with Non Positive Input {arguments}")
+    @ValueSource(ints = {-2,-1,0})
+    public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero(int value) {
+
+        proj.adjustSecondsToday(value);
+        assertEquals(0,proj.getSecondsToday());
+        assertEquals(50 - 4,proj.getSecondsOverall());
+    }
+```
+
+All the tests above passed successfully, as expected.
+
+// TODO: Mudar o .png, eu tou a testar com o VSCode, convém ficar igual pelo intelIJ em todo o lado.
+![All tests of the method `adjustSecondsToday` passed successfully](./images/cp_tests2.png)
+
 
 ### 2) `public static int parseSeconds(String strTime) throws ParseException`
 
