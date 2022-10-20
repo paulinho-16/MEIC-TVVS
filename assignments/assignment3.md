@@ -1,34 +1,33 @@
 # Assignment 3 - Boundary Value Analysis (Black-box Testing)
 
-### Introduction
+*Boundary Value Analysis* is based on testing the boundary values of valid and invalid partitions.
+The behaviour at the edge of the equivalence partition is more likely to be incorrect than the behaviour within the partition, so boundaries are an area where testing is likely to yield defects.
 
-TODO: definição de Boundary Value Analysis, introdução
+It checks for the input values near the boundary that have a higher chance of error.
+Every partition has its maximum and minimum values and these are the boundary values of a partition.
 
 Due to time and budget considerations, it is not possible to perform exhausting testing for each set of test data, especially when there is a large pool of input combinations.
+*Boundary Value Analysis* is used as an easy way to intelligently select from the pool test case, such that all test case scenarios are covered.
 
-*Boundary Value Analysis* is a testing technique used as an easy way to intelligently select from the pool test case, such that all test case scenarios are covered.
+The combination of *Equivalence Class Partitioning* and *Boundary Value Analysis* techniques results in some advantages, namely:
 
-To try out this technique, we selected 3 out of the 5 functions from the 2nd Assignment.
-For each one, we selected its previously defined partitions and performed a Boundary Value Analysis.
+- The test cases are reduced into manageable chunks
+- The effectiveness of the testing is not compromised in test cases
+- Works well with a large number of variables
 
-### Boundary Testing
+To try out these techniques, we selected three different functions from the package `de.dominik_geyer.jtimesched.project` of the *jTimeSched* project.
+For each one, we present the reason we decided to test it and its purpose.
+After applying the *Category Partition* algorithm to these functions, we perform the *Boundary Value Analysis* to discover the cases to be tested, and we describe the unit tests we created based on this method, as well as their outcomes.
 
-TODO: Falar mais dos inpoints e offpoints?
+For each partition, we test an *in-point*: a value that makes the condition at hand evaluate to true.
+For each boundary, we test an *on-point*, which corresponds to the value that is exactly on the borderline, therefore being the value that we can see in the condition itself.
+We also test, for each boundary, an *off-point*, which is the value closest to the borderline that flips the condition's result. In the cases where the result of the boundary value differs from the result of both its closest values, it is necessary to test two *off-points*, one in each direction.
+Some *out-points* are naturally tested (values that make the condition evaluate to false), since we choose an *in-point* for each condition.
 
-*Boundary Testing* is a *Black-box* software testing technique where test cases utilize extreme ends or boundaries between partitions to test if they are valid.
+We tried our best to follow a black-box testing approach, even though the [documentation](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/assignments/jtimesched-javadoc/index.html) of the project at hand is non-existent, limited only to the signature of the functions.
+For this reason, we were forced to resort to source code to understand the purpose of some functions, but even in these cases, we tried to just focus on their purpose and not on their functioning, to avoid being influenced when writing the tests.
 
-The behaviour at the edge of the equivalence partition is more likely to be incorrect than the behaviour within the partition, therefore boundaries are in an area where testing is likely to yield more defects.
-
-The basic idea in normal value testing is to select input variables as their:
-1. Minimum value
-1. Just above the minimum
-1. A nominal value
-1. Just bellow the maximum
-1. Maximum value
-
-
-
-
+As for the naming of test methods, we follow a *MethodName_StateUnderTest_ExpectedBehaviour* approach.
 
 ### 1) `public void adjustSecondsToday(int secondsToday)`
 
@@ -66,14 +65,14 @@ Visually representing the partitions, we are faced with the following graphic:
 ![AdjustSeconds domain](./images/domain_adjustSeconds.png)
 
 
-The three chosen test cases corresponding to in-points of each partition are -2, 2 and 6.
+The three chosen test cases corresponding to *in-points* of each partition are -2, 2 and 6.
 
 Finally, the following image represents the tested input values for the `adjustSeconds` parameter, according to the tested situation (`previousValue` = 4)
 ![AdjustSeconds points](./images/points_adjustSeconds.png)
 - previousValue = 4
-- On-Points: 0 and 4
-- Off-Points: -1 and 5
-- In-points: -2 , 2, and 4
+- *On-Points*: 0 and 4
+- *Off-Points*: -1 and 5
+- *In-points*: -2 , 2, and 4
 TODO: Arranjar a forma de descrever esta imagem final de uma forma mais semelhante ás que o paulinho fez, apra ser consistente
 
 #### Unit Tests
@@ -111,7 +110,7 @@ In the first case, there are two categories being tested, either when:
 1. The value initially set on the `secondsToday` variable before the method call is *smaller* than the given argument (Partition E2)
 2. The value initially set on the `secondsToday` variable before the method call is *greater* than the given argument (Partition E3)
 
-Both categories have two values being tested, the first being the closest off-point to the border, and the second being a nominal value in the provided interval.
+Both categories have two values being tested, the first being the closest *off-point* to the border, and the second being a nominal value in the provided interval.
 
 This results, respectively, in:
 1. An *increased* expected output of the `secondsOverall` variable after the method call;
@@ -202,31 +201,31 @@ This possibility, together with the importance of robustness concerning user inp
 
 #### *Boundary Value Analysis*
 
-For the three main partitions, we get the following in-points, on-points and off-points:
-   - **E1**: the null value is both the in-point and on-point, and there are two off-points, each belonging to each of the other partitions (might be "0:0:0" and the empty string, for example)
-   - **E2**: both the in-point and on-point could be any of the examples belonging to this partition, let us choose "0:0:0" and "4:21:16", and there are two off-points, each belonging to each of the other partitions (null and the empty string, for example)
-   - **E3**: both the in-point and on-point could be any of the examples belonging to this partition, let us choose "8:-42:09" and the empty string, and there are two off-points, each belonging to each of the other partitions (null and "0:0:0", for example)
+For the three main partitions, we get the following *in-points*, *on-points* and *off-points*:
+   - **E1**: the null value is both the *in-point* and *on-point*, and there are two *off-points*, each belonging to each of the other partitions (might be "0:0:0" and the empty string, for example)
+   - **E2**: both the *in-point* and *on-point* could be any of the examples belonging to this partition, let us choose "0:0:0" and "4:21:16", and there are two *off-points*, each belonging to each of the other partitions (null and the empty string, for example)
+   - **E3**: both the *in-point* and *on-point* could be any of the examples belonging to this partition, let us choose "8:-42:09" and the empty string, and there are two *off-points*, each belonging to each of the other partitions (null and "0:0:0", for example)
 
 Accordingly, we will now define the test points for each of the sub-partitions.
 
-   - **S1**: both in-point and on-point can be "0:0:0", and the two off-points can be null and the empty string, for example
-   - **S2**: both in-point and on-point can be "12:15:0", and the two off-points can be null and the empty string, for example
-   - **S3**: both in-point and on-point can be "7:0:9", and the two off-points can be null and the empty string, for example
-   - **S4**: both in-point and on-point can be "0:17:05", and the two off-points can be null and the empty string, for example
-   - **S5**: both in-point and on-point can be "20:02:0", and the two off-points can be null and the empty string, for example
-   - **S6**: both in-point and on-point can be "59:59:59", and the two off-points can be null and the empty string, for example
-   - **S7**: both in-point and on-point can be "06:09:03", and the two off-points can be null and the empty string, for example
+   - **S1**: both *in-point* and *on-point* can be "0:0:0", and the two *off-points* can be null and the empty string, for example
+   - **S2**: both *in-point* and *on-point* can be "12:15:0", and the two *off-points* can be null and the empty string, for example
+   - **S3**: both *in-point* and *on-point* can be "7:0:9", and the two *off-points* can be null and the empty string, for example
+   - **S4**: both *in-point* and *on-point* can be "0:17:05", and the two *off-points* can be null and the empty string, for example
+   - **S5**: both *in-point* and *on-point* can be "20:02:0", and the two *off-points* can be null and the empty string, for example
+   - **S6**: both *in-point* and *on-point* can be "59:59:59", and the two *off-points* can be null and the empty string, for example
+   - **S7**: both *in-point* and *on-point* can be "06:09:03", and the two *off-points* can be null and the empty string, for example
 
 
-   - **S8**: both in-point and on-point are the empty string, and the two off-points can be null and "0:0:0", for example
-   - **S9**: both in-point and on-point can be "4.21.16", and the two off-points can be null and "4:21:16", for example
-   - **S10**: both in-point and on-point can be "1:11:11:11", and the two off-points can be null and "59:59:59", for example
-   - **S11**: both in-point and on-point can be "1:11", and the two off-points can be null and "0:0:0", for example
-   - **S12**: both in-point and on-point can be "1", and the two off-points can be null and "0:0:0", for example
-   - **S13**: both in-point and on-point can be "00:60:00", and the two off-points can be null and "18:59:14", for example
-   - **S14**: both in-point and on-point can be "24:00:60", and the two off-points can be null and "9:21:59", for example
-   - **S15**: both in-points and on-points can be "-2:13:09", "8:-42:09" or "07:5:-15", and the two off-points can be null and "06:09:03", for example
-   - **S16**: both in-points and on-points can be "aa:19:23", "14:bb:34" or "04:25:cc", and the two off-points can be null and "0:17:05", for example
+   - **S8**: both *in-point* and *on-point* are the empty string, and the two *off-points* can be null and "0:0:0", for example
+   - **S9**: both *in-point* and *on-point* can be "4.21.16", and the two *off-points* can be null and "4:21:16", for example
+   - **S10**: both *in-point* and *on-point* can be "1:11:11:11", and the two *off-points* can be null and "59:59:59", for example
+   - **S11**: both *in-point* and *on-point* can be "1:11", and the two *off-points* can be null and "0:0:0", for example
+   - **S12**: both *in-point* and *on-point* can be "1", and the two *off-points* can be null and "0:0:0", for example
+   - **S13**: both *in-point* and *on-point* can be "00:60:00", and the two *off-points* can be null and "18:59:14", for example
+   - **S14**: both *in-point* and *on-point* can be "24:00:60", and the two *off-points* can be null and "9:21:59", for example
+   - **S15**: both *in-points* and *on-points* can be "-2:13:09", "8:-42:09" or "07:5:-15", and the two *off-points* can be null and "06:09:03", for example
+   - **S16**: both *in-points* and *on-points* can be "aa:19:23", "14:bb:34" or "04:25:cc", and the two *off-points* can be null and "0:17:05", for example
 
 #### Unit Tests
 
@@ -326,9 +325,9 @@ Visually representing the partitions, we are faced with the following graphic:
 
 ![Domain of the variable `row`](./images/domain_row.png)
 
-The three chosen test cases corresponding to in-points of each partition are -2, 1 and 3, the latter being an in-point since only two projects are created in this test (`max_proj` = 2).
-For the first boundary (between E1 and E2), we get the on-point 0 and the off-point -1.
-For the second boundary (between E2 and E3), we get the on-point 2 and the off-point 1.
+The three chosen test cases corresponding to *in-points* of each partition are -2, 1 and 3, the latter being an *in-point* since only two projects are created in this test (`max_proj` = 2).
+For the first boundary (between E1 and E2), we get the *on-point* 0 and the *off-point* -1.
+For the second boundary (between E2 and E3), we get the *on-point* 2 and the *off-point* 1.
 
 Finally, the following image represents the tested input values for the `row` parameter, according to the tested situation (there are two existing projects).
 
@@ -344,11 +343,11 @@ Visually representing the partitions, we are faced with the following graphic:
 ![Domain of the variable `column`](./images/domain_column.png)
 
 Since, in this case, it is important to test the return values for valid cases, it makes sense to have a test for every possible column.
-So, as in-points of the valid partition (E2), we chose all editable and non-editable columns.
-As in-points for the other two partitions (E1 and E3), we chose the values -2 and 9.
+So, as *in-points* of the valid partition (E2), we chose all editable and non-editable columns.
+As *in-points* for the other two partitions (E1 and E3), we chose the values -2 and 9.
 
-For the first boundary (between E1 and E2), we get the on-point 0 and the off-point -1. The on-point corresponds to a valid column (`COLUMN_ACTION_DELETE`), which returns `false` as it is a non-editable cell.
-For the second boundary (between E2 and E3), we get the on-point 7 and the off-point 8. The on-point corresponds to a valid column (`COLUMN_ACTION_STARTPAUSE`), which returns `false` as it is a non-editable cell.
+For the first boundary (between E1 and E2), we get the *on-point* 0 and the *off-point* -1. The *on-point* corresponds to a valid column (`COLUMN_ACTION_DELETE`), which returns `false` as it is a non-editable cell.
+For the second boundary (between E2 and E3), we get the *on-point* 7 and the *off-point* 8. The *on-point* corresponds to a valid column (`COLUMN_ACTION_STARTPAUSE`), which returns `false` as it is a non-editable cell.
 
 Finally, the following image shows all the tested input values for the `columns` parameter.
 
@@ -360,7 +359,7 @@ The tests implemented for this function can be found in the `ProjectTableModelTe
 We decided to create three test methods, the first two related to allowed and prohibited cells to edit, respectively, and the last one to exceptions raised for out-of-bounds and illegal inputs.
 
 The first two tests use `@ParameterizedTest` with a `@ValueSource` list of values for the `column` variable.
-In these cases, we test the `row` value as 0 and 1, the latter corresponding to an off-point of this variable, as we are creating two projects.
+In these cases, we test the `row` value as 0 and 1, the latter corresponding to an *off-point* of this variable, as we are creating two projects.
 The third case uses `@ParameterizedTest` with `@CsvSource` lists of `row` and `column` combinations of values to check for invalid inputs.
 
 Using the `@BeforeEach` annotation, we manage to create two projects and add them to a new `ProjectTableModel` object immediately before every single test.
@@ -413,7 +412,7 @@ public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) thr
 }
 ```
 
-Note that both on-points of the `column` variable are tested in these first two cases, as they correspond to valid columns.
+Note that both *on-points* of the `column` variable are tested in these first two cases, as they correspond to valid columns.
 The third and last case includes the situations in which exceptions are expected to be thrown.
 There are several combinations explored, especially in order to cover all test points that resulted from the *Boundary Value Analysis*.
 
