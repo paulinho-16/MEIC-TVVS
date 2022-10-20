@@ -54,7 +54,6 @@ This method evaluates the variations from the input values in comparison to the 
 
 #### *Boundary Value Analysis*
 
-
 Regarding the `secondsToday` variable, there are 3 possible partitions, where `previousValue` is the previous value of the `secondsToday` before method execution:
 
 1. E1: `secondsToday` <= 0
@@ -62,13 +61,15 @@ Regarding the `secondsToday` variable, there are 3 possible partitions, where `p
 1. E3: 0 < `previousValue` <  `secondsToday`
 
 Visually representing the partitions, we are faced with the following graphic:
-![AdjustSeconds domain](./images/domain_adjustSeconds.png)
 
+![Domain of the variable `secondsToday`](./images/domain_secondsToday.png)
 
 The three chosen test cases corresponding to *in-points* of each partition are -2, 2 and 6.
 
-Finally, the following image represents the tested input values for the `adjustSeconds` parameter, according to the tested situation (`previousValue` = 4)
-![AdjustSeconds points](./images/points_adjustSeconds.png)
+Finally, the following image represents the tested input values for the `adjustSeconds` parameter, according to the tested situation (`previousValue` = 4).
+
+![Tested input values of the variable `secondsToday` after *Boundary Value Analysis*](./images/points_secondsToday.png)
+
 - previousValue = 4
 - *On-Points*: 0 and 4
 - *Off-Points*: -1 and 5
@@ -331,7 +332,7 @@ For the second boundary (between E2 and E3), we get the *on-point* 2 and the *of
 
 Finally, the following image represents the tested input values for the `row` parameter, according to the tested situation (there are two existing projects).
 
-![Tested input values of the variable `row` after Boundary Value Analysis](./images/points_row.png)
+![Tested input values of the variable `row` after *Boundary Value Analysis*](./images/points_row.png)
 
 1. Regarding `column`, there are 3 possible outcomes:
    - E1: `column` &lt; 0 (invalid)
@@ -351,7 +352,7 @@ For the second boundary (between E2 and E3), we get the *on-point* 7 and the *of
 
 Finally, the following image shows all the tested input values for the `columns` parameter.
 
-![Tested input values of the variable `column` after Boundary Value Analysis](./images/points_column.png)
+![Tested input values of the variable `column` after *Boundary Value Analysis*](./images/points_column.png)
 
 #### Unit Tests
 
