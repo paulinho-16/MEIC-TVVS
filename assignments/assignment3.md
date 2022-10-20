@@ -35,8 +35,8 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 
 This function of the `Project` class is called whenever the user edits the `Time Today` table field, arising the need to adjust the value from the `Time Overall` variable accordingly.
 This method evaluates the variations from the input values in comparison to the previously stored ones and makes the necessary adjustments to update the time variables.
-
-(TODO: Explicar o pq de a escolhermos)
+It is fundamental to guarantee the consistency of the application, given that an edit by the user must be correctly processed, avoiding unexpected effects.
+Changing project times should update overall and today's times properly, hence the importance of testing this function.
 
 #### *Category-Partition* algorithm
 
@@ -50,15 +50,15 @@ This method evaluates the variations from the input values in comparison to the 
 1. After thinking about the possible categories of inputs, we get the following tests:
     - `secondsToday` input is larger than its previous value
     - `secondsToday` input is smaller than its previous value
-    - `secondsToday` input is negative
+    - `secondsToday` input is zero or negative
 
 #### *Boundary Value Analysis*
 
-Regarding the `secondsToday` variable, there are 3 possible partitions, where `previousValue` is the previous value of the `secondsToday` before method execution:
+Regarding the `secondsToday` variable, there are three possible partitions, where `previousValue` is the previous value of `secondsToday` before the method execution:
 
-1. E1: `secondsToday` <= 0
-1. E2: 0 < `secondsToday` < `previousValue` 
-1. E3: 0 < `previousValue` <  `secondsToday`
+1. E1: `secondsToday` &le; 0
+1. E2: 0 &lt; `secondsToday` &lt; `previousValue` 
+1. E3: 0 &lt; `previousValue` &lt;  `secondsToday`
 
 Visually representing the partitions, we are faced with the following graphic:
 
@@ -442,3 +442,4 @@ Therefore, this test was made to prevent future errors from being created, and w
 #### Sources
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-3.pdf)
+- [Boundary Value Analysis - GeeksforGeeks](https://www.geeksforgeeks.org/software-testing-boundary-value-analysis/)
