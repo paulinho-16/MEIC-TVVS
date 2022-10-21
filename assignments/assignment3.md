@@ -22,7 +22,7 @@ After applying the *Category Partition* algorithm to these functions, we perform
 For each partition, we test an *in-point*: a value that makes the condition at hand evaluate to true.
 For each boundary, we test an *on-point*, which corresponds to the value that is exactly on the borderline, therefore being the value that we can see in the condition itself.
 We also test, for each boundary, an *off-point*, which is the value closest to the borderline that flips the condition's result. In the cases where the result of the boundary value differs from the result of both its closest values, it is necessary to test two *off-points*, one in each direction.
-Some *out-points* are naturally tested (values that make the condition evaluate to false), since we choose an *in-point* for each condition.
+Some *out-points* are naturally tested (values that make the condition evaluate to false) since we choose an *in-point* for each condition.
 
 We tried our best to follow a black-box testing approach, even though the [documentation](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/assignments/jtimesched-javadoc/index.html) of the project at hand is non-existent, limited only to the signature of the functions.
 For this reason, we were forced to resort to source code to understand the purpose of some functions, but even in these cases, we tried to just focus on their purpose and not on their functioning, to avoid being influenced when writing the tests.
@@ -41,8 +41,8 @@ Changing project times should update overall and today's times properly, hence t
 #### *Category-Partition* algorithm
 
 1. This method has only one parameter:
-    - `secondsToday`: an int representing the provided seconds in the table field.
-1. For each parameter we define the characteristics as:
+    - `secondsToday`: an int representing the provided seconds in the table field
+1. For each parameter, we define the characteristics as:
     - `secondsToday`: corresponds to the number of seconds of the user input variable
 1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: negative values for the variable `secondsToday` are not allowed.
@@ -57,99 +57,95 @@ Changing project times should update overall and today's times properly, hence t
 Regarding the `secondsToday` variable, there are three possible partitions, where `previousValue` is the previous value of `secondsToday` before the method execution:
 
 1. E1: `secondsToday` &le; 0
-1. E2: 0 &lt; `secondsToday` &lt; `previousValue` 
+1. E2: 0 &lt; `secondsToday` &le; `previousValue`
 1. E3: 0 &lt; `previousValue` &lt;  `secondsToday`
 
 Visually representing the partitions, we are faced with the following graphic:
 
 ![Domain of the variable `secondsToday`](./images/domain_secondsToday.png)
 
-The three chosen test cases corresponding to *in-points* of each partition are -2, 2 and 6.
+In the case to be tested, we consider that the previous value of `secondsToday` (`previousValue`) is 4.
+
+According to this, the three chosen test cases corresponding to *in-points* of each partition are -2, 2 and 6.
+For the first boundary (between E1 and E2), we get the *on-point* 0 and there is only one *off-point*, the value 1, because it's the closest value where the result flips (non-positive values have the same result: `secondsToday` becomes zero, and the time variables are updated accordingly).
+For the second boundary (between E2 and E3), we get the *on-point* 4 and there are two *off-points*, 3 and 5, since when `secondsToday` is equal to `previousValue` no changes occur to the time variables, and the behaviour of the *off-points* differs: 3 results in a decrease of the time variables and 5 results in an increase.
 
 Finally, the following image represents the tested input values for the `adjustSeconds` parameter, according to the tested situation (`previousValue` = 4).
 
 ![Tested input values of the variable `secondsToday` after *Boundary Value Analysis*](./images/points_secondsToday.png)
 
-- previousValue = 4
-- *On-Points*: 0 and 4
-- *Off-Points*: -1 and 5
-- *In-points*: -2 , 2, and 4
-TODO: Arranjar a forma de descrever esta imagem final de uma forma mais semelhante ás que o paulinho fez, apra ser consistente
-
 #### Unit Tests
 
-The tests implemented for this function can be found in the `ProjectTest.java` file, inside the test directory. We decided to create two test methods for different input values of the `secondsToday` parameter.
+The tests implemented for this function can be found in the `ProjectTest.java` file, inside the test directory.
+We decided to create two test methods for different input values of the `secondsToday` parameter.
 
 All tests have the following steps:
 1. Creating a new `Project` variable
-1. Setting the project's `secondsToday` variable to a specific value and `secondsOverall` variables to a specific value
-1. Calling the `adjustSecondsToday` method with a specific value in its argument
-1. Verifying the final values for the `secondsToday` and `secondsOverall` variables after the method has been called, expecting a predetermined output using the `assertEquals` method
+1. Setting the project's `secondsToday` and `secondsOverall` variables to a specific initial value (4 and 50, respectively)
+1. Calling the `adjustSecondsToday` method with a specific value as its argument
+1. Verifying the final values for the `secondsToday` and `secondsOverall` variables after the method has been called, expecting the proper changes of the time variables using the `assertEquals` method
 
-Using the `@BeforeEach` annotation, we manage to perform the first 2 steps immediately before every single test. Therefore, the tests only differ on the values provided for steps 3 and 4.
+Using the `@BeforeEach` annotation, we manage to perform the first two steps immediately before every single test.
+Therefore, the tests only differ on the values provided for steps three and four.
 
-We have decided to choose 4 as the previous value for the `secondsToday` variable before method call, which allows testing the borders as well as nominal values in the interval.
+We have decided to choose 4 as the previous value for the `secondsToday` variable before the method call, which allows testing the borders as well as nominal values in the interval.
 The `secondsOverall` variable is set to 50, which is simply a fixed value used to ensure the method performs its expected operations.
 
 ```java
-public class adjustSecondsTodayTest {
-    Project proj;
-    
-    @BeforeEach
-    void setup() {
-        proj = new Project("Test Project");
-
-        proj.setSecondsToday(4);
-        proj.setSecondsOverall(50);
-    }
-
-    // ... remaining tests ... 
+@Nested
+public class adjustSecondsTodayTest { 
+  Project proj;
+  final int overallTime = 50;
+  final int previousValue = 4;
+   
+  @BeforeEach
+  void setup() { 
+    proj = new Project("Test Project");
+   
+    proj.setSecondsToday(previousValue);
+    proj.setSecondsOverall(overallTime);
+  }
+   
+  (...)
 }
 ```
 
-In the first case, there are two categories being tested, either when:
-1. The value initially set on the `secondsToday` variable before the method call is *smaller* than the given argument (Partition E2)
-2. The value initially set on the `secondsToday` variable before the method call is *greater* than the given argument (Partition E3)
+In the first case, two categories are being tested, either when:
 
-Both categories have two values being tested, the first being the closest *off-point* to the border, and the second being a nominal value in the provided interval.
+1. The value provided in the `secondsToday` parameter is *smaller or equal* to the previous value (Partition E2)
+1. The value provided in the `secondsToday` parameter is *greater* than the previous value (Partition E3)
 
 This results, respectively, in:
-1. An *increased* expected output of the `secondsOverall` variable after the method call;
-2. A *lowered* expected output of the `secondsOverall` variable after the method call;
 
+1. A *lowered or equal* expected output of the `secondsOverall` variable after the method call;
+1. An *increased* expected output of the `secondsOverall` variable after the method call;
 
 ```java
 @ParameterizedTest(name = "Test #{index} with Positive input {arguments}")
-    @ValueSource(ints = {1,2,5,6})
-    public void testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime(int value) {
-        Project proj = new Project("Test Project");
-        proj.setSecondsToday(4);
-        proj.setSecondsOverall(50);
-        proj.adjustSecondsToday(value);
-
-        assertEquals(value,proj.getSecondsToday());
-        assertEquals(50 + value - 4,proj.getSecondsOverall());
-    } 
+@ValueSource(ints = {1,2,3,4,5,6})
+public void testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime(int value) {
+  proj.adjustSecondsToday(value);
+  assertEquals(value, proj.getSecondsToday());
+  assertEquals(overallTime + value - previousValue, proj.getSecondsOverall());
+}
 ```
 
-In the seconds and last case, the E1 partition is being tested, as the value initially set on the `secondsToday` variable is positive and the one provided in the method call is not positive. In the situation, the parameter is parsed as zero and the method updates the `secondsToday` and `secondsOverall` variables accordingly.
+In the second case, the E1 partition is being tested, as the value initially set on the `secondsToday` variable is positive and the one provided in the method call is not positive.
+In this situation, the parameter is parsed as zero and the method updates the `secondsToday` and `secondsOverall` variables accordingly.
 
 ```java
-@ParameterizedTest(name = "Test #{index} with Non Positive Input {arguments}")
-    @ValueSource(ints = {-2,-1,0})
-    public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero(int value) {
-
-        proj.adjustSecondsToday(value);
-        assertEquals(0,proj.getSecondsToday());
-        assertEquals(50 - 4,proj.getSecondsOverall());
-    }
+@ParameterizedTest(name = "Test #{index} with Non-Positive input {arguments}")
+@ValueSource(ints = {-2,0})
+public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero(int value) {
+  proj.adjustSecondsToday(value);
+  assertEquals(0, proj.getSecondsToday());
+  assertEquals(overallTime - previousValue, proj.getSecondsOverall());
+}
 ```
 
 All the tests above passed successfully, as expected.
 
-TODO: Mudar o .png, eu tou a testar com o VSCode, convém ficar igual pelo intelIJ em todo o lado.
-![All tests of the method `adjustSecondsToday` passed successfully](./images/cp_tests2.png)
-
+![All tests of the method `adjustSecondsToday` passed successfully](./images/bva_tests1.png)
 
 ### 2) `public static int parseSeconds(String strTime) throws ParseException`
 
@@ -172,7 +168,7 @@ This possibility, together with the importance of robustness concerning user inp
 1. This method has only one parameter:
     - `strTime`: a string representing a given time
 
-1. For each parameter we define the characteristics as:
+1. For each parameter, we define the characteristics as:
     - `strTime`: corresponds to a time representation, in the format `h:m:s`, where `h`, `m` and `s` are the hours, minutes, and seconds of that time duration, respectively
 
 1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
@@ -189,7 +185,7 @@ This possibility, together with the importance of robustness concerning user inp
         - `strTime` duration is less than 24 hours (**S5**)
         - `strTime` duration exceeds 24 hours (**S6**)
         - `strTime` time units have leading zeros (**S7**)
-    - `strTime` is not null, but doesn't conform to the time format (**E3**)
+    - `strTime` is not null but doesn't conform to the time format (**E3**)
         - `strTime` is an empty string (**S8**)
         - `strTime` uses a separator character other than `:` (**S9**)
         - `strTime` uses more than two separators, to reference days, for example (**S10**)
@@ -199,6 +195,7 @@ This possibility, together with the importance of robustness concerning user inp
         - the time unit seconds of `strTime` exceeds the value 59 (**S14**)
         - some time unit of `strTime` contains a negative number (**S15**)
         - some time unit of `strTime` contains non-numeric characters (**S16**)
+        - some time unit of `strTime` contains more than two digits in the minutes and seconds time units (**S17**)
 
 #### *Boundary Value Analysis*
 
@@ -214,7 +211,7 @@ Accordingly, we will now define the test points for each of the sub-partitions.
    - **S3**: both *in-point* and *on-point* can be "7:0:9", and the two *off-points* can be null and the empty string, for example
    - **S4**: both *in-point* and *on-point* can be "0:17:05", and the two *off-points* can be null and the empty string, for example
    - **S5**: both *in-point* and *on-point* can be "20:02:0", and the two *off-points* can be null and the empty string, for example
-   - **S6**: both *in-point* and *on-point* can be "59:59:59", and the two *off-points* can be null and the empty string, for example
+   - **S6**: both *in-point* and *on-point* can be "100:59:59", and the two *off-points* can be null and the empty string, for example
    - **S7**: both *in-point* and *on-point* can be "06:09:03", and the two *off-points* can be null and the empty string, for example
 
 
@@ -227,6 +224,7 @@ Accordingly, we will now define the test points for each of the sub-partitions.
    - **S14**: both *in-point* and *on-point* can be "24:00:60", and the two *off-points* can be null and "9:21:59", for example
    - **S15**: both *in-points* and *on-points* can be "-2:13:09", "8:-42:09" or "07:5:-15", and the two *off-points* can be null and "06:09:03", for example
    - **S16**: both *in-points* and *on-points* can be "aa:19:23", "14:bb:34" or "04:25:cc", and the two *off-points* can be null and "0:17:05", for example
+   - **S17**: both *in-points* and *on-points* can be "14:021:34" or "04:25:123", and the two *off-points* can be null and "13:21:12", for example
 
 #### Unit Tests
 
@@ -249,7 +247,7 @@ We feed the function the various input-output pairs using the `@CsvSource` annot
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds")
-@CsvSource(value = {"0:0:0,0", "12:15:0,44100", "7:0:9,25209", "0:17:05,1025", "20:02:0,72120", "4:21:16,15676", "59:59:59,215999", "06:09:03,22143"})
+@CsvSource(value = {"0:0:0,0", "12:15:0,44100", "7:0:9,25209", "0:17:05,1025", "20:02:0,72120", "4:21:16,15676", "100:59:59,363599", "18:59:14,68354", "9:21:59,33719", "06:09:03,22143", "13:21:12,48072"})
 public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int value) throws ParseException {
   assertEquals(value, parseSeconds(format));
 }
@@ -261,7 +259,7 @@ Bearing in mind that now we only need to pass a single value to the test functio
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input {arguments} throws exception")
-@ValueSource(strings = {"", "4.21.16", "1:11:11:11","1:11","1","00:60:00","24:00:60", "-2:13:09", "8:-42:09", "07:5:-15", "aa:19:23", "14:bb:34", "04:25:cc"})
+@ValueSource(strings = {"", "4.21.16", "1:11:11:11","1:11","1","00:60:00","24:00:60", "-2:13:09", "8:-42:09", "07:5:-15", "aa:19:23", "14:bb:34", "04:25:cc", "14:021:34", "04:25:123"})
 public void testParseSeconds_IncorrectDateFormat_ShouldThrowException(String format) {
   assertThrows(ParseException.class, () -> parseSeconds(format));
 }
@@ -288,7 +286,7 @@ Furthermore, it receives two integers as parameters, to which we can apply *Boun
     - `row`: an integer value to select the table row to edit. This effectively selects which project the user wants to edit.
     - `column`: an integer value to select the table column to edit. This effectively selects which value of the project the user wishes to edit.
 
-1. For each parameter we define the characteristics as:
+1. For each parameter, we define the characteristics as:
     - `row`: must be an integer value lower or equal to the number of existing projects.
     - `column`: must be an integer value from 0 to 7, representing the project column the user wishes to edit.
 
@@ -396,6 +394,7 @@ public void testIsCellEditable_EditableCell_ShouldReturnTrue(int column) {
 ```
 
 The second case, as an opposite, checks if all cells that are prohibited from being edited return false when the `isCellEditable` method is called.
+Note that the columns `COLUMN_TIMETODAY` and `COLUMN_TIMEOVERALL` belong to both tests because in this case the projects are running and these fields become non-editable.
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input {arguments} returns false")
@@ -415,7 +414,7 @@ public void testIsCellEditable_NonEditableCell_ShouldReturnFalse(int column) thr
 
 Note that both *on-points* of the `column` variable are tested in these first two cases, as they correspond to valid columns.
 The third and last case includes the situations in which exceptions are expected to be thrown.
-There are several combinations explored, especially in order to cover all test points that resulted from the *Boundary Value Analysis*.
+There are several combinations explored, especially to cover all test points that resulted from the *Boundary Value Analysis*.
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")

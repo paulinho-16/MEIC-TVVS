@@ -42,32 +42,31 @@ public class ProjectTest {
     @Nested
     public class adjustSecondsTodayTest {
         Project proj;
+        final int overallTime = 50;
+        final int previousValue = 4;
         
         @BeforeEach
         void setup() {
             proj = new Project("Test Project");
 
-            proj.setSecondsToday(4);
-            proj.setSecondsOverall(50);
+            proj.setSecondsToday(previousValue);
+            proj.setSecondsOverall(overallTime);
         }
         
         @ParameterizedTest(name = "Test #{index} with Positive input {arguments}")
-        @ValueSource(ints = {1,2,5,6})
+        @ValueSource(ints = {1,2,3,4,5,6})
         public void testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime(int value) {
-            
             proj.adjustSecondsToday(value);
-            assertEquals(value,proj.getSecondsToday());
-            assertEquals(50 + value - 4,proj.getSecondsOverall());
-        } 
-       
+            assertEquals(value, proj.getSecondsToday());
+            assertEquals(overallTime + value - previousValue, proj.getSecondsOverall());
+        }
 
-        @ParameterizedTest(name = "Test #{index} with Negative Input {arguments}")
-        @ValueSource(ints = {-2,-1,0})
+        @ParameterizedTest(name = "Test #{index} with Non-Positive input {arguments}")
+        @ValueSource(ints = {-2,0})
         public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero(int value) {
-
             proj.adjustSecondsToday(value);
-            assertEquals(0,proj.getSecondsToday());
-            assertEquals(50 - 4,proj.getSecondsOverall());
+            assertEquals(0, proj.getSecondsToday());
+            assertEquals(overallTime - previousValue, proj.getSecondsOverall());
         }
     }
 }
