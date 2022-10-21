@@ -6,7 +6,7 @@ The behaviour at the edge of the equivalence partition is more likely to be inco
 It checks for the input values near the boundary that have a higher chance of error.
 Every partition has its maximum and minimum values and these are the boundary values of a partition.
 
-Due to time and budget considerations, it is not possible to perform exhausting testing for each set of test data, especially when there is a large pool of input combinations.
+Due to time and budget considerations, it is not possible to perform exhaustive testing for each set of test data, especially when there is a large pool of input combinations.
 *Boundary Value Analysis* is used as an easy way to intelligently select from the pool test case, such that all test case scenarios are covered.
 
 The combination of *Equivalence Class Partitioning* and *Boundary Value Analysis* techniques results in some advantages, namely:
@@ -46,10 +46,10 @@ Changing project times should update overall and today's times properly, hence t
     - `secondsToday`: corresponds to the number of seconds of the user input variable
 1. The number of characteristics and parameters is not too large in this case, so we don't need to be defining testable combinations of features.
    *Constraints*: negative values for the variable `secondsToday` are not allowed.
-   Several combinations of values must be tested, such as a negative input from the seconds and different combinations of the `secondsToday` parameter being smaller or larger than the previous value of the `secondsToday` variable.
+   Several combinations of values must be tested, such as a negative input from the seconds and different combinations of the `secondsToday` parameter being smaller, equal or larger than the previous value of the `secondsToday` variable.
 1. After thinking about the possible categories of inputs, we get the following tests:
     - `secondsToday` input is larger than its previous value
-    - `secondsToday` input is smaller than its previous value
+    - `secondsToday` input is smaller or equal to its previous value
     - `secondsToday` input is zero or negative
 
 #### *Boundary Value Analysis*
