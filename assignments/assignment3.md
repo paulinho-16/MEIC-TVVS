@@ -70,7 +70,7 @@ According to this, the three chosen test cases corresponding to *in-points* of e
 For the first boundary (between E1 and E2), we get the *on-point* 0 and there is only one *off-point*, the value 1, because it's the closest value where the result flips (non-positive values have the same result: `secondsToday` becomes zero, and the time variables are updated accordingly).
 For the second boundary (between E2 and E3), we get the *on-point* 4 and there are two *off-points*, 3 and 5, since when `secondsToday` is equal to `previousValue` no changes occur to the time variables, and the behaviour of the *off-points* differs: 3 results in a decrease of the time variables and 5 results in an increase.
 
-Finally, the following image represents the tested input values for the `adjustSeconds` parameter, according to the tested situation (`previousValue` = 4).
+Finally, the following image represents the tested input values for the `secondsToday` parameter, according to the tested situation (`previousValue` = 4).
 
 ![Tested input values of the variable `secondsToday` after *Boundary Value Analysis*](./images/points_secondsToday.png)
 
@@ -117,8 +117,8 @@ In the first case, two categories are being tested, either when:
 
 This results, respectively, in:
 
-1. A *lowered or equal* expected output of the `secondsOverall` variable after the method call;
-1. An *increased* expected output of the `secondsOverall` variable after the method call;
+1. A *lowered or equal* expected output of the `secondsOverall` variable after the method call
+1. An *increased* expected output of the `secondsOverall` variable after the method call
 
 ```java
 @ParameterizedTest(name = "Test #{index} with Positive input {arguments}")
@@ -191,8 +191,8 @@ This possibility, together with the importance of robustness concerning user inp
         - `strTime` uses more than two separators, to reference days, for example (**S10**)
         - `strTime` uses only one separator, when the time does not exceed one hour, for example (**S11**)
         - `strTime` doesn't use any separator, when the time does not exceed one minute, for example (**S12**)
-        - the time unit minutes of `strTime` exceeds the value 59 (**S13**)
-        - the time unit seconds of `strTime` exceeds the value 59 (**S14**)
+        - the minutes time unit of `strTime` exceeds the value 59 (**S13**)
+        - the seconds time unit of `strTime` exceeds the value 59 (**S14**)
         - some time unit of `strTime` contains a negative number (**S15**)
         - some time unit of `strTime` contains non-numeric characters (**S16**)
         - some time unit of `strTime` contains more than two digits in the minutes and seconds time units (**S17**)
@@ -276,7 +276,7 @@ All the tests above pass successfully, although we think that some cases where t
 
 #### Description
 
-This function of the `isCellEditable` class is called when the user edits any column field from any project in the table, verifying if the user is allowed to edit the selected table cell.
+This function of the `ProjectTableModel` class is called when the user edits any column field from any project in the table, verifying if the user is allowed to edit the selected table cell.
 We chose this function because of its importance in preventing the user from editing fields for which they do not have the proper permissions.
 Furthermore, it receives two integers as parameters, to which we can apply *Boundary Value Analysis*, defining the ranges of valid rows and columns.
 
@@ -375,7 +375,7 @@ void setup() {
 }
 ```
 
-In the first case, checks if all columns allowed to be edited return true when the `isCellEditable` method is called.
+In the first case, we check if all columns allowed to be edited return true when the `isCellEditable` method is called.
 
 ```java
 @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
