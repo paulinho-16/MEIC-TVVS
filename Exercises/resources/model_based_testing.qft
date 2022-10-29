@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE RootStep>
+<RootStep id="_0" name="root"
+          signature="961F99A4FD27AB8029334193C0F034EE04599926"
+          version="6.0.3">
+  <include>qfs.qft</include>
+  <reference>qfs.qft</reference>
+  <TestSet id="_1" name="FEUP Search Staff by name">
+    <SetupSequence id="_6" name="Launch sigarra.up.pt">
+      <BasicSequence id="_7" name="Set global variables">
+        <SetGlobalStep id="_8" varname="client">
+          <default>sigarra.up.pt</default>
+        </SetGlobalStep>
+        <SetGlobalStep id="_9" varname="browser">
+          <default>edge</default>
+        </SetGlobalStep>
+        <SetGlobalStep id="_A" varname="browserdir"/>
+      </BasicSequence>
+      <ClientWaiter client="$(client)" id="_B" local="true" raise="false"
+                    resvarname="isSUTRunning" timeout="1">
+        <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+      </ClientWaiter>
+      <IfSequence id="_C" name="Launch SUT if not running"
+                  test="not $(isSUTRunning)">
+        <BasicSequence id="_D" name="Start web engine">
+          <BrowserClientStarter browser="$(browser)" client="$(client)"
+                                executable="${qftest:java}" id="_E"
+                                mozhome="$(browserdir)" openwindow="false"/>
+          <ClientWaiter client="$(client)" id="_F"/>
+        </BasicSequence>
+        <BasicSequence id="_G" name="Perform browser settings">
+          <ProcedureCall id="_H"
+                         procedure="qfs.qft#qfs.web.browser.settings.doStartupSettings">
+            <variable name="client">$(client)</variable>
+            <variable name="browser">$(browser)</variable>
+            <variable name="mozhome">$(browserdir)</variable>
+            <variable name="emptyCache">true</variable>
+            <variable name="enableCookies">true</variable>
+            <variable name="deleteCookies">true</variable>
+            <variable name="locale">pt</variable>
+            <variable name="enableProxy">false</variable>
+            <variable name="proxyAddress"/>
+            <variable name="proxyPort"/>
+            <variable name="proxyAutoconfigurl"/>
+            <variable name="enableProxyBypass">false</variable>
+            <variable name="proxyBypass"/>
+            <variable name="mozprofile"/>
+            <variable name="compatibilitymode">no</variable>
+          </ProcedureCall>
+        </BasicSequence>
+        <BasicSequence id="_I" name="Open browser window">
+          <BrowserClientStarter browser="${default:browser:chrome}"
+                                client="$(client)" executable="${qftest:java}"
+                                height="1040" id="_J" openwindow="true"
+                                url="https://sigarra.up.pt/feup/en/WEB_PAGE.INICIAL"
+                                width="1920"/>
+          <DocumentWaiter client="$(client)" component="genericDocument"
+                          id="_K" timeout="60000"/>
+        </BasicSequence>
+        <BasicSequence id="_L" name="Install CustomWebResolver">
+          <ProcedureCall id="_M"
+                         procedure="qfs.qft#qfs.web.ajax.installCustomWebResolver">
+            <variable name="client">$(client)</variable>
+            <variable name="resolver">autodetect</variable>
+            <variable name="version"/>
+            <variable name="genericClasses"/>
+            <variable name="attributesToGenericClasses"/>
+            <variable name="tagsToGenericClasses"/>
+            <variable name="ignoreTags">DIV,SPAN,</variable>
+            <variable name="ignoreByAttributes"/>
+            <variable name="autoIdPatterns"/>
+            <variable name="customIdAttributes"/>
+            <variable name="interestingByAttributes"/>
+            <variable name="attributesToQftFeature"/>
+            <variable name="documentJS"/>
+            <variable name="auto_angular_version">1</variable>
+            <variable name="auto_extjs_version">3</variable>
+            <variable name="auto_gwt_version">2</variable>
+            <variable name="auto_icefaces_version">1</variable>
+            <variable name="auto_jqueryui_version">1</variable>
+            <variable name="auto_jeasyui_version">1</variable>
+            <variable name="auto_kendoui_version">2</variable>
+            <variable name="auto_primefaces_version">2</variable>
+            <variable name="auto_qooxdoo_version">3</variable>
+            <variable name="auto_rap_version">3</variable>
+            <variable name="auto_richfaces_version">3</variable>
+            <variable name="auto_smartgwt_version">1</variable>
+            <variable name="auto_vaadin_version">2</variable>
+            <variable name="auto_zk_version">1</variable>
+            <comment>This call installs a CustomWebResolver for AJAX toolkits.
+The CustomWebResolver concept allows you to map the specific attributes of your web application to QF-Test generic classes. This will cause QF-Test to trigger default mechanisms of its component recognition and checking behavior.
+Your testing will become more stable, robust and readable using this approach.
+The most important parameter is 'genericClasses'. You can take a value from the 'class' attribute of a component of your web page like 'btn' and turn it into a QF-Test button via writing btn=Button. You can add more definitions separated via comma.
+
+You can find more information at the 'Procedure' node itself, simply perform a double clickon that call to jump there.
+In the manual you can find a full example.</comment>
+          </ProcedureCall>
+        </BasicSequence>
+      </IfSequence>
+    </SetupSequence>
+    <TestCase id="_2" name="Home from Home">
+      <BasicSequence id="_S" name="click Home">
+        <MouseEventStep clicks="1" client="$(client)" component="imgLogótipo"
+                        event="MOUSE_MPRC" id="_T" modifiers="16" x="118"
+                        y="36"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_U"
+                        timeout="60000"/>
+      </BasicSequence>
+      <BasicSequence id="_c" name="assert">
+        <CheckStringStep client="$(client)" component="barralocalizacao"
+                         id="_d">
+          <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)" component="linkStart" id="_e">
+          <text>Start</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                         id="_f">
+          <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+        </CheckStringStep>
+        <CheckStringStep client="$(client)"
+                         component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                         id="_g">
+          <text>Faculty of Engineering of the University of Porto</text>
+        </CheckStringStep>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_m" name="Home from Search">
+      <BasicSequence id="_1M" name="Home then Search then Home">
+        <BasicSequence id="_1S" name="Home assert">
+          <CheckStringStep client="$(client)" component="barralocalizacao"
+                           id="_1T">
+            <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStart" id="_1U">
+            <text>Start</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                           id="_1V">
+            <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                           id="_1W">
+            <text>Faculty of Engineering of the University of Porto</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="linkSearch"
+                        event="MOUSE_MPRC" id="_1N" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_1O"
+                        timeout="60000"/>
+        <BasicSequence id="_1c" name="Search assert">
+          <CheckStringStep client="$(client)" component="h1Search" id="_1d">
+            <text>Search</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="h2Oriented_Search"
+                           id="_1e">
+            <text>Oriented Search</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.p2"
+                           id="_1f">
+            <text>You can perform a search in the following areas:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStaff" id="_1g">
+            <text>Staff</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="imgLogótipo2"
+                        event="MOUSE_MPRC" id="_1P" modifiers="16" x="108"
+                        y="24"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_1Q"
+                        timeout="60000"/>
+        <BasicSequence id="_1X" name="Home assert">
+          <CheckStringStep client="$(client)" component="barralocalizacao"
+                           id="_1Y">
+            <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStart" id="_1Z">
+            <text>Start</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                           id="_1a">
+            <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                           id="_1b">
+            <text>Faculty of Engineering of the University of Porto</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_1h" name="Home from Staff">
+      <BasicSequence id="_1k" name="Home then Search then Staff then Home">
+        <BasicSequence id="_1r" name="Home assert">
+          <CheckStringStep client="$(client)" component="barralocalizacao"
+                           id="_1s">
+            <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStart" id="_1t">
+            <text>Start</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                           id="_1u">
+            <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                           id="_1v">
+            <text>Faculty of Engineering of the University of Porto</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="linkSearch"
+                        event="MOUSE_MPRC" id="_1l" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_1m"
+                        timeout="60000"/>
+        <BasicSequence id="_1w" name="Search assert">
+          <CheckStringStep client="$(client)" component="h1Search" id="_1x">
+            <text>Search</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="h2Oriented_Search"
+                           id="_1y">
+            <text>Oriented Search</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.p2"
+                           id="_1z">
+            <text>You can perform a search in the following areas:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStaff" id="_1+">
+            <text>Staff</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="linkStaff"
+                        event="MOUSE_MPRC" id="_1n" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_1o"
+                        timeout="60000"/>
+        <BasicSequence id="_2F" name="Staff assert">
+          <CheckStringStep client="$(client)"
+                           component="h1Information_Search_about_the_Staff"
+                           id="_2G">
+            <text>Information Search about the Staff</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="formPessoal.td"
+                           id="_2H">
+            <text>Name:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="formPessoal.buttonSearch" id="_2I">
+            <text>Search</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="imgLogótipo3"
+                        event="MOUSE_MPRC" id="_1p" modifiers="16" x="76"
+                        y="35"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_1q"
+                        timeout="60000"/>
+        <BasicSequence id="_24" name="Home assert">
+          <CheckStringStep client="$(client)" component="barralocalizacao"
+                           id="_25">
+            <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStart" id="_26">
+            <text>Start</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                           id="_27">
+            <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                           id="_28">
+            <text>Faculty of Engineering of the University of Porto</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_2J" name="Home from Results">
+      <BasicSequence id="_2O"
+                     name="Home then Search then Staff then Results then Home">
+        <BasicSequence id="_2b" name="Home assert">
+          <CheckStringStep client="$(client)" component="barralocalizacao"
+                           id="_2c">
+            <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStart" id="_2d">
+            <text>Start</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                           id="_2e">
+            <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                           id="_2f">
+            <text>Faculty of Engineering of the University of Porto</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="linkSearch"
+                        event="MOUSE_MPRC" id="_2P" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_2Q"
+                        timeout="60000"/>
+        <BasicSequence id="_2g" name="Search assert">
+          <CheckStringStep client="$(client)" component="h1Search" id="_2h">
+            <text>Search</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="h2Oriented_Search"
+                           id="_2i">
+            <text>Oriented Search</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.p2"
+                           id="_2j">
+            <text>You can perform a search in the following areas:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStaff" id="_2k">
+            <text>Staff</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="linkStaff"
+                        event="MOUSE_MPRC" id="_2R" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_2S"
+                        timeout="60000"/>
+        <BasicSequence id="_2l" name="Staff assert">
+          <CheckStringStep client="$(client)"
+                           component="h1Information_Search_about_the_Staff"
+                           id="_2m">
+            <text>Information Search about the Staff</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="formPessoal.td"
+                           id="_2n">
+            <text>Name:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="formPessoal.buttonSearch" id="_2o">
+            <text>Search</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="textfieldP_NOME&amp;0" event="MOUSE_MPRC"
+                        id="_2T" modifiers="16"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="textfieldP_NOME" id="_2U">
+          <text>Jos</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="textfieldP_NOME"
+                      event="KEY_PTR" id="_2V" keychar="0" keycode="186"
+                      modifiers="0"/>
+        <TextInputStep client="$(client)" component="textfieldP_NOME"
+                       id="_2W">
+          <text>é Campos</text>
+        </TextInputStep>
+        <BasicSequence id="_2u" name="Entered staff name assert">
+          <CheckStringStep checktype="value" client="$(client)"
+                           component="textfieldP_NOME" id="_2v">
+            <text>José Campos</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="formPessoal.buttonSearch"
+                        event="MOUSE_MPRC" id="_2X" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_2Y"
+                        timeout="60000"/>
+        <BasicSequence id="_2-" name="Results assert">
+          <CheckStringStep client="$(client)"
+                           component="h1Search_Results_for_Staff" id="_30">
+            <text>Search Results for Staff</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkJosé_Carlos_Medeiros_de_Campos"
+                           id="_31">
+            <text>José Carlos Medeiros de Campos</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="h4Records:_1_to_3_from_a_total_of_3"
+                           id="_32">
+            <text>Records: 1 to 3 from a total of 3</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="imgLogótipo4"
+                        event="MOUSE_MPRC" id="_2Z" modifiers="16" x="80"
+                        y="32"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_2a"
+                        timeout="60000"/>
+        <BasicSequence id="_2p" name="Home assert">
+          <CheckStringStep client="$(client)" component="barralocalizacao"
+                           id="_2q">
+            <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStart" id="_2r">
+            <text>Start</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                           id="_2s">
+            <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                           id="_2t">
+            <text>Faculty of Engineering of the University of Porto</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_33" name="Sneak Path">
+      <BasicSequence id="_3F" name="Home then Staff">
+        <BasicSequence id="_3O" name="Home assert">
+          <CheckStringStep client="$(client)" component="barralocalizacao"
+                           id="_3P">
+            <text>You are here: Start &gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="linkStart" id="_3Q">
+            <text>Start</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="sigarra.up.pt.span"
+                           id="_3R">
+            <text>&gt; Faculdade de Engenharia da Universidade do Porto</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                           id="_3S">
+            <text>Faculty of Engineering of the University of Porto</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="linkStaff2"
+                        event="MOUSE_MPRC" id="_3G" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_3H"
+                        timeout="60000"/>
+        <BasicSequence id="_3T" name="Staff assert">
+          <CheckStringStep client="$(client)"
+                           component="h1Information_Search_about_the_Staff"
+                           id="_3U">
+            <text>Information Search about the Staff</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)" component="formPessoal.td"
+                           id="_3V">
+            <text>Name:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="formPessoal.buttonSearch" id="_3W">
+            <text>Search</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="textfieldP_NOME&amp;0" event="MOUSE_MPRC"
+                        id="_3I" modifiers="16"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="textfieldP_NOME" id="_3J">
+          <text>Jos</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="textfieldP_NOME"
+                      event="KEY_PTR" id="_3K" keychar="0" keycode="186"
+                      modifiers="0"/>
+        <TextInputStep client="$(client)" component="textfieldP_NOME"
+                       id="_3L">
+          <text>é Campos</text>
+        </TextInputStep>
+        <BasicSequence id="_3X" name="Entered staff name assert">
+          <CheckStringStep checktype="value" client="$(client)"
+                           component="textfieldP_NOME" id="_3Y">
+            <text>José Campos</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="formPessoal.buttonSearch"
+                        event="MOUSE_MPRC" id="_3M" modifiers="16"/>
+        <DocumentWaiter client="$(client)" component="sigarra.up.pt" id="_3N"
+                        timeout="60000"/>
+        <BasicSequence id="_3Z" name="Results assert">
+          <CheckStringStep client="$(client)"
+                           component="h1Search_Results_for_Staff" id="_3a">
+            <text>Search Results for Staff</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="linkJosé_Carlos_Medeiros_de_Campos"
+                           id="_3b">
+            <text>José Carlos Medeiros de Campos</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="h4Records:_1_to_3_from_a_total_of_3"
+                           id="_3c">
+            <text>Records: 1 to 3 from a total of 3</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <CleanupSequence id="_k" name="Teardown">
+      <WindowEventStep client="$(client)" component="sigarra.up.pt"
+                       event="WINDOW_CLOSING" id="_l"/>
+      <ClientStopper client="$(client)" id="_1K"/>
+      <ProcessWaiter client="$(client)" id="_1L"/>
+    </CleanupSequence>
+  </TestSet>
+  <PackageRoot id="_3"/>
+  <ExtraSequence id="_4"/>
+  <WindowList id="_5">
+    <WebPageStep class="Window" feature="sigarra.up.pt" height="969"
+                 id="sigarra.up.pt" uid="_N" width="1873">
+      <extrafeature name="baseurl" negate="false" regexp="false" state="0">https://sigarra.up.pt/feup/en/WEB_PAGE.INICIAL</extrafeature>
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">DOCUMENT</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Window</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">DOCUMENT</extrafeature>
+      <extrafeature name="title" negate="false" regexp="false" state="0">FEUP - Faculdade de Engenharia da Universidade do Porto</extrafeature>
+      <extrafeature name="url" negate="false" regexp="false" state="0">https://sigarra.up.pt/feup/en/WEB_PAGE.INICIAL</extrafeature>
+      <ComponentStep class="HTML" classcount="1" classindex="0"
+                     id="sigarra.up.pt.html" uid="_O">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">HTML</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">HTML</extrafeature>
+        <extrafeature name="tag" negate="false" regexp="false" state="0">HTML</extrafeature>
+        <ComponentStep class="BODY" classcount="1" classindex="0"
+                       id="sigarra.up.pt.body" uid="_P">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">BODY</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">BODY</extrafeature>
+          <extrafeature name="tag" negate="false" regexp="false" state="0">BODY</extrafeature>
+          <ComponentStep class="Link" classcount="27" classindex="0"
+                         feature="Link to Homepage" height="20"
+                         id="linkLink_to_Homepage" uid="_Q" width="200" x="23"
+                         y="51">
+            <extrafeature name="href" negate="false" regexp="false" state="0">https://sigarra.up.pt/feup/en/web_page.Inicial</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Link</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Logótipo</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">A</extrafeature>
+            <ComponentStep class="IMG" classcount="1" classindex="0"
+                           feature="Logótipo" height="80" id="imgLogótipo"
+                           uid="_R" width="200" x="0" y="-28">
+              <extrafeature name="id" negate="false" regexp="false" state="1">logotipo</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Logótipo</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">logotipo</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">IMG</extrafeature>
+              <extrafeature name="src" negate="false" regexp="false"
+                            state="1">/feup/pt/imagens/LogotipoSI</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="DIV" classcount="68" classindex="10"
+                         feature="barralocalizacao" height="41"
+                         id="barralocalizacao" name="barralocalizacao"
+                         uid="_V" width="1810" x="23" y="126">
+            <extrafeature name="id" negate="false" regexp="false" state="1">barralocalizacao</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <extrafeature name="qfs:originalid" negate="false" regexp="false"
+                          state="0">barralocalizacao</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">DIV</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">DIV</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="Link" classcount="27" classindex="6"
+                         feature="Start" height="22" id="linkStart" uid="_W"
+                         width="28" x="326" y="134">
+            <extrafeature name="href" negate="false" regexp="false" state="0">https://sigarra.up.pt/feup/en/web_page.inicial</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Link</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Start</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">A</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="SPAN" classcount="14" classindex="1"
+                         height="22" id="sigarra.up.pt.span" uid="_X"
+                         width="307" x="354" y="134">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">pagina-atual</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">SPAN</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">SPAN</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">SPAN</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="UL" classcount="6" classindex="4" height="428"
+                         id="sigarra.up.pt.ul" uid="_Y" width="1410" x="223"
+                         y="166">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">slides</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">UL</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">UL</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">UL</extrafeature>
+            <ComponentStep class="LI" classcount="1" classindex="0"
+                           height="428"
+                           id="sigarra.up.pt.liFaculty_of_Engineering_of_the_University_of_Porto"
+                           uid="_Z" width="1410" x="0" y="0">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">flex-active-slide</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">LI</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Faculty of Engineering of the University of Porto</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">LI</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">LI</extrafeature>
+              <ComponentStep class="P" classcount="1" classindex="0"
+                             height="22" id="sigarra.up.pt.p" uid="_a"
+                             width="1410" x="0" y="391">
+                <extrafeature name="class" negate="false" regexp="false"
+                              state="0">flex-caption</extrafeature>
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">P</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">P</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">P</extrafeature>
+                <ComponentStep class="Link" classcount="1" classindex="0"
+                               feature="Faculty of Engineering of the University of Porto"
+                               height="22"
+                               id="linkFaculty_of_Engineering_of_the_University_of_Porto"
+                               uid="_b" width="1410" x="0" y="0">
+                  <extrafeature name="href" negate="false" regexp="false"
+                                state="0">https://sigarra.up.pt/feup/en/web_page.Inicial</extrafeature>
+                  <extrafeature name="qfs:class" negate="false" regexp="false"
+                                state="0">A</extrafeature>
+                  <extrafeature name="qfs:genericclass" negate="false"
+                                regexp="false" state="0">Link</extrafeature>
+                  <extrafeature name="qfs:label" negate="false" regexp="false"
+                                state="1">Faculty of Engineering of the University of Porto</extrafeature>
+                  <extrafeature name="qfs:systemclass" negate="false"
+                                regexp="false" state="0">A</extrafeature>
+                  <extrafeature name="tag" negate="false" regexp="false"
+                                state="0">A</extrafeature>
+                </ComponentStep>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="NAV" classcount="1" classindex="0"
+                         height="499" id="sigarra.up.pt.nav" uid="_n"
+                         width="200" x="23" y="166">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">NAV</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">NAV</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">NAV</extrafeature>
+            <ComponentStep class="UL" classcount="1" classindex="0"
+                           height="499" id="sigarra.up.pt.ul2" uid="_o"
+                           width="200" x="0" y="0">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">UL</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">UL</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">UL</extrafeature>
+              <ComponentStep class="LI" classcount="12" classindex="11"
+                             height="42" id="sigarra.up.pt.liSearch" uid="_p"
+                             width="200" x="0" y="458">
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">LI</extrafeature>
+                <extrafeature name="qfs:label" negate="false" regexp="false"
+                              state="1">Search</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">LI</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">LI</extrafeature>
+                <ComponentStep class="Link" classcount="1" classindex="0"
+                               feature="Search" height="24" id="linkSearch"
+                               uid="_q" width="175" x="17" y="8">
+                  <extrafeature name="class" negate="false" regexp="false"
+                                state="0">menu-navegacao-conteudo-15</extrafeature>
+                  <extrafeature name="href" negate="false" regexp="false"
+                                state="0">https://sigarra.up.pt/feup/en/web_base.gera_pagina</extrafeature>
+                  <extrafeature name="p_pagina" negate="false" regexp="false"
+                                state="0">1831</extrafeature>
+                  <extrafeature name="qfs:class" negate="false" regexp="false"
+                                state="0">A</extrafeature>
+                  <extrafeature name="qfs:genericclass" negate="false"
+                                regexp="false" state="0">Link</extrafeature>
+                  <extrafeature name="qfs:label" negate="false" regexp="false"
+                                state="1">Search</extrafeature>
+                  <extrafeature name="qfs:systemclass" negate="false"
+                                regexp="false" state="0">A</extrafeature>
+                  <extrafeature name="tag" negate="false" regexp="false"
+                                state="0">A</extrafeature>
+                </ComponentStep>
+              </ComponentStep>
+              <ComponentStep class="LI" classcount="12" classindex="5"
+                             height="42" id="sigarra.up.pt.liStaff2" uid="_34"
+                             width="200" x="0" y="208">
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">LI</extrafeature>
+                <extrafeature name="qfs:label" negate="false" regexp="false"
+                              state="1">Staff</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">LI</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">LI</extrafeature>
+                <ComponentStep class="Link" classcount="1" classindex="0"
+                               feature="Staff" height="24" id="linkStaff2"
+                               uid="_35" width="175" x="17" y="9">
+                  <extrafeature name="class" negate="false" regexp="false"
+                                state="0">menu-navegacao-conteudo-6</extrafeature>
+                  <extrafeature name="href" negate="false" regexp="false"
+                                state="0">https://sigarra.up.pt/feup/en/func_geral.formquery</extrafeature>
+                  <extrafeature name="qfs:class" negate="false" regexp="false"
+                                state="0">A</extrafeature>
+                  <extrafeature name="qfs:genericclass" negate="false"
+                                regexp="false" state="0">Link</extrafeature>
+                  <extrafeature name="qfs:label" negate="false" regexp="false"
+                                state="1">Staff</extrafeature>
+                  <extrafeature name="qfs:systemclass" negate="false"
+                                regexp="false" state="0">A</extrafeature>
+                  <extrafeature name="tag" negate="false" regexp="false"
+                                state="0">A</extrafeature>
+                </ComponentStep>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="Link" classcount="18" classindex="0"
+                         feature="Link to Homepage" height="20"
+                         id="linkLink_to_Homepage2" uid="_r" width="200"
+                         x="23" y="51">
+            <extrafeature name="href" negate="false" regexp="false" state="0">https://sigarra.up.pt/feup/en/web_page.Inicial</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Link</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Logótipo</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">A</extrafeature>
+            <ComponentStep class="IMG" classcount="1" classindex="0"
+                           feature="Logótipo" height="80" id="imgLogótipo2"
+                           uid="_s" width="200" x="0" y="-28">
+              <extrafeature name="id" negate="false" regexp="false" state="1">logotipo</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Logótipo</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">logotipo</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">IMG</extrafeature>
+              <extrafeature name="src" negate="false" regexp="false"
+                            state="1">/feup/pt/imagens/LogotipoSI</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="H1" classcount="2" classindex="1"
+                         feature="Search" height="43" id="h1Search" uid="_y"
+                         width="1365" x="246" y="181">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">H1</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">H1</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">H1</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="H2" classcount="1" classindex="0"
+                         feature="Oriented Search" height="33"
+                         id="h2Oriented_Search" uid="_z" width="1365" x="246"
+                         y="270">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">H2</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">H2</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">H2</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="P" classcount="2" classindex="1" height="22"
+                         id="sigarra.up.pt.p2" uid="_+" width="1365" x="246"
+                         y="326">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">texto</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">P</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">P</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">P</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="TABLE" classcount="1" classindex="0"
+                         height="156" id="sigarra.up.pt.table" uid="_-"
+                         width="755" x="246" y="363">
+            <extrafeature name="class" negate="false" regexp="false"
+                          state="0">formatar</extrafeature>
+            <extrafeature name="columns" negate="false" regexp="false"
+                          state="1">3</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">TABLE</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">TABLE</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">TABLE</extrafeature>
+            <ComponentStep class="TR" classcount="1" classindex="0"
+                           height="154" id="sigarra.up.pt.tr" uid="_10"
+                           width="753" x="1" y="1">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">TR</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">TR</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">TR</extrafeature>
+              <ComponentStep class="TD" classcount="3" classindex="0"
+                             height="154" id="sigarra.up.pt.td" uid="_11"
+                             width="250" x="0" y="0">
+                <extrafeature name="class" negate="false" regexp="false"
+                              state="0">topo</extrafeature>
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">TD</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">TD</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">TD</extrafeature>
+                <ComponentStep class="UL" classcount="2" classindex="0"
+                               height="51" id="sigarra.up.pt.ul3" uid="_12"
+                               width="235" x="7" y="18">
+                  <extrafeature name="qfs:class" negate="false" regexp="false"
+                                state="0">UL</extrafeature>
+                  <extrafeature name="qfs:systemclass" negate="false"
+                                regexp="false" state="0">UL</extrafeature>
+                  <extrafeature name="tag" negate="false" regexp="false"
+                                state="0">UL</extrafeature>
+                  <ComponentStep class="LI" classcount="2" classindex="1"
+                                 height="22" id="sigarra.up.pt.liStaff"
+                                 uid="_13" width="195" x="40" y="29">
+                    <extrafeature name="qfs:class" negate="false"
+                                  regexp="false" state="0">LI</extrafeature>
+                    <extrafeature name="qfs:label" negate="false"
+                                  regexp="false" state="1">Staff</extrafeature>
+                    <extrafeature name="qfs:systemclass" negate="false"
+                                  regexp="false" state="0">LI</extrafeature>
+                    <extrafeature name="tag" negate="false" regexp="false"
+                                  state="0">LI</extrafeature>
+                    <ComponentStep class="Link" classcount="1" classindex="0"
+                                   feature="Staff" height="20" id="linkStaff"
+                                   uid="_14" width="33" x="0" y="0">
+                      <extrafeature name="href" negate="false" regexp="false"
+                                    state="0">https://sigarra.up.pt/feup/en/func_geral.formquery</extrafeature>
+                      <extrafeature name="qfs:class" negate="false"
+                                    regexp="false" state="0">A</extrafeature>
+                      <extrafeature name="qfs:genericclass" negate="false"
+                                    regexp="false" state="0">Link</extrafeature>
+                      <extrafeature name="qfs:label" negate="false"
+                                    regexp="false" state="1">Staff</extrafeature>
+                      <extrafeature name="qfs:systemclass" negate="false"
+                                    regexp="false" state="0">A</extrafeature>
+                      <extrafeature name="tag" negate="false" regexp="false"
+                                    state="0">A</extrafeature>
+                    </ComponentStep>
+                  </ComponentStep>
+                </ComponentStep>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="Link" classcount="17" classindex="0"
+                         feature="Link to Homepage" height="20"
+                         id="linkLink_to_Homepage3" uid="_1i" width="200"
+                         x="23" y="51">
+            <extrafeature name="href" negate="false" regexp="false" state="0">https://sigarra.up.pt/feup/en/web_page.Inicial</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Link</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Logótipo</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">A</extrafeature>
+            <ComponentStep class="IMG" classcount="1" classindex="0"
+                           feature="Logótipo" height="80" id="imgLogótipo3"
+                           uid="_1j" width="200" x="0" y="-28">
+              <extrafeature name="id" negate="false" regexp="false" state="1">logotipo</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Logótipo</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">logotipo</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">IMG</extrafeature>
+              <extrafeature name="src" negate="false" regexp="false"
+                            state="1">/feup/pt/imagens/LogotipoSI</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="H1" classcount="2" classindex="1"
+                         feature="Information Search about the Staff"
+                         height="43" id="h1Information_Search_about_the_Staff"
+                         uid="_29" width="1365" x="246" y="181">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">H1</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">H1</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">H1</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="FORM" classcount="2" classindex="1"
+                         feature="pessoal" height="626" id="formPessoal"
+                         uid="_2A" width="1365" x="246" y="245">
+            <extrafeature name="name" negate="false" regexp="false" state="1">pessoal</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">FORM</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">FORM</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">FORM</extrafeature>
+            <ComponentStep class="TABLE" classcount="1" classindex="0"
+                           height="626" id="formPessoal.table" uid="_2B"
+                           width="724" x="0" y="0">
+              <extrafeature name="class" negate="false" regexp="false"
+                            state="0">formulario</extrafeature>
+              <extrafeature name="columns" negate="false" regexp="false"
+                            state="1">2</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">TABLE</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">TABLE</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">TABLE</extrafeature>
+              <ComponentStep class="TR" classcount="17" classindex="0"
+                             height="37" id="formPessoal.tr" uid="_2C"
+                             width="722" x="1" y="1">
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">TR</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">TR</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">TR</extrafeature>
+                <ComponentStep class="TD" classcount="2" classindex="0"
+                               height="37" id="formPessoal.td" uid="_2D"
+                               width="138" x="0" y="0">
+                  <extrafeature name="class" negate="false" regexp="false"
+                                state="0">formulario-legenda</extrafeature>
+                  <extrafeature name="qfs:class" negate="false" regexp="false"
+                                state="0">TD</extrafeature>
+                  <extrafeature name="qfs:systemclass" negate="false"
+                                regexp="false" state="0">TD</extrafeature>
+                  <extrafeature name="tag" negate="false" regexp="false"
+                                state="0">TD</extrafeature>
+                </ComponentStep>
+                <ComponentStep class="TD" classcount="2" classindex="1"
+                               height="37" id="formPessoal.td2" uid="_2K"
+                               width="583" x="139" y="0">
+                  <extrafeature name="qfs:class" negate="false" regexp="false"
+                                state="0">TD</extrafeature>
+                  <extrafeature name="qfs:systemclass" negate="false"
+                                regexp="false" state="0">TD</extrafeature>
+                  <extrafeature name="tag" negate="false" regexp="false"
+                                state="0">TD</extrafeature>
+                  <ComponentStep class="TextField" classcount="1"
+                                 classindex="0" feature="P_NOME" height="31"
+                                 id="textfieldP_NOME" uid="_2L" width="398"
+                                 x="7" y="3">
+                    <extrafeature name="name" negate="false" regexp="false"
+                                  state="1">P_NOME</extrafeature>
+                    <extrafeature name="qfs:class" negate="false"
+                                  regexp="false" state="0">INPUT:TEXT</extrafeature>
+                    <extrafeature name="qfs:genericclass" negate="false"
+                                  regexp="false" state="0">TextField</extrafeature>
+                    <extrafeature name="qfs:systemclass" negate="false"
+                                  regexp="false" state="0">INPUT:TEXT</extrafeature>
+                    <extrafeature name="tag" negate="false" regexp="false"
+                                  state="0">INPUT:TEXT</extrafeature>
+                  </ComponentStep>
+                </ComponentStep>
+              </ComponentStep>
+            </ComponentStep>
+            <ComponentStep class="Button" classcount="1" classindex="0"
+                           height="35" id="formPessoal.buttonSearch" uid="_2E"
+                           width="72" x="603" y="655">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">INPUT:SUBMIT</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Button</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Search</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">INPUT:SUBMIT</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">INPUT:SUBMIT</extrafeature>
+              <extrafeature name="value" negate="false" regexp="false"
+                            state="1">Search</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="Link" classcount="16" classindex="0"
+                         feature="Link to Homepage" height="20"
+                         id="linkLink_to_Homepage4" uid="_2M" width="200"
+                         x="23" y="51">
+            <extrafeature name="href" negate="false" regexp="false" state="0">https://sigarra.up.pt/feup/en/web_page.Inicial</extrafeature>
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Link</extrafeature>
+            <extrafeature name="qfs:label" negate="false" regexp="false"
+                          state="1">Logótipo</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">A</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">A</extrafeature>
+            <ComponentStep class="IMG" classcount="1" classindex="0"
+                           feature="Logótipo" height="80" id="imgLogótipo4"
+                           uid="_2N" width="200" x="0" y="-28">
+              <extrafeature name="id" negate="false" regexp="false" state="1">logotipo</extrafeature>
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">Logótipo</extrafeature>
+              <extrafeature name="qfs:originalid" negate="false"
+                            regexp="false" state="0">logotipo</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">IMG</extrafeature>
+              <extrafeature name="src" negate="false" regexp="false"
+                            state="1">/feup/pt/imagens/LogotipoSI</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">IMG</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="H1" classcount="2" classindex="1"
+                         feature="Search Results for Staff" height="43"
+                         id="h1Search_Results_for_Staff" uid="_2w"
+                         width="1365" x="246" y="181">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">H1</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">H1</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">H1</extrafeature>
+          </ComponentStep>
+          <ComponentStep class="UL" classcount="2" classindex="1" height="80"
+                         id="sigarra.up.pt.ul4" uid="_2x" width="1365" x="246"
+                         y="245">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">UL</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">UL</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">UL</extrafeature>
+            <ComponentStep class="LI" classcount="3" classindex="1"
+                           height="22"
+                           id="sigarra.up.pt.liJosé_Carlos_Medeiros_de_Campos"
+                           uid="_2y" width="1325" x="40" y="29">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">LI</extrafeature>
+              <extrafeature name="qfs:label" negate="false" regexp="false"
+                            state="1">José Carlos Medeiros de Campos</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">LI</extrafeature>
+              <extrafeature name="tag" negate="false" regexp="false"
+                            state="0">LI</extrafeature>
+              <ComponentStep class="Link" classcount="1" classindex="0"
+                             feature="José Carlos Medeiros de Campos"
+                             height="20"
+                             id="linkJosé_Carlos_Medeiros_de_Campos" uid="_2z"
+                             width="228" x="0" y="0">
+                <extrafeature name="P_CODIGO" negate="false" regexp="false"
+                              state="0">480945</extrafeature>
+                <extrafeature name="href" negate="false" regexp="false"
+                              state="0">https://sigarra.up.pt/feup/en/func_geral.FormView</extrafeature>
+                <extrafeature name="qfs:class" negate="false" regexp="false"
+                              state="0">A</extrafeature>
+                <extrafeature name="qfs:genericclass" negate="false"
+                              regexp="false" state="0">Link</extrafeature>
+                <extrafeature name="qfs:label" negate="false" regexp="false"
+                              state="1">José Carlos Medeiros de Campos</extrafeature>
+                <extrafeature name="qfs:systemclass" negate="false"
+                              regexp="false" state="0">A</extrafeature>
+                <extrafeature name="tag" negate="false" regexp="false"
+                              state="0">A</extrafeature>
+              </ComponentStep>
+            </ComponentStep>
+          </ComponentStep>
+          <ComponentStep class="H4" classcount="1" classindex="0"
+                         feature="Records: 1 to 3 from a total of 3"
+                         height="22" id="h4Records:_1_to_3_from_a_total_of_3"
+                         uid="_2+" width="1365" x="246" y="356">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">H4</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">H4</extrafeature>
+            <extrafeature name="tag" negate="false" regexp="false" state="0">H4</extrafeature>
+          </ComponentStep>
+        </ComponentStep>
+      </ComponentStep>
+    </WebPageStep>
+  </WindowList>
+</RootStep>
