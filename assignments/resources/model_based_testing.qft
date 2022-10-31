@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE RootStep>
 <RootStep id="_0" name="root"
-          signature="9DC53EBE4B33626813F3A3BBA57F440C2C199BFB"
+          signature="9A67C98E768CDC0512942E2C7C4763807070FA93"
           version="6.0.3">
   <include>qfs.qft</include>
   <TestSet id="_1" name="Add and Delete Projects">
@@ -661,6 +661,1026 @@ cJ^*}HDigF.Mx~H96#!shBAG*`/%,?frl{G}KM{EudcZqUw}gwKcCA</webp>
       <ProcessWaiter client="$(client)" id="_J"/>
     </CleanupSequence>
   </TestSet>
+  <TestSet id="_7I" name="Edit Project attributes">
+    <SetupSequence id="_7J" name="Launch jtimesched">
+      <SetGlobalStep id="_7K" varname="client">
+        <default>jtimesched</default>
+      </SetGlobalStep>
+      <ClientWaiter client="$(client)" id="_7M" local="true" raise="false"
+                    resvarname="isSUTRunning" timeout="1">
+        <comment>This node checks whether the SUT is already running. The result of this check will be stored in the variable isSUTRunning. The variable itself can contain true if SUT is already running or false if SUT is not running. This variable will be used in the following 'If' node.</comment>
+      </ClientWaiter>
+      <IfSequence id="_7N" name="Launch SUT if not running"
+                  test="not $(isSUTRunning)">
+        <JavaClientStarter client="$(client)"
+                           directory="C:\Users\Paulinho\Desktop\jtimesched"
+                           executable="${qftest:java}" id="_7O">
+          <parameter>-jar</parameter>
+          <parameter>C:\Users\Paulinho\Desktop\jtimesched\target\jtimesched-1.2-SNAPSHOT-jar-with-dependencies.jar</parameter>
+        </JavaClientStarter>
+        <ClientWaiter client="$(client)" id="_7P"/>
+      </IfSequence>
+    </SetupSequence>
+    <TestCase id="_8p" name="Set overall and today time quotas">
+      <BasicSequence id="_8b" name="OverallQuota-Ok-TodayQuota-Ok">
+        <BasicSequence id="_90" name="Before quotas assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Overall&amp;5"
+                          id="_AQ">
+            <ImageNode height="21" name="checkimage" width="94">
+              <webp size="150">UaRzDKBAv(*wpBQPT?2OQAAAQ:GtCA/Tvm.pnEE]^O%WvACD^hpYe1?Oo!b7k'Ee1;9]xYC5nIo4qCTFHX
+Re"!yzTt"vy]apU!Na/Vui%\9]Vtg23rB*F|03UOU|Aw5EEcEN]KY!r(^6Ja/VuiG=C=c03rB*EiX=Es
+:A}FHe{Q^dE0#BkB:YLBAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                          id="_AR">
+            <ImageNode height="21" name="checkimage" width="94">
+              <webp size="150">UaRzDKBAv(*wpBQPT?2OQAAAQ:GtCA/Tvm.pnEE]^O%WvACD^hpYe1?Oo!b7k'Ee1;9]xYC5nIo4qCTFHX
+Re"!yzTt"vy]apU!Na/Vui%\9]Vtg23rB*F|03UOU|Aw5EEcEN]KY!r(^6Ja/VuiG=C=c03rB*EiX=Es
+:A}FHe{Q^dE0#BkB:YLBAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Overall&amp;5"
+                        event="MOUSE_MPRC" id="_AG" modifiers="4"
+                        popup="true"/>
+        <ComponentWaiter client="$(client)" component="dialogInput" id="_8d"/>
+        <BasicSequence id="_8r" name="After Overall Quota assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="dialogInput.panel" id="_8s"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="dialogInput.panel" id="_8t"/>
+          <CheckStringStep client="$(client)"
+                           component="labelEnter_new_quota_for_time_overall:"
+                           id="_96">
+            <text>Enter new quota for time overall:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="dialogInput.textEnter_new_quota_for_time_overall:"
+                           id="_8v">
+            <text>0:00:00</text>
+          </CheckStringStep>
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="dialogInput.textEnter_new_quota_for_time_overall:"
+                            id="_8x"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="dialogInput.textEnter_new_quota_for_time_overall:"
+                            id="_8w"/>
+          <CheckImageStep client="$(client)" component="dialogInput.panel"
+                          id="_8u">
+            <ImageNode height="96" name="checkimage" width="291">
+              <webp size="2002">UaRzV0PAv(*wpBQPT?37%CAA0Y^(XA|Hr=A"mg"|z@Z5Hdb$O=0mb$O=lr72M=B.|+!R$bg{e$12,Mb2Lb
+(ZIWX_'0O=P=y\@~U0k'*C.}1-ZA^(='zi%ZOMS`$e|6}9~/4lA_B.TDK8[~{'lzxZD*M]8SUJxF=,NW
+(.A"!T,HjXwu"wH7?=t(Ojo9LzM`~.bF*MkjbowBskiq2iH;Ax#T+Fw*D\s68BAzJ%x%RD6lN|cC7X^)
+JR\cCt^QNcbJ|}zs=y@2UZ6+YEZeKP\AN/xI:"Q)NRDCDFy[8p~]o9rkB:2~n}}62}6Hyg=pzPatX"l6
+a/k:AAn6(,^:nmOI|wO/Iph#Bz87u6;-Gi='GXsLTHsKBqwWBph=0fYg2P.uAA\Q?bJbRlx.r.5A^WuC
+YL_O5VEQ%;,x4Uio$yjwIxlqi4)/WhE_JgXLVDD"#v'q?Vud+V~GgTf=9O1D[+6t0W)wcin\VcDF`F?u
+SM\SlYf)!H*FfnoJWxD\m6PJVCVz{N08A5l#erZQ;E"uTf*taKkgu6!Jp1$mz:T@3?-Gf0p`4_P~4N1%
+uWqG\FHnn8L./?qB3~qh.WAA9(jV/FB5StwfO{rCLFQFaY9luI5GbvrN+ME=3L;f9~0W$~ktltZX\@)2
+?HXCoM;P6K3Vo0-AIOb#S*qN4C/d"6~le#FA{ZUo05g)!rKys|AcO0]si1Vr|SeQcU~FrC5F/T]KtY9l
+`DZJjPtNWmc4l_1g8wX7[BowfLvJ^q=]XL~FB~oBt~S*qNgy;ND*E|oXm4tAvbxDZ3gxC-$`u}a(%?uG
+__/g]atB$Dn2=A|8cr@~Z.$}'#}_SA|FV[-HbMaS}L,B{cxDeCALoW]TVwfE\K!KkQ;vXw-F"XyX-YC'
+V]=^`;tm@c.(=-*hI%Z/:[Uj0bb4='HCKS=hO)QSYApvV[|Oq\}GD^E61y@h94|LLHdtxi@s/noG5uED
+/_"-XL{MUAqG2LrF~[js^`(diiPL)+cGAr23t6{Oq:^Ms-88IjK-nhOt`W_k}UJ)OB1h]:^ixHJV],G'
+)iPO"4LL1@1bEHtBJYx1=[Gbg0N`{BNCDsvW[Z^7w\V-0_=cp/*a=A(h#S$LagS!iutv{JeQqvvF))[D
+Qs6-hcX?{uN{u%'|"H/1`]G[c2b|y1`+9IEnPMHvv1(\ni:O$*ge@s^UcZGUj:T{:I.:Ugq/tk6F:h~v
+NE0WASj,K2;\S[R|%Qir|IZL5(`F2H?ZB%XQO#}MH#8.3rPi{x?U!6{}.;[v~7@CNYq1tihXHOy^W%VQ
+HEXb=uS(]D_,euB_O_;~xN:7sG:h~voD%M)56I`L_UY./Vo)6Q`CicDWA_;ykA[A+XzbGG=.t7DzWGH\
+B/S8z@)4mkY~?Kd3#Q}4(,WR(4g@GncOTCH#zjH1Z+PJg]cy!76nN9{YKtq"@LwmUwWie]Ll:%h'NW.j
+:(xf^Xq1ti+.U3l;djv71+odoXxc@@51PM4;,~jsg$+8,GhgW%;}{bM6T[]a|[02s4NzV,rO^RvU}(zO
+1g~b*v^zB^DdaN/i.ZtOZNp0U`SZuU}(sO1gW_Zb|ZoO/mLeewl=GfWcxZ+{qvHvLmp?6{-YEwD~{_GS
+I#]9C1+/3H2N[T;*?)2T!U9kmm'Z3+[kDJo"f|+%nj"4;1BbDT=nqlrx:6WmRI2eh$Y8$kr3VJSn"zhl
+u'c@x,VK[oWv5}'b1R8$%.vvwN(R5^O4]oMkTcKWxrh?l5F*vyr+3?wi,[iLX=ZhBI*4ilXm|$W='J!d
+PkpeamV=9::HieW5{qFg0}/%.`8!]c"5,2U(jRl9[a}-O}SI`/2\t$pqiTm!.B|fujV9y~|yjpWgv^xm
+v$#=@?u}%FOk\EAk\.HqHXn=YJDmw;rs%u31\^fyC$.]IJYfaO5"Oqb{t=]g{W:\R(7\BEyw=W9[;/b?
+gj:p+10m1J.eq|O`D1"1H8Nk3LxFr7;+Og/F}s(MHQ9fPRVqJ{ECe1ps1R6m^@Um-!ESM\QevG4%_:Sz
+[!%$VT^8}8fHEG8%UiWHgcw0jLSpPMlpAH-okQofGODHGt1nQjVmsirJ5F|5Y4{g;Z/3FjXBSwdg{$l`
+Iuy@.';lBr;0tFT\/BdOZn3n3m3a8cmZk\|Ssc3"Z{,E3O%u\kMBPOg%]G7#lo!Ra\[+7Q1SI)[%;!:p
+w;L#6RRkC1P+ft"^TEI#k^6V+?|(9w.dhv]`Z@_Vt$4,:ohO]#0tGnTIhK^XfC?3kpZ;_IYdU5KZ(V`]
+w8-Uz%mY8x%J7#lo{/cWY.2P$%Ia7ih6a.cFay63$K]J\gw;kG9,*!qmUz#G~0pMz}_VJ|Pnm`}:oR.-
+8FiJ[N|{E7uy4+5d}{/=t:%3K'OLl'PUCzyVR{yyqp/u,paNO%jO"5x9*d;Zj9)ZtO~Np0qzz,L:4D$a
+5@L*_rDp^toO1g71jQ5bu_LaO11*,e:NY|H6~3+Tpko=G6[fqUs.ZSv@AA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="dialogInput.textEnter_new_quota_for_time_overall:"
+                        event="MOUSE_MPRC" id="_8e" modifiers="16" x="25"
+                        y="7"/>
+        <KeyEventStep client="$(client)"
+                      component="dialogInput.textEnter_new_quota_for_time_overall:"
+                      event="KEY_PTR" id="_8f" keychar="8" keycode="8"
+                      modifiers="0"/>
+        <KeyEventStep client="$(client)"
+                      component="dialogInput.textEnter_new_quota_for_time_overall:"
+                      event="KEY_PTR" id="_8g" keychar="8" keycode="8"
+                      modifiers="0"/>
+        <TextInputStep client="$(client)"
+                       component="dialogInput.textEnter_new_quota_for_time_overall:"
+                       id="_8h">
+          <text>20</text>
+        </TextInputStep>
+        <MouseEventStep clicks="1" client="$(client)" component="buttonOK"
+                        event="MOUSE_MPRC" id="_8i" modifiers="16"/>
+        <BasicSequence id="_8y" name="After Overall Quota input assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Overall&amp;5"
+                          id="_AC">
+            <ImageNode height="21" name="checkimage" width="94">
+              <webp size="166">UaRzaVBAv(*wpBQPT?2OSAAAQ:GtCA/TvmxeD.TiX,z(swV9G9wHkNz+AI91U?l{z*De3P|s;Ctnf^z?q#
+V:?GtBU"X@N8iM)l_CU"X@jac%9*/Z]WiYJVdF%!,M:M!MyK9v$fSwo/PD7vmi\nP*gj1B;XU!62ziUC
+.A}yz8?`'6Sp1B;XU!ucT62P2BsH$^Q@D.^jfgYDAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckStringStep checktype="item_tooltip" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Overall&amp;5"
+                           id="_AN">
+            <text>Quota overall: 0:20:00</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                        event="MOUSE_MPRC" id="_AJ" modifiers="4"
+                        popup="true"/>
+        <ComponentWaiter client="$(client)" component="dialogInput" id="_8k"/>
+        <BasicSequence id="_98" name="After Today Quota assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="dialogInput.panel" id="_99"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="dialogInput.panel" id="_9A"/>
+          <CheckStringStep client="$(client)"
+                           component="labelEnter_new_quota_for_time_today:"
+                           id="_9B">
+            <text>Enter new quota for time today:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="dialogInput.textEnter_new_quota_for_time_today:"
+                           id="_9C">
+            <text>0:00:00</text>
+          </CheckStringStep>
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="dialogInput.textEnter_new_quota_for_time_today:"
+                            id="_9D"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="dialogInput.textEnter_new_quota_for_time_today:"
+                            id="_9E"/>
+          <CheckImageStep client="$(client)" component="dialogInput.panel"
+                          id="_9F">
+            <ImageNode height="96" name="checkimage" width="291">
+              <webp size="2030">UaRz_,PAv(*wpBQPT?2O*CAA0Y^(XA|Hr=B"_J"|z@4cQ%ulAhbm'#O=0m.pX$U#F.P|^}_a}+[}A,f:X2
+(Z`az=M2`OL$]%O=_.]XBrT_xW?9SkXL:V,beMoz#Z.eD8wV#jv~`?{.tNt_M6:vfT?5_c.09c)V,(c/
+l~0\v=B"bUQys:/`ANl%c[i_b\|6zd\fV|7K~b47~xANi")?4+vpAtU"PkM#vf\zTD"LRogE6RZ;Xn9Z
+,(_tTirP,k9(6wdSB,M~9L*$Ozoc2IH;Y#uWzcyqeCsuj-u'$Xy;|};:zs(uer@+V{ZnK|^snMji%3dd
+Bf]9{`5YvFuWq7'?JgZz4(`YPjG)me6![P2Zskt89rNlqBCY'_(E#TscE'^wxK/djFBteT:NWY+3`FP3
+b4?vzL_)'B/32YEB8uv*2{ti(ZB#=5eMaDhM/B9N1FgQ[9.WCUS4)O/.WYZN={b2Z)7nnL_v3/w85li6
+{EXPQvSM\S1Yj)KH3fPLzTUq@h[I1ktN2GGwm!Aw3/dm]:OKOG\iADPpzn~Iwb.hcU*y;v`MB.3A"U5F
+[W`@\V_ho!@W_!$N5^Khg4)hg6!Bv(EHgJ"CAM0(=DIY5tm)'tGGn2yvjVk4Vw/uEsFDZB9hu/0M1d6y
+{)w9avT6ct:A^Wqy\tTdQtq]vj(ZB#[W^CYLZXoRo_LCxCn$"_kWiuexF7B:i{-,F{f_+ji)7"AYDAiG
+lLZlv+vxtIt_ER;h`FwAln:a8F},sTIuzPf++6uW|L`/oBg@rzu6MDEAdx}YMwfTI}D?9=|pb1D_`}Fs
+_;6gtXfV~4`F~44!oaA^\eo}1u4XPDBNVF$$:$o1~N54)F@Tf(!TRc#M%M+z~RqD91CACyl[=/6*LP?X
+{q|k-|j'Gpm]a(ACraBd~NuP"*Lv#Zf;DL=/..v(6M8cM8IA[N@Jn%,jDY7nO01L316t=vscEEuwh@IM
+SYv`Du0j0ABZlJ+'j?s85QN`JHa+#w}y(o[}Cb,x.0g)T.i:d|(BWZ\ya%Ht^)gF3;#WmZk^GWk_l6H]
+zbBtiv:*YFwU7WC{\(?{(X_XtZquexYkv/5R%{%/*PH"LD%MH?r]10@m^_W)oZ1a}e$Bc_Ff!dzMCSc[
+z;AY#wL$_))km)1(m*wonGl$EWfr%$C0S/y))'%{]TP,DsM]n~Gc1R4;hm4#2_z!\zG#z3NbdBMT8%?)
+zdex/8"q?U}le\v:UDmxk]L9k{X#;v]QA*AC:L*q9,xR;\F.R|NeKk{IZL5(`FeHxb'$CyWBlF1`k%yD
+fnB?}+%mzFvq~cBpni/N5(`F5GHZc`^S]0'?ai[mZ}N+si{nD-p{H\piTv=zzDKKCgc]sHmNlS?oU!lc
+X_}^{DJIo{n\bG=M}4(,X!94$T,Z?+LUxJDJpl6,)Hio{g~^-="~zWVt@L8O,3*?_BJ-C!o(r@zM(HEK
+xMN'LLH`8uvGsc@@WOVz7!Z1U18Pu34~R|K$Z:`DWOooGm3\s:]*mxTD.r.g?o,BFFBQ6R17t(.C^%b2
+0G]S#U{~`5/^OFEP@m@Z3]GUGd;*A#A0M-jdGNV!t+tO!O}dT`p$/r^tPoM6ph/5A0zd$7xzi3W`nG0f
+^%faYjyeJdy6-*^~c@6d.q"RSz@T:.{,g.:d`AulWZ#c/xl~(ftT:?1JOiSKL'*YSZsl(B((z\kNbIR\
+]me\U,6d+j=V!lCrSqZ(cr5)o._/prr9_/z3$Y1$WyK*#jA..`c4csN3V`N.y{p%7.]xV7@"0{_,kvNw
+|BgVr[*GZKLYVuPn.RCQy)-:v\dj}p~;Y7m.j55t`p'4[a:8f*YjEgm}Yk'G9!OdJ6|2t4diy:fy,+.d
+f$IO8U`]MLb_p_!Y$THW"t]7]Xjjc^"hzkmv3-9,d%cGbx9_qIx+C^6ZVvRS.ur'zF72y"O[/8SiF$}S
+Ly!xaIZ`17zxG#,M~d5GC!wm}L-FtBbKfqIz\ghKq;U78S3aMMXo%IE94m#F-tvDD1K$@v?("XC=64(+
+.(H0mQbXACHO,;If^!?+!.2!%e.fw]l#*Y4,\'F=7z=#WdMYo]#x~c.YC9zt_:b2IICcA}aK^!N/0kc"
+:kydUmsi'QXL?ZxW]%xzTVL+|3:M~n)?P+YVhOR"63F_+1MWmiWH_4~N.u8l0VXxeXh,;~7FiJ[Nt\88
+ZbdxLSa-l3oNNcs9[5myL2(7a.fzH=C1i[K$\.S\OSFg;KgBVrnI?,1z1{Bx.B1O]kmJ/_0Mk['%QfAi
+@Y]lwE-e#U,]XL)SE_V9IR-,1~9HGVY'RgRi1;NsgP6ku-H7(e{cq}"l7ZYT$c0ShyUm[|T|*`x_Sil]
+K$VzVh,V!l)xQ022jrv-,.areTkQ9'DJb8cB^dn_A?b~D|!pJwNa#:'Vi[o~1}O;bgiM8O/c*{e'$cmm
+IdP5Vy~bu_ybZ0"'~zA0-A$7xzBh]0AdUc`7@Mc[(@WH]+t0hjKp.rlXIoM6k$Z-^V$LMU0^).:=n?KU
+S~8xLx?s|V5AA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="dialogInput.textEnter_new_quota_for_time_today:"
+                        event="MOUSE_MPRC" id="_8l" modifiers="16" x="26"
+                        y="12"/>
+        <KeyEventStep client="$(client)"
+                      component="dialogInput.textEnter_new_quota_for_time_today:"
+                      event="KEY_PTR" id="_8m" keychar="8" keycode="8"
+                      modifiers="0"/>
+        <TextInputStep client="$(client)"
+                       component="dialogInput.textEnter_new_quota_for_time_today:"
+                       id="_8n">
+          <text>4</text>
+        </TextInputStep>
+        <MouseEventStep clicks="1" client="$(client)" component="buttonOK"
+                        event="MOUSE_MPRC" id="_8o" modifiers="16"/>
+        <BasicSequence id="_9G" name="After Today Quota input assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                          id="_AD">
+            <ImageNode height="21" name="checkimage" width="94">
+              <webp size="166">UaRzaVBAv(*wpBQPT?2OSAAAQ:GtCA/TvmxeD.TiX,z(swV9G9wHkNz+AI91U?l{z*De3P|s;Ctnf^z?q#
+V:?GtBU"X@N8iM)l_CU"X@jac%9*/Z]WiYJVdF%!,M:M!MyK9v$fSwo/PD7vmi\nP*gj1B;XU!62ziUC
+.A}yz8?`'6Sp1B;XU!ucT62P2BsH$^Q@D.^jfgYDAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckStringStep checktype="item_tooltip" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                           id="_AO">
+            <text>Quota today: 0:04:00</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_9P" name="Set project notes">
+      <BasicSequence id="_9u" name="Notes-Ok">
+        <BasicSequence id="_9z" name="Before Notes assert">
+          <CheckStringStep checktype="item_tooltip" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Title&amp;4"
+                           id="_9+"/>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Title&amp;4"
+                        event="MOUSE_MPRC" id="_9v" modifiers="4"
+                        popup="true"/>
+        <ComponentWaiter client="$(client)" component="dialogNotes" id="_9w"/>
+        <BasicSequence id="_A0" name="After Notes assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="dialogNotes.text" id="_A1"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="dialogNotes.text" id="_A2"/>
+          <CheckStringStep client="$(client)" component="dialogNotes.text"
+                           id="_A3"/>
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="dialogNotes.text" id="_A4"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="dialogNotes.text" id="_A5"/>
+          <CheckImageStep client="$(client)" component="dialogNotes.panel"
+                          id="_A6">
+            <ImageNode height="41" name="checkimage" width="443">
+              <webp size="908">UaRzADHAv(*wpBQPT?fDUBAA0Y3AFA!g,FozcYg?2DE[,Y(,3,dL1m%ZVH_,C`W\~_X4]N)p_1FUqMoz*d
+pk4^d!XfSqt\)er~X)uwpwpwS)2CL]0US%H_\xU\Yx3Wfx_wttalWakY@a|C#L0e(+|u`xCQ./(j2)"a
+'HX1\PqL|9tv{dK$wmfK7h/#nVGlN:Y6va-Pq5rBSMjDxBU9A^b~^{LIp)}O}`]~CL~(_y4(Ngr1/*3v
+z|[!3jS1x^PW=[g1J.*$k{k{iXmD7~h0EH]}UDw*WeOH/A{!5pdlr|.CxZ92:P^[_x9x`,djfj-m^9,M
+,X;CCEnzjXm/(6qu5[SCnZ{)_2@cuS/WJ`0bRdAz9Pjz$AI0!u`,jLXDLHhNit:CvW;vpL^X/FscjtyW
+'ygs~-K`1mvE@xs!A-zmq7(:~mpMmm.p\6X=@YcTX`p~9^mpA]B.41YGrWI%/MHarx5UZ?iZoW:6~V=n
+!1!_Kxblk*@YppkXZ8U\S6OHKg!*wiKxblk*@Y_okXZ8U\j#6cmm9ILwiQR7x0?wANOoy?f2Yp}+)|gD
+"`fFn.\~dPQJk-|cJ}n1K#`_.E0`36vv1y3y_v|ba(w-y4ds'9hGHn`3/qM.^64zPxn#)(),0[g-DP*y
+E7QfWPsvY{$|.h)^hl8qAotLesu@{9H1ipCu@v?Ewm,rtje6hvzx`'Rmn]0coqow=4__Z+f9gyS(W^XT
+DR|FQ(sbH]u|L|$#8v~umR]-"x27sjO~?TU+qvG}~V;6vs{[0LR'AWQX$ruuD_z^M.P4:\@XL_6`k+AV
+{NML4Qwt0*}PVq..VqON[Wz#a41K|z#_|zN|d9Kn*79C6;V4ZT,g8kwJY6rJYJ#JTz7j"lumC^XRCXc0
+!P.p/t+mHjl])zI=$KaHc-g*Qq54LmXz:@]%IC(.%UZk|E=JA@'2yj2TnkIy6VU*nU}Y-)AZI+c%{G+|
+Vb\Fc-{5`=dF|iU9"m#,@S9=n%N:1%1"unDu2fif{*J2[pD/Lj[m*!unkTEo]p_D\:`t4nR2wFZ9_4Lm
+Lz6cmm9I)1/ggcGPFT5XdOU$fx?anQR7wHwJ16OHKg!*o6SI3:+w+x2/Qv=O`|_psplW8`!T)ZA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <TextInputStep clear="true" client="$(client)"
+                       component="dialogNotes.text" id="_9x">
+          <text>Must buy cotton swabs and lighters</text>
+        </TextInputStep>
+        <MouseEventStep clicks="1" client="$(client)" component="buttonOK2"
+                        event="MOUSE_MPRC" id="_9y" modifiers="16"/>
+        <BasicSequence id="_A9" name="After Notes input assert">
+          <CheckStringStep checktype="item_tooltip" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Title&amp;4"
+                           id="_AA">
+            <text>&lt;html&gt;&lt;strong&gt;&lt;u&gt;Notes:&lt;/u&gt;&lt;/strong&gt;&lt;br/&gt;&lt;br/&gt;Must&amp;nbsp;buy&amp;nbsp;cotton&amp;nbsp;swabs&amp;nbsp;and&amp;nbsp;lighters&lt;/html&gt;</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_AS" name="Edit text fields">
+      <BasicSequence id="_B9" name="Title-DateCreated-TimeOverall-TimeToday">
+        <BasicSequence id="_BP" name="Before edits assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Title&amp;5"
+                           id="_BQ">
+            <text>Go shopping</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Created&amp;5"
+                           id="_BR">
+            <text>2022-10-31</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Overall&amp;5"
+                           id="_BS">
+            <text>0:00:00</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                           id="_BT">
+            <text>0:00:00</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Title&amp;5"
+                        event="MOUSE_DBLCLK" id="_Df" modifiers="16"/>
+        <BasicSequence id="_BU" name="After Title selection assert">
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="frameJTimeSched.text" id="_BV"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="frameJTimeSched.text" id="_BW"/>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_PRESSED"
+                        id="_Dg" modifiers="16" x="2" y="7"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_DRAGGED"
+                        id="_Dh" modifiers="16" x="97" y="11"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text"
+                        event="MOUSE_RELEASED" id="_Di" modifiers="16" x="97"
+                        y="11"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="frameJTimeSched.text" id="_Dj">
+          <text>Go shopping (urgent)</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="frameJTimeSched.text"
+                      event="KEY_PTR" id="_Dk" keychar="10" keycode="10"
+                      modifiers="0"/>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Created&amp;5"
+                        event="MOUSE_DBLCLK" id="_Dl" modifiers="16"/>
+        <BasicSequence id="_BZ" name="After DateCreated selection assert">
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="frameJTimeSched.text" id="_Ba"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="frameJTimeSched.text" id="_Bb"/>
+        </BasicSequence>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_MOVED"
+                        id="_Dm" modifiers="0" x="1" y="7"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_PRESSED"
+                        id="_Dn" modifiers="16" x="1" y="7"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_DRAGGED"
+                        id="_Do" modifiers="16" x="75" y="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text"
+                        event="MOUSE_RELEASED" id="_Dp" modifiers="16" x="75"
+                        y="16"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="frameJTimeSched.text" id="_Dq">
+          <text>2022-10-30</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="frameJTimeSched.text"
+                      event="KEY_PTR" id="_Dr" keychar="10" keycode="10"
+                      modifiers="0"/>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Overall&amp;5"
+                        event="MOUSE_DBLCLK" id="_DR" modifiers="16"/>
+        <BasicSequence id="_Bc" name="After TimeOverall selection assert">
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="frameJTimeSched.text" id="_Bd"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="frameJTimeSched.text" id="_Be"/>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_PRESSED"
+                        id="_DT" modifiers="16" x="12" y="12"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                        event="MOUSE_DRAGGED" id="_DU" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                        event="MOUSE_RELEASED" id="_DV" modifiers="16"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="frameJTimeSched.text" id="_DW">
+          <text>0:05:00</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="frameJTimeSched.text"
+                      event="KEY_PTR" id="_DX" keychar="10" keycode="10"
+                      modifiers="0"/>
+        <BasicSequence id="_Bo"
+                       name="After TimeOverall edit and before TimeToday edit assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:10:19_overall_|_0:00:18_today@Time Overall&amp;5"
+                           id="_Bp">
+            <text>0:05:00</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Time Today&amp;5"
+                        event="MOUSE_DBLCLK" id="_DY" modifiers="16"/>
+        <BasicSequence id="_Bf" name="After TimeToday selection assert">
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="frameJTimeSched.text" id="_Bg"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="frameJTimeSched.text" id="_Bh"/>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_PRESSED"
+                        id="_DZ" modifiers="16" x="14" y="9"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched" event="MOUSE_DRAGGED"
+                        id="_Da" modifiers="16" x="603" y="176"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched" event="MOUSE_RELEASED"
+                        id="_Db" modifiers="16" x="603" y="176"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="frameJTimeSched.text" id="_Dc">
+          <text>0:02:00</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="frameJTimeSched.text"
+                      event="KEY_PTR" id="_Dd" keychar="10" keycode="10"
+                      modifiers="0"/>
+        <BasicSequence id="_Bj" name="After edits assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:12:19_overall_|_0:02:18_today@Title&amp;5"
+                           id="_Bk">
+            <text>Go shopping (urgent)</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:12:19_overall_|_0:02:18_today@Created&amp;5"
+                           id="_Bl">
+            <text>2022-10-30</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:12:19_overall_|_0:02:18_today@Time Overall&amp;5"
+                           id="_Bm">
+            <text>0:07:00</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:12:19_overall_|_0:02:18_today@Time Today&amp;5"
+                           id="_Bn">
+            <text>0:02:00</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_Dy" name="Set quick colour">
+      <BasicSequence id="_Du" name="Colour-Pick">
+        <BasicSequence id="_Dz" name="Before colour edit assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                          id="_D+">
+            <ImageNode height="21" name="checkimage" width="21">
+              <webp size="58">UaRzgjAAv(*wpBQPT?37EAAAxXCtCAg"g`0[A"[{]|YVZlE"YE_[O('{(GB5X4+'zz:vTAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                        event="MOUSE_MPRC" id="_Dv" modifiers="16"/>
+        <ComponentWaiter client="$(client)" component="dialog4" id="_Dw"/>
+        <BasicSequence id="_E1" name="After colour panel assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panel2" id="_E2"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panel2" id="_E5"/>
+          <CheckImageStep client="$(client)" component="panel2" id="_E3">
+            <ImageNode height="42" name="checkimage" width="301">
+              <webp size="1028">UaRzk|HAv(*wpBQPT?K]iBAAHv^WKA+K#!O=%#ZKULYl/J1^1'Q=0mb$O={ge|`ngdVsuJs#_k_c%h8w)O
+$#ZBOBVRAAOOwmb$PmRS^gWjaTJ,`uafdG441^)m~RZt]y]FGi]y^FnT0p~[52Z8zkj$pMMH1^oO!;un
+(7vF|3B"Kv-BMv_ljGmW[?v'r~}I]H2}',Hj3?w1^6~s}*VVR2!)VVzUgvf'bvBO~h/;=up^Vt/+`Rx]
+-/Zmo'){iYAeV0vaLUIl3CqH0q}X]=fK*1lp01oPA%EDl@IYxP4wDwAc%_Uv5-1pQH$803R7DNlv!3nz
+NEt/ggVWTtn5d8;,|?tK}fDh.(tYRN{E$R88kqte]as\VFM?]'2QN}Qz/podc!;G,YL{pJ3k2'Jt/cD)
+M6S]8JX5(jS$}cca-zT:B-:x/zD8KP(tx/!0+HAA3g?B$G5iyoqIQe{'i4V8E:X8fY'`2I=ecKb.dX5Y
+?i|OuPS-IgO9(xX[Bv/YtH9dOp_w!Z'86gt?v$wqHC}10R7VYd9J)$;fWgW:e:6LQ(qIe=I`wq27jN`I
+lBm[rw:jTB#V:bt*zLYGM^60HYMi_~i(E1v2.@By-cJ]kadY,5Mz)`%N:|x!XM56uRm.`+w={pBS23]m
+(o}Uu%:m$4Rv;qI5fi%=Y7q]ZMjz?he~:@@*PERu+)QHAArCj]vVz%r@Dp:bzSmo=J\kiP2,{}Wdqda,
++!^qi_qN3;ivL0!$xGH3M0%T1a1J.-knq{8l]C*67Rauk;RO6T!]6g!C3mfg5E;k~,tyYB:IOIUp|aiJ
+F:31pcsEcf{HrN`aP-GW)!tX@MjPeH}{}B#T_Y3+Msfc,qS)"ECa7M@{0bbQ6}UJj.]t(@G?qRrXowN;
++?%|;$z:rxX:5^1C"~1FUtN%~^UgUH^ABtBm+:|!"BxS-\U[mBP2_YkODO^-8_AT6P|1tQ+:eyUcjmDY
+R)7cYJ'FD\KZdnicxd=-Vy1aN@4=}-%0XOej!e,wt--s[5Y2eCMy?II(jewhFKF2xP0K!Cb.K:xri'M(
+D@62l$kJVA6*w_x^3o}J|y']%Jll)6#~~`"zRn2vhT4u_?k\.B|}9(QzOn`!eW0Bl0{PWAp1|ZB9.[Q^
+^q?3WPg(5}i1(k39{jiUnopoW|~Dw{::qxc3}Y95%D,rHGb|+ghbNmL\NIo+E"$pc@nRr:y{=UYq*:B2
+9H6%Bb76,\Kx'o(V#GG7mTntx5P{vQ?50|3%@Xos`.Ch6]Kym73u/3U]8*E/AA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="button4"
+                        event="MOUSE_MPRC" id="_Dx" modifiers="16"/>
+        <BasicSequence id="_E6" name="After quick colour selection">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                          id="_E7">
+            <ImageNode height="21" name="checkimage" width="21">
+              <webp size="58">UaRzgjAAv(*wpBQPT?37EAAAxXCtCAg"'|RqA"`}]|YVZlE"YE_[O('{(GB5X4+'zz:vTAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_E8" name="Set custom colour and reset">
+      <BasicSequence id="_EH" name="Colour-Custom-Reset">
+        <BasicSequence id="_EO" name="Before colour edit assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                          id="_EP">
+            <ImageNode height="21" name="checkimage" width="21">
+              <webp size="58">UaRzgjAAv(*wpBQPT?37EAAAxXCtCAg"g`0[A"[{]|YVZlE"YE_[O('{(GB5X4+'zz:vTAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                        event="MOUSE_MPRC" id="_EI" modifiers="16"/>
+        <ComponentWaiter client="$(client)" component="dialog6" id="_EJ"/>
+        <BasicSequence id="_EQ" name="After colour panel assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panel2" id="_ER"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panel2" id="_ES"/>
+          <CheckImageStep client="$(client)" component="panel2" id="_ET">
+            <ImageNode height="42" name="checkimage" width="301">
+              <webp size="1028">UaRzk|HAv(*wpBQPT?K]iBAAHv^WKA+K#!O=%#ZKULYl/J1^1'Q=0mb$O={ge|`ngdVsuJs#_k_c%h8w)O
+$#ZBOBVRAAOOwmb$PmRS^gWjaTJ,`uafdG441^)m~RZt]y]FGi]y^FnT0p~[52Z8zkj$pMMH1^oO!;un
+(7vF|3B"Kv-BMv_ljGmW[?v'r~}I]H2}',Hj3?w1^6~s}*VVR2!)VVzUgvf'bvBO~h/;=up^Vt/+`Rx]
+-/Zmo'){iYAeV0vaLUIl3CqH0q}X]=fK*1lp01oPA%EDl@IYxP4wDwAc%_Uv5-1pQH$803R7DNlv!3nz
+NEt/ggVWTtn5d8;,|?tK}fDh.(tYRN{E$R88kqte]as\VFM?]'2QN}Qz/podc!;G,YL{pJ3k2'Jt/cD)
+M6S]8JX5(jS$}cca-zT:B-:x/zD8KP(tx/!0+HAA3g?B$G5iyoqIQe{'i4V8E:X8fY'`2I=ecKb.dX5Y
+?i|OuPS-IgO9(xX[Bv/YtH9dOp_w!Z'86gt?v$wqHC}10R7VYd9J)$;fWgW:e:6LQ(qIe=I`wq27jN`I
+lBm[rw:jTB#V:bt*zLYGM^60HYMi_~i(E1v2.@By-cJ]kadY,5Mz)`%N:|x!XM56uRm.`+w={pBS23]m
+(o}Uu%:m$4Rv;qI5fi%=Y7q]ZMjz?he~:@@*PERu+)QHAArCj]vVz%r@Dp:bzSmo=J\kiP2,{}Wdqda,
++!^qi_qN3;ivL0!$xGH3M0%T1a1J.-knq{8l]C*67Rauk;RO6T!]6g!C3mfg5E;k~,tyYB:IOIUp|aiJ
+F:31pcsEcf{HrN`aP-GW)!tX@MjPeH}{}B#T_Y3+Msfc,qS)"ECa7M@{0bbQ6}UJj.]t(@G?qRrXowN;
++?%|;$z:rxX:5^1C"~1FUtN%~^UgUH^ABtBm+:|!"BxS-\U[mBP2_YkODO^-8_AT6P|1tQ+:eyUcjmDY
+R)7cYJ'FD\KZdnicxd=-Vy1aN@4=}-%0XOej!e,wt--s[5Y2eCMy?II(jewhFKF2xP0K!Cb.K:xri'M(
+D@62l$kJVA6*w_x^3o}J|y']%Jll)6#~~`"zRn2vhT4u_?k\.B|}9(QzOn`!eW0Bl0{PWAp1|ZB9.[Q^
+^q?3WPg(5}i1(k39{jiUnopoW|~Dw{::qxc3}Y95%D,rHGb|+ghbNmL\NIo+E"$pc@nRr:y{=UYq*:B2
+9H6%Bb76,\Kx'o(V#GG7mTntx5P{vQ?50|3%@Xos`.Ch6]Kym73u/3U]8*E/AA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="buttonTipChoose_custom_color"
+                        event="MOUSE_MPRC" id="_EK" modifiers="16"/>
+        <ComponentWaiter client="$(client)"
+                         component="dialogChoose_a_custom_color" id="_EL"/>
+        <BasicSequence id="_EV" name="After custom colour panel assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panelSwatches" id="_EW"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panelSwatches" id="_EX"/>
+          <CheckImageStep client="$(client)" component="panelSwatches"
+                          id="_EY">
+            <ImageNode height="199" name="checkimage" width="607">
+              <webp size="984">UaRzp4HAv(*wpBQPT?JldBAA1*\txAGK4kb$*)p-2^.tB*c4%G:1f|sOcC9Grl.pcT`2rb(N@zS]_osqQ;
+bf"#%F`c\SIRqLqL?MLYtZxzD2~1/1/1=1/~"*pMozs4,KZ2W#T}+hoz62jp/6.-P$O=KkC=n1O=eA0m
+8lgqZq_{Sx.w*~3+O=WGBSghG-kB,[Ei5yrW^~1~b}\~"s#$ku^8nVV`{:yz`)|"Bx}+F\XOP^0UoDCI
+p=fK-u3}Z]JA9)SG-rL.|@vIxV`a\)(Kcxq-T"iag7_J7GD5w[x;(q~6!H*/bDxe\Bt~)UBK;*{7AB76
+r?ptPn-Wljyxw8;Hee`DPP.B20ekOiH$}4qtr3=v67SzUkv_`%#Qpb(WDg7i]IPRxklX!8}(m`sD{yy?
+!bX*ZQgT8CQacJ\6jnSg:6qw*x@`yL4egMVJdLO?fGmdXLZLgu(#SCDCuL9)-TOYYH6Y]-Bf$L'UI*Sa
+1%cL/57DwfWkyWBZ,y-2?fzSvCV=N=+PRgzjR74,[Z.O|l]P_sMG!OF6(C}CR01U:.+S[q4iqt^b-WVT
+iL4%Aq[jIE~RFCu\CBY^tt5p-WGgB_w8EI1p7D;7=vGP?T|"E8A'"9;B7lv_g}gYY}#QJc=5!:|Qp{qO
+!#ptk82!3cbf!P^,VITv8%)ujq#y.r#yts#yE|hL09iLzQiLzQhL:bUr[jDEPP\BkK|"o$r?GI{2ABep
+iLk'o{Wq@BG_-WC'[LBij_x\@X.va`pty'ptCe)W.6iLb}hL.Q/FJCL`*W*~\Ce(U)?Q0_'D8}vtI4!F
+75U)~"W-ut6{-W\!hLDoiL$O@$\BX[-Wf3=v~6r?#OiqCE33rtSS!FP$s+Bkj_x\B0,vf2-W,9guw8NH
+}@^D'iFCM-\C,e3L'D=`stD|%;-(TIaq~AxQhL-OlxGI|j9DPP?Bx^n9RiSnQj=mQj`mQjl'g+P9g+x3
+g+E'0yg9s+B\2r6prcpiqe/gj)UYQjH#%tvt*[\CpQd/-%qDP#TX2Df#g++mQjo62!u]?Nqm(W46hLBe
+#yj2g+om3]r4Lov\2r6pANpieC#y*cYN;i.BRjnu;Hm+f32B!c3L(WwiiL16+Y]@9Dso;BWU$%/.DFDC
+|sX.FLKV!:M5+*;=-BzD|X7b@"]"I\CoxIM9z}`~k~k.G%Y}$9}^T@cxs:ekK2Vw-E^~i_d+VL|s/~O~
+1{)B,FAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panelPreview" id="_EZ"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panelPreview" id="_Ea"/>
+          <CheckImageStep client="$(client)" component="panelPreview"
+                          id="_Eb">
+            <ImageNode height="86" name="checkimage" width="612">
+              <webp size="2146">UaRzs#QAv(*wpBQPT?37^CAA;jfXVA+KX50m-M)fb$kPb$O=0mb$AV0mb$O=0m:RRzv]iEGUH9Oj3Nh-wm
+JukyUf(hy;gNA\[#s7h|fW""B_"k$gE^EB4`URSk;Cwm3c)=S5_~,aww6k@J?TOCm/]X!MRo1NZGGC3%
+`wR-pGT*%jP"%lAT@2q+_9.xtNEHi=e4MFw-OA[VemMALy]JLtIu1CAB:ETr)M7#d.xABwnyteI!?'KA
+?N@Ajn"h_tbK5A(lsc{WTBhh3h2W%=~;T!9LtA3$_p8F$;_9_hUB#nT3Dt=!D)ZxM}X4XirLpJT3NAa`
+CAFCF~LAmKn'iQ2(KBgW"y3V-60KITPrXbtJKo0K+JBt4lDNvnS0SVUR.W#?BtJEAM{\3bABlb*(F2rX
+|LUrG'r-w%xWkJ#;*,HKpC--;;mF\}AA!mS/mB'EXLB(!rI73}{f(_C,L){y$B|3M\^|{yQ/6#=L"(~|
+OwjL+c#T0WaOoo3DTQBmG\jn^L7A%9dkAA[/UZPB=\MV'vcCP,_ULbIv"ASLo6~;DU-.T+s3}lVF,G~D
+QHWX/urC1f6O"8,5#ya,!?_FUJRau-,+R`=w6QN^y,_.w9atNWsY"Al8l%rZ~1S#1xiO!gmqQyXu1Aww
+~B.eAV4na4QYyhPj7@?'VC2bO-g=eY#A-a6svTT{S:Ss4XG|/-J2W2eQ*h|pGrFc7[\XOJux$+7ujis:
+|!_[ey2Y3R@+[*qZ2;pc/YB5(f_k-p,QjCQ`8IBAX(O],P6c:r0_gAIw=8?s:'xU[He3b:iUWAyu9p@G
+5?YR#jp%M1pes$u]OwZ.0KSx[peRr?E'qWG4J6YtblR@p1|9hq9@@QxkSH`,Q^Z$Ehn2%,]U7VLsEAsB
+qg~e!!C"v(-OJvD_ULQv5-IWQO1E7sF@(6F5t3T@^LN3ZA^TiL}BGO`1Gnm.OjOtNG$`7'L|e3HN'B-"
+#ix(t-J20)Ed_X{6.E'Tkzd6$1-|XAJRiL*@Xac7DB'+4F'Wr~Z~b0peeCpd?jFH`,[|x,qy;\GD+'(6
+l~)yhW@^WCvD}B=fQ^]*mod0GwM;;FUJSqFc;%E7#j5$JHm9NS(6;/AUCMNqji.Ha7tU5~mq)Qz=e*a_
+(~p}-Oa)AIC2]/fZPU%+2^]bBYgY]D3ZT|fs@:JSyNpv^*[Gm/cx{,c_u^sBN9g9uM}`jGRz-*@-lxu=
+IBh$3SaMut8}+Q3^,`64u4\f/=Z=o'~dKKY~Kk:EbhuSxAuFoN\=}afL\+;guk,@k-Nu^RajjC-^9O~o
+zPohNW?0sPFd3X7Pa-LdeV5m?q59?e}?#{\TtnGX#f2$8B~Al85Q1v+_460KRV:;jaP}WCqpbJzCg#j#
+^h\Uqj?9|@__[J/\:fb{M_DM!UG-DS9eUm`.@h`*v@om|}bP#o{*jz"|dfP9BOtjO+8Ry73alWFH_DxL
+IF/J}{f63]E7nS2sGu)h{6v`/yPoZ]^5sC`9abH===])nUa}~wTy3smpiymi-I,8vs\EC,o?RhVu5*Z3
+aW1!}]?o_~RU{*"rxg(v.iysLs\fEhZZi#dJ,!=/%;w7CRd|Tdo5%.kbBG+[%jbIw$$l\gQN*kO[bVm?
+@.{RoR!D.zDq9lrhxQ'T7!-*%,-{1`SVHZzP^,~LVr$#/e'H0Hk|^p1l:Jz$+e|UEO)kcfHQTucV.#(*
+]G~0!l/D\)IzU`ck^!AVK/1bvP-:*P)qGG2jPxD*FgNq;Q/K9+_}^fT@906#3T_puwW%tN@FaVfH6Nb}
+6#6NVrMi!5O}62F$^%ga,]5$8;[xG2ePf}h?MOu[%kdy9'QYu$C[-R%.jv-^3QF(87H(E'k[A(SCSxeU
+3$i)W%}K6xjfmO'p*-OkzX0~E)V:89y7?]GsXMe.tPj~"=F.h#6TnkZheo];JR}qxN?nq(dqM[A(]-}Z
+Ds[NrjpXqTc{+.x4;kH,fZOURfnTFY"tlzOp|mV-_gChxy)J%GMrD:%5#EDe_k3qH:?-Yr}_UYE-nxv'
+B8/?nLUFJ/0tSqCSi+g+@BopL,j-uHd@+{+iW#ISMag^9Qc#=/w}V.JVoH0Ov]Q{POp)eVdsE?Vw}.Q=
+;^NO.,wsCqT{-oSs\bG|^$J2CyeQ;uw;X]jW^ygFIiWaPNbF\*v?75UViI/$pN8JNeu$5vpSAGTG_D@8
+o{yjH?v7f5DdvhcrbkKxvxpu`m.[=8RuT@Z3Jxm9@kRK52|DNgV{=V."hMQK-?%?O,~^2B+P//0Z=0HB
++^QdZ*#aD{-4:Y#Pr#LNLK!3h0#0.|iYKZr[vy"_|71ENNW5h/}K/=D4lO!}T;Kcj2!_[e5K!w~xfUs.
+u?H2Cp})g+yO{d'R6|cgZ*capka.0~a+87\7lXbeJEx~Xfv1GDbq!OAW'!o(S4Q3Dfn7InN,H6#%j0`v
+hWR{tW\Y^6k.{:C(Cn9_BcxeMa8vPMH}#olL^HD(J|,v*vt-h`:GU%d=mzU8PipSjl8w2slfP*=hTOug
+9eRbN@CoF*W_=,%rD]o=tu"|1|fd:gU$}z_i"(j;M0#yeon6/]fa-ov/#H.M#S1~[:qP{Npv/v^MQG2I
+p2Ta%j\Ui+JsN01q)Q?Za='e!`r7k\X`UYmM=H_cv!k01SxjOJUvE-Ogk.7-^M]ZpjlP.Y:HAAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="panelSwatches.panel" event="MOUSE_MPRC"
+                        id="_EM" modifiers="16" x="93" y="57"/>
+        <BasicSequence id="_Ec"
+                       name="After picking a colour from the palette assert">
+          <CheckImageStep client="$(client)" component="panelSwatches"
+                          id="_Ed">
+            <ImageNode height="199" name="checkimage" width="607">
+              <webp size="1090">UaRz~oIAv(*wpBQPT?'+qBAA1*\txAs49;46nz}%DsASB2Y^aiBiuoA.Ak!}41B.@UBvM%U{Aec^+:e*[5
+%tnz!8#u!B!B`M`M`XW0U.,,i+-+i+c}~CqM5w:uq#:,2X~{yd#%s})%@9}~X~@={;~s0;Cfzl\Xka`P
+UDf#:WDDsRiXvu'v}'{@(yaBg^?x{GX~92Vcgw`.0?z!0{=TLm?DF1wb5=9|Z-%t3)Vfo4%@8cTgU({h
+ncnW[R"U/2z.|4h(90PnbB$r4r+t.."iI(#H)ap5gu}4qCPJlLJT:Wma"nfX;5'vDb$FGJlL[z"T!4b;
+numK8kUFeSsT@aEkHim}QV+twZkT}'H`"C-E1g@t!,Fice~/`@^G:WQ]6lRlG3]Vl0*aHLcn(Txd,Fds
+m0M/TMs_2|wB5GGv02'Qavm*0?odYTt1ue:!|C'QijVi~-2VGd~g)$%dNLdsp0{J*t'(g\kS_dk?XP`L
+,w=pDqrnh7|fj=T'_(h4M]5_QSdsq0'Wyb70UkhW;qUI#VQ1xa%sza;32C[HS3s6r)L@jrNT^O'=/fGe
+F;4oeO8Uc:ii\YE|Wi;.M75t[1VBb-zC$+$J}G9?6tL,xCp7RK*5yUtZ$n"y7=(3D31CDNTF%5:WIglL
+6O$Fu0o/r4'UccfKRhC+`)48]Fg/~sF}UzRR)]3^Cb+)3j:WR1'v%D$F}zlL${6twIw*!L=?|LC@|LK@
+|L|*_X*V$Fa1lLyQ:W2Kw*!L\;_XO$'vYO$F\]TX`]TX=]TX?]TX';[_W/RUd/[Ud/%Ui-bhg/~sw,m*
++vD:rCy@^JY@uUtZo[|LG@-"5C{)cBK`8t}};WD|;W=~;WeWlL_slLEc$F,v=CiUAwkp"y5^|Lq,_Xpg
+$FC@TXL@TXD@TXF@TXV+nuIy=C9g$F$O$FTl$F1fWzi'6~WTxelsf7[JM0/mvN6e5tW2ZBN\xCqI$F9*
+nuE.'WBKs_)m}bE_6twQ;WYIlLI@|L_]|LG=_XS0'v5;[_PO`]}4d9'v3%lL/^aBZoEFH,[UWO[]v`p8
+h@+0YYw6_gNoYk%;+6IPMS3a(en]/Y:\wl)%F[SZba!3:*)`A.W4}%A27YNIw*!Lh)_Xe:mBQK%FIFi+
+xC;`$J}G:6=Cl?%twCBz1CoOTF6!#J}Gy$:W;b6tZ9XBxg3CH%_mA(dSz=B'{;H=.+WL5D:W4EKX9Lh?
+-"ZB}L;W]a"n'";TnL6tB*7t`/~?!uym$Fb:lLGknCvrhMEv;~52YPKV!:D5LwkT`NL?%t.$(q\ClLZ;
+`o\Fopx{:~[}wT%+=o)hZm-Lpi}0jJN'E9hp|{sp)h_~t})%@9}~X~(E}dA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckImageStep client="$(client)" component="panelPreview"
+                          id="_Ee">
+            <ImageNode height="86" name="checkimage" width="612">
+              <webp size="2236">UaRz*kRAv(*wpBQPT?fDEDAA;jfXVAQM1?*'kmyfzmb$O=0mb$O=0mb$+*qm$%v}E4*2pKy'a$+l1g0vX=
+?\0mgNY[*:0mtqjOq9O=E.r5y0_dgmb$GZ:w?6Z\0maTuH*'|s;C'M76b{y^Q=0mb$O=0mb$O="0f(G{
+-n1ZVH5w"o.KXpDr5VK)-!:+Ht1\R@ScMXK"L\O'^(bCdH2e^'\;6FyD4o1W8eUcmARC7Xz|DHN/DXPA
+y)17Bt)PU+rKyLQtfBY.lngBQ}J`o_HZQArssoZ"qCqK2me#!(=AkSI$zX/'7hfY[QN:~ewW7C'!%$KA
+G.BDHv.L(hT9}QFXDAc{e+{y;v*A]];MQQ"'TonC9%$$dADQ!tzG$_-"%B8CZ9'W`EJCB*:?Ha!y?X%h
+H)`YgyKtKKq1M3R)u\F4HA)o5yx(ua`'A?{(XC:]='@CBhX+mvuy~fy"QJ~FYbln'B_Y6yw;]kEt0~$'
+KU7}=m-(]LhEQg8[Ut[K@CQ}b^%Ahgr^(Kq19Kcs`@(BuK!cup[sw"eEqI)_bo1A5R|\2X]QkRBx(,yD
+jP=-^,8QZJ^3,AT|F`n3}xHk}~,Q~R\f}.e^Cg/%''lU*SKb!!*f|rJ)40R'4x!4N'):OLBr.#CNT:6L
+CVdx:5F'Ee"Ap8H#JdXyhs8BjXgox7nf+dVSU!#F?OutUeUqNjuLRHY7MB7-D7_!]rQDI`dHT%z`[|Bz
++8s~~@}pO#5\q/_PbhF`r{-p#n~Lip4=m|_bSly\McOO]Ckfx8'3.d"qREYD.R~H^-}x8o2PjK0l`"2F
+AwG:2kdK_!y7ES.C[h$Hm=2!RUlo~VQ3*5z=^?QmjQLkV;^lsU.%rj{LUap5N)0jG(]iMa[EzdJdh}%c
+3C4HYVmfICo!0+y:PUE9"n*RNkZu:68M$#]qTXW|bj9@;Cy[CDQU!j?f(@@{pW27d27ON(tDUHvD)nIE
+G5"yGxbX4E{8F`EN-,"Bo^m:UxUdqijVXflzoO#@a@s\nPg!?vRp)W{D5I/R,lHMGJK#~)(gkdG~`kuq
+i${B\vHH!dnO_sDO!'B5`~B7.M7!]khlKu_c`D?#i@OLKE_K!';,M#-Vok\9ql%XtEr0_Q$@e6k:DCD]
+Rx)xM0'5|jk%OH'5?H%l.?/z0b\.J81,T'4xXR3'@:j.TFsOzcY8F1h!!]0P!@.dBX*84692|ndJERHn
+%*WM%irKYURK:QDH/7~Bwed6L;|pkGM@Pq0Be*iqk:An#$AEH8t!5Nq}6D#94Fs_R$RK(i@#+h$w48No
+]%mW@hC#DP^Ebx\7Xy~d}Df?LsnuSdCdAR!fE\?;QW:7CqQ_p21mT?xj'IL?"*he,;aHv5+9rvktc;VR
+0LLI\Cn=:?@T]sasAKd"h,IO~B~#A[YUOW#CIHGom{#F/THH].Y$9rfhZj:`(We])NLVHoGw@w_(|I_)
+Nt8i.Yjw:W4xEUd+`|Et/YBG$M`q5MXBKp#5$)8J(E,'qki:l$?JFr[R~H|eSB4x}hWG[=*0aDu0@vkU
+Gr+\v}=%Nr\FyIa'|;F4AYfI5^GJ;_9%3r"sp/oT)8mZ]?g(,|CB[|$m@tkad~:C"y8)GgMBzlA*qL8l
+$(^%#zu.oIOFSLCK$2lfemY|(VsI's$AE|Ye\NAG[kXQRux9^UU_$FBo'JrZxAdYDtM:|wE_gt\!RzDD
+[JU|$XiSVjCN)W|wLH9ybQf7D5/EojSLTz!J*`HM(MM-Aa$lSEl,B@muy+_cI_7t:b2-fUL!7fiL[{?G
+ypKGds@[I^Te_Yzt(Q%l1:VHxd[TSY\I5wU)jqfzK7`B`foF_a'JtG9yR`6ML9H;V?U+Sl)FH*uvyw"y
+3D@K2-LS]:k-_IAx7^,otb9g,|iv\d~AcDA=S;zJBK\C1fVRz'RQTM8aq-KIt)ACIH#M=t}xBQdx#}z(
+|P*p8R~Hi`__'CTJ";uag$@V#2lfHb=.tv6Y_dAik+G!99KhrQt9UZ`R$G2n+RwZ`+%M-L98yH^f8H9/
++GO@:Z3}x@reqDOi2Ma!T@nk;It$stdf|rHKRfmMq*$tz6G!4elfMPOF=igEA7f6^H1JO(x\/trslpX-
+?O8Svxat+7K3rhEMZ-I6c9D1~-h3W;9rKc7hY=)g}^-Kj!LJ}]{E?Id]YQ}NS=boZmhP~QA6vHAns~Nz
+r{)ry1o!zZOJ;5HgFl)-UTx8#Av+_7ttN;a9s0*#:s4YZh:*%1)=c3|1AMKghWu2a6LT-Ic3.@+8[fi3
+dk9tD[Jx#gBrL.5e3pDwo6(;yLrHp0-k`:s-0r3fm`#y\#Tvch0f4-+[@rb.N/}(lx\d~AZ83O49]e0`
+3?2}EZyn=SL'FW.j6OeSmXmG4P~$Rv6G(f,2:aa1"D;*;61+]O\vh}"i2Z,5{0Kz"j)9j*6IRO{B1f#*
+Km~$jWh@M$C1(qk{o0~T(]{Geb|CRvEY`a4wxYBHb|6LmxcYOc\B"Qcj2-fUL!7f.Z1}#Gc)pRUN:Vpi
+UobmX1Y8=@iMg/,ZhV=:yUuLI3NG]*2+_cwcxn$PP*5DAX[lX4}F%n+S)lITmT[[e0:^ZS(Z:{HXk;CU
+aoY$,Z8H(:]id8O6GE}W?S@/5x?O9#PCizI[*y\#F5M2@.:2F}u|!drufd_DF9nt,,Sg;gVNS+SL5+6w
+-1@1upT4$xUJDg4PS\{q%a+[[sFD*nSn!8]f!nN7%*WMS#?}~u@bRfA?MvPa=%SDI`lT;!O293Uj6Y_d
+Aik+znchV-Gj)hsSF:19}te?~tA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="buttonReset"
+                        event="MOUSE_MPRC" id="_EN" modifiers="16"/>
+        <BasicSequence id="_Ef" name="After Reset assert">
+          <CheckImageStep client="$(client)" component="panelSwatches"
+                          id="_Eg">
+            <ImageNode height="199" name="checkimage" width="607">
+              <webp size="1054">UaRz8PIAv(*wpBQPT?=ZmBAA1*\txAs4smPkI$o[K{pM0m^Y)TH\hP0mu|?wO=j]4_h,Q_du4]E;!g+D}L
+LaKk[jRjRjhjBD#Z$!)G)G-G(z(zrW)$=MkzI'Ud+I#%n4p;+={;~s6~{^~]t(;~r$S)Gg2`Rwv6Ok;"
+_0'vN?{@PO0nscj=hV3!lL_gVGiX_~YPwDc!hUT-:HQ_i:5NttQ[*NAk=}Mh?(bi)H4kQU!:iecnA\3d
+3Fsx*.T[7`W7fnPN/2;WnhlhoLSSXf+Q`u!G\dQXscVB1E$FyJlLU6"T9L_/_Xw6'vwE$F|+"Jfc8]TX
+"Ef#tCQ2!JoND#DRQ~23[(+5#JsnxqtBivb9{(=@CRQPA]r`pDlL~{:S3#2.|3T,iNyy7T?J+O]vOWU,
+0[JGX|/}+t'*LZabo17)9nl|'d:EiNhvK$@('j/r+tk0;t\8}dP%wB[y4{](R6iw{XHL_M;wj5OU.8^K
+e8rnpqsB8xb9_(S[7G%BlfqP7^=tGb^W_0[m_(O[Xoa\Dm3.r'V,:?I!j\?2'Vr0k(I'Xk(oPlDlypAu
+togv,)|(Wc\*e52wrkv2#=kH$F(GlLxT;W}k?4!L%\_XK$'v]m$Fc3lL2U:W!S?4!L!;_Xex=CNUd/IK
+8kDF1dkT`N-SlL?fw1z+xCTdKk:a{{~S_;Qof7A?Zn(+e5`n44EFGa]JY@tUtZ.p~F#=U4AwxCBzIFB5
+RKB*(o~Fu^|LQ:_XHv'vI@(~%5-Uu+Boscy@TXgK8khK8kgKP7gK9[(%nWm%vCn%tCn%1CK;jln%@9S%
+3qURuU:W1=VBxgzC{kTFuiRK''8t)_;W.}lL)s$FYs$F}s$FqW$F8$=Cw:mBq?%tIFv?fK*5CUu+hosc
+5;nuAUd/CUd/AUccBUd/Fo44D@TX!;nuR,nu,*nul;/MJq_~d.*jJL\OrCy@$2gD8HlLzN;WE$;W..mB
+m[[?6#C}6tE_h.uD|#=CQ:mBa?%tAFB5QF@cAKY@MUWO?=U4+!QFH,$UWO?]}4hh$Fl$:W1=WBZo`mw'
+kJ.^{{"#Z$S{7YNI:|!Lh)_Xe:mBTF?vbB3!;W'm?4otyUo4|E4klLH%lL8i:WPP?4!Ly,_Xi0'vHP$F
+^SlL;lS[GVkM(-Y~tmGQ;}8c'J*5gTpNDT:W`[%tsUnL[m*11R:Wg@|L8]|L~$Aj?/AK*5}TtZgp/'%0
+h@{o)hZm6DmiTTq%Rf%X?ArC`X=x|Grn~F_m-2M\-JZnLc3yEJ.^{{"#Z$N`7YI#'*E|XP=gX~@={;~s
+6~{^~]t(;~#)sHA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckImageStep client="$(client)" component="panelPreview"
+                          id="_Eh">
+            <ImageNode height="86" name="checkimage" width="612">
+              <webp size="2146">UaRzs#QAv(*wpBQPT?37^CAA;jfXVA+KX50m-M)fb$kPb$O=0mb$AV0mb$O=0m:RRzv]iEGUH9Oj3Nh-wm
+JukyUf(hy;gNA\[#s7h|fW""B_"k$gE^EB4`URSk;Cwm3c)=S5_~,aww6k@J?TOCm/]X!MRo1NZGGC3%
+`wR-pGT*%jP"%lAT@2q+_9.xtNEHi=e4MFw-OA[VemMALy]JLtIu1CAB:ETr)M7#d.xABwnyteI!?'KA
+?N@Ajn"h_tbK5A(lsc{WTBhh3h2W%=~;T!9LtA3$_p8F$;_9_hUB#nT3Dt=!D)ZxM}X4XirLpJT3NAa`
+CAFCF~LAmKn'iQ2(KBgW"y3V-60KITPrXbtJKo0K+JBt4lDNvnS0SVUR.W#?BtJEAM{\3bABlb*(F2rX
+|LUrG'r-w%xWkJ#;*,HKpC--;;mF\}AA!mS/mB'EXLB(!rI73}{f(_C,L){y$B|3M\^|{yQ/6#=L"(~|
+OwjL+c#T0WaOoo3DTQBmG\jn^L7A%9dkAA[/UZPB=\MV'vcCP,_ULbIv"ASLo6~;DU-.T+s3}lVF,G~D
+QHWX/urC1f6O"8,5#ya,!?_FUJRau-,+R`=w6QN^y,_.w9atNWsY"Al8l%rZ~1S#1xiO!gmqQyXu1Aww
+~B.eAV4na4QYyhPj7@?'VC2bO-g=eY#A-a6svTT{S:Ss4XG|/-J2W2eQ*h|pGrFc7[\XOJux$+7ujis:
+|!_[ey2Y3R@+[*qZ2;pc/YB5(f_k-p,QjCQ`8IBAX(O],P6c:r0_gAIw=8?s:'xU[He3b:iUWAyu9p@G
+5?YR#jp%M1pes$u]OwZ.0KSx[peRr?E'qWG4J6YtblR@p1|9hq9@@QxkSH`,Q^Z$Ehn2%,]U7VLsEAsB
+qg~e!!C"v(-OJvD_ULQv5-IWQO1E7sF@(6F5t3T@^LN3ZA^TiL}BGO`1Gnm.OjOtNG$`7'L|e3HN'B-"
+#ix(t-J20)Ed_X{6.E'Tkzd6$1-|XAJRiL*@Xac7DB'+4F'Wr~Z~b0peeCpd?jFH`,[|x,qy;\GD+'(6
+l~)yhW@^WCvD}B=fQ^]*mod0GwM;;FUJSqFc;%E7#j5$JHm9NS(6;/AUCMNqji.Ha7tU5~mq)Qz=e*a_
+(~p}-Oa)AIC2]/fZPU%+2^]bBYgY]D3ZT|fs@:JSyNpv^*[Gm/cx{,c_u^sBN9g9uM}`jGRz-*@-lxu=
+IBh$3SaMut8}+Q3^,`64u4\f/=Z=o'~dKKY~Kk:EbhuSxAuFoN\=}afL\+;guk,@k-Nu^RajjC-^9O~o
+zPohNW?0sPFd3X7Pa-LdeV5m?q59?e}?#{\TtnGX#f2$8B~Al85Q1v+_460KRV:;jaP}WCqpbJzCg#j#
+^h\Uqj?9|@__[J/\:fb{M_DM!UG-DS9eUm`.@h`*v@om|}bP#o{*jz"|dfP9BOtjO+8Ry73alWFH_DxL
+IF/J}{f63]E7nS2sGu)h{6v`/yPoZ]^5sC`9abH===])nUa}~wTy3smpiymi-I,8vs\EC,o?RhVu5*Z3
+aW1!}]?o_~RU{*"rxg(v.iysLs\fEhZZi#dJ,!=/%;w7CRd|Tdo5%.kbBG+[%jbIw$$l\gQN*kO[bVm?
+@.{RoR!D.zDq9lrhxQ'T7!-*%,-{1`SVHZzP^,~LVr$#/e'H0Hk|^p1l:Jz$+e|UEO)kcfHQTucV.#(*
+]G~0!l/D\)IzU`ck^!AVK/1bvP-:*P)qGG2jPxD*FgNq;Q/K9+_}^fT@906#3T_puwW%tN@FaVfH6Nb}
+6#6NVrMi!5O}62F$^%ga,]5$8;[xG2ePf}h?MOu[%kdy9'QYu$C[-R%.jv-^3QF(87H(E'k[A(SCSxeU
+3$i)W%}K6xjfmO'p*-OkzX0~E)V:89y7?]GsXMe.tPj~"=F.h#6TnkZheo];JR}qxN?nq(dqM[A(]-}Z
+Ds[NrjpXqTc{+.x4;kH,fZOURfnTFY"tlzOp|mV-_gChxy)J%GMrD:%5#EDe_k3qH:?-Yr}_UYE-nxv'
+B8/?nLUFJ/0tSqCSi+g+@BopL,j-uHd@+{+iW#ISMag^9Qc#=/w}V.JVoH0Ov]Q{POp)eVdsE?Vw}.Q=
+;^NO.,wsCqT{-oSs\bG|^$J2CyeQ;uw;X]jW^ygFIiWaPNbF\*v?75UViI/$pN8JNeu$5vpSAGTG_D@8
+o{yjH?v7f5DdvhcrbkKxvxpu`m.[=8RuT@Z3Jxm9@kRK52|DNgV{=V."hMQK-?%?O,~^2B+P//0Z=0HB
++^QdZ*#aD{-4:Y#Pr#LNLK!3h0#0.|iYKZr[vy"_|71ENNW5h/}K/=D4lO!}T;Kcj2!_[e5K!w~xfUs.
+u?H2Cp})g+yO{d'R6|cgZ*capka.0~a+87\7lXbeJEx~Xfv1GDbq!OAW'!o(S4Q3Dfn7InN,H6#%j0`v
+hWR{tW\Y^6k.{:C(Cn9_BcxeMa8vPMH}#olL^HD(J|,v*vt-h`:GU%d=mzU8PipSjl8w2slfP*=hTOug
+9eRbN@CoF*W_=,%rD]o=tu"|1|fd:gU$}z_i"(j;M0#yeon6/]fa-ov/#H.M#S1~[:qP{Npv/v^MQG2I
+p2Ta%j\Ui+JsN01q)Q?Za='e!`r7k\X`UYmM=H_cv!k01SxjOJUvE-Ogk.7-^M]ZpjlP.Y:HAAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_Ei" name="Set custom colour">
+      <BasicSequence id="_Em" name="Colour-Custom-Ok">
+        <BasicSequence id="_Et" name="Before colour edit assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                          id="_Eu">
+            <ImageNode height="21" name="checkimage" width="21">
+              <webp size="58">UaRzgjAAv(*wpBQPT?37EAAAxXCtCAg"g`0[A"[{]|YVZlE"YE_[O('{(GB5X4+'zz:vTAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                        event="MOUSE_MPRC" id="_En" modifiers="16"/>
+        <ComponentWaiter client="$(client)" component="dialog7" id="_Eo"/>
+        <BasicSequence id="_Ev" name="After colour panel assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panel2" id="_Ew"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panel2" id="_Ex"/>
+          <CheckImageStep client="$(client)" component="panel2" id="_Ey">
+            <ImageNode height="42" name="checkimage" width="301">
+              <webp size="1028">UaRzk|HAv(*wpBQPT?K]iBAAHv^WKA+K#!O=%#ZKULYl/J1^1'Q=0mb$O={ge|`ngdVsuJs#_k_c%h8w)O
+$#ZBOBVRAAOOwmb$PmRS^gWjaTJ,`uafdG441^)m~RZt]y]FGi]y^FnT0p~[52Z8zkj$pMMH1^oO!;un
+(7vF|3B"Kv-BMv_ljGmW[?v'r~}I]H2}',Hj3?w1^6~s}*VVR2!)VVzUgvf'bvBO~h/;=up^Vt/+`Rx]
+-/Zmo'){iYAeV0vaLUIl3CqH0q}X]=fK*1lp01oPA%EDl@IYxP4wDwAc%_Uv5-1pQH$803R7DNlv!3nz
+NEt/ggVWTtn5d8;,|?tK}fDh.(tYRN{E$R88kqte]as\VFM?]'2QN}Qz/podc!;G,YL{pJ3k2'Jt/cD)
+M6S]8JX5(jS$}cca-zT:B-:x/zD8KP(tx/!0+HAA3g?B$G5iyoqIQe{'i4V8E:X8fY'`2I=ecKb.dX5Y
+?i|OuPS-IgO9(xX[Bv/YtH9dOp_w!Z'86gt?v$wqHC}10R7VYd9J)$;fWgW:e:6LQ(qIe=I`wq27jN`I
+lBm[rw:jTB#V:bt*zLYGM^60HYMi_~i(E1v2.@By-cJ]kadY,5Mz)`%N:|x!XM56uRm.`+w={pBS23]m
+(o}Uu%:m$4Rv;qI5fi%=Y7q]ZMjz?he~:@@*PERu+)QHAArCj]vVz%r@Dp:bzSmo=J\kiP2,{}Wdqda,
++!^qi_qN3;ivL0!$xGH3M0%T1a1J.-knq{8l]C*67Rauk;RO6T!]6g!C3mfg5E;k~,tyYB:IOIUp|aiJ
+F:31pcsEcf{HrN`aP-GW)!tX@MjPeH}{}B#T_Y3+Msfc,qS)"ECa7M@{0bbQ6}UJj.]t(@G?qRrXowN;
++?%|;$z:rxX:5^1C"~1FUtN%~^UgUH^ABtBm+:|!"BxS-\U[mBP2_YkODO^-8_AT6P|1tQ+:eyUcjmDY
+R)7cYJ'FD\KZdnicxd=-Vy1aN@4=}-%0XOej!e,wt--s[5Y2eCMy?II(jewhFKF2xP0K!Cb.K:xri'M(
+D@62l$kJVA6*w_x^3o}J|y']%Jll)6#~~`"zRn2vhT4u_?k\.B|}9(QzOn`!eW0Bl0{PWAp1|ZB9.[Q^
+^q?3WPg(5}i1(k39{jiUnopoW|~Dw{::qxc3}Y95%D,rHGb|+ghbNmL\NIo+E"$pc@nRr:y{=UYq*:B2
+9H6%Bb76,\Kx'o(V#GG7mTntx5P{vQ?50|3%@Xos`.Ch6]Kym73u/3U]8*E/AA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="buttonTipChoose_custom_color2"
+                        event="MOUSE_MPRC" id="_Ep" modifiers="16"/>
+        <ComponentWaiter client="$(client)"
+                         component="dialogChoose_a_custom_color" id="_Eq"/>
+        <BasicSequence id="_Ez" name="After custom colour panel assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panelSwatches" id="_E+"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panelSwatches" id="_E-"/>
+          <CheckImageStep client="$(client)" component="panelSwatches"
+                          id="_F0">
+            <ImageNode height="199" name="checkimage" width="607">
+              <webp size="984">UaRzp4HAv(*wpBQPT?JldBAA1*\txAGK4kb$*)p-2^.tB*c4%G:1f|sOcC9Grl.pcT`2rb(N@zS]_osqQ;
+bf"#%F`c\SIRqLqL?MLYtZxzD2~1/1/1=1/~"*pMozs4,KZ2W#T}+hoz62jp/6.-P$O=KkC=n1O=eA0m
+8lgqZq_{Sx.w*~3+O=WGBSghG-kB,[Ei5yrW^~1~b}\~"s#$ku^8nVV`{:yz`)|"Bx}+F\XOP^0UoDCI
+p=fK-u3}Z]JA9)SG-rL.|@vIxV`a\)(Kcxq-T"iag7_J7GD5w[x;(q~6!H*/bDxe\Bt~)UBK;*{7AB76
+r?ptPn-Wljyxw8;Hee`DPP.B20ekOiH$}4qtr3=v67SzUkv_`%#Qpb(WDg7i]IPRxklX!8}(m`sD{yy?
+!bX*ZQgT8CQacJ\6jnSg:6qw*x@`yL4egMVJdLO?fGmdXLZLgu(#SCDCuL9)-TOYYH6Y]-Bf$L'UI*Sa
+1%cL/57DwfWkyWBZ,y-2?fzSvCV=N=+PRgzjR74,[Z.O|l]P_sMG!OF6(C}CR01U:.+S[q4iqt^b-WVT
+iL4%Aq[jIE~RFCu\CBY^tt5p-WGgB_w8EI1p7D;7=vGP?T|"E8A'"9;B7lv_g}gYY}#QJc=5!:|Qp{qO
+!#ptk82!3cbf!P^,VITv8%)ujq#y.r#yts#yE|hL09iLzQiLzQhL:bUr[jDEPP\BkK|"o$r?GI{2ABep
+iLk'o{Wq@BG_-WC'[LBij_x\@X.va`pty'ptCe)W.6iLb}hL.Q/FJCL`*W*~\Ce(U)?Q0_'D8}vtI4!F
+75U)~"W-ut6{-W\!hLDoiL$O@$\BX[-Wf3=v~6r?#OiqCE33rtSS!FP$s+Bkj_x\B0,vf2-W,9guw8NH
+}@^D'iFCM-\C,e3L'D=`stD|%;-(TIaq~AxQhL-OlxGI|j9DPP?Bx^n9RiSnQj=mQj`mQjl'g+P9g+x3
+g+E'0yg9s+B\2r6prcpiqe/gj)UYQjH#%tvt*[\CpQd/-%qDP#TX2Df#g++mQjo62!u]?Nqm(W46hLBe
+#yj2g+om3]r4Lov\2r6pANpieC#y*cYN;i.BRjnu;Hm+f32B!c3L(WwiiL16+Y]@9Dso;BWU$%/.DFDC
+|sX.FLKV!:M5+*;=-BzD|X7b@"]"I\CoxIM9z}`~k~k.G%Y}$9}^T@cxs:ekK2Vw-E^~i_d+VL|s/~O~
+1{)B,FAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panelPreview" id="_F1"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panelPreview" id="_F2"/>
+          <CheckImageStep client="$(client)" component="panelPreview"
+                          id="_F3">
+            <ImageNode height="86" name="checkimage" width="612">
+              <webp size="2146">UaRzs#QAv(*wpBQPT?37^CAA;jfXVA+KX50m-M)fb$kPb$O=0mb$AV0mb$O=0m:RRzv]iEGUH9Oj3Nh-wm
+JukyUf(hy;gNA\[#s7h|fW""B_"k$gE^EB4`URSk;Cwm3c)=S5_~,aww6k@J?TOCm/]X!MRo1NZGGC3%
+`wR-pGT*%jP"%lAT@2q+_9.xtNEHi=e4MFw-OA[VemMALy]JLtIu1CAB:ETr)M7#d.xABwnyteI!?'KA
+?N@Ajn"h_tbK5A(lsc{WTBhh3h2W%=~;T!9LtA3$_p8F$;_9_hUB#nT3Dt=!D)ZxM}X4XirLpJT3NAa`
+CAFCF~LAmKn'iQ2(KBgW"y3V-60KITPrXbtJKo0K+JBt4lDNvnS0SVUR.W#?BtJEAM{\3bABlb*(F2rX
+|LUrG'r-w%xWkJ#;*,HKpC--;;mF\}AA!mS/mB'EXLB(!rI73}{f(_C,L){y$B|3M\^|{yQ/6#=L"(~|
+OwjL+c#T0WaOoo3DTQBmG\jn^L7A%9dkAA[/UZPB=\MV'vcCP,_ULbIv"ASLo6~;DU-.T+s3}lVF,G~D
+QHWX/urC1f6O"8,5#ya,!?_FUJRau-,+R`=w6QN^y,_.w9atNWsY"Al8l%rZ~1S#1xiO!gmqQyXu1Aww
+~B.eAV4na4QYyhPj7@?'VC2bO-g=eY#A-a6svTT{S:Ss4XG|/-J2W2eQ*h|pGrFc7[\XOJux$+7ujis:
+|!_[ey2Y3R@+[*qZ2;pc/YB5(f_k-p,QjCQ`8IBAX(O],P6c:r0_gAIw=8?s:'xU[He3b:iUWAyu9p@G
+5?YR#jp%M1pes$u]OwZ.0KSx[peRr?E'qWG4J6YtblR@p1|9hq9@@QxkSH`,Q^Z$Ehn2%,]U7VLsEAsB
+qg~e!!C"v(-OJvD_ULQv5-IWQO1E7sF@(6F5t3T@^LN3ZA^TiL}BGO`1Gnm.OjOtNG$`7'L|e3HN'B-"
+#ix(t-J20)Ed_X{6.E'Tkzd6$1-|XAJRiL*@Xac7DB'+4F'Wr~Z~b0peeCpd?jFH`,[|x,qy;\GD+'(6
+l~)yhW@^WCvD}B=fQ^]*mod0GwM;;FUJSqFc;%E7#j5$JHm9NS(6;/AUCMNqji.Ha7tU5~mq)Qz=e*a_
+(~p}-Oa)AIC2]/fZPU%+2^]bBYgY]D3ZT|fs@:JSyNpv^*[Gm/cx{,c_u^sBN9g9uM}`jGRz-*@-lxu=
+IBh$3SaMut8}+Q3^,`64u4\f/=Z=o'~dKKY~Kk:EbhuSxAuFoN\=}afL\+;guk,@k-Nu^RajjC-^9O~o
+zPohNW?0sPFd3X7Pa-LdeV5m?q59?e}?#{\TtnGX#f2$8B~Al85Q1v+_460KRV:;jaP}WCqpbJzCg#j#
+^h\Uqj?9|@__[J/\:fb{M_DM!UG-DS9eUm`.@h`*v@om|}bP#o{*jz"|dfP9BOtjO+8Ry73alWFH_DxL
+IF/J}{f63]E7nS2sGu)h{6v`/yPoZ]^5sC`9abH===])nUa}~wTy3smpiymi-I,8vs\EC,o?RhVu5*Z3
+aW1!}]?o_~RU{*"rxg(v.iysLs\fEhZZi#dJ,!=/%;w7CRd|Tdo5%.kbBG+[%jbIw$$l\gQN*kO[bVm?
+@.{RoR!D.zDq9lrhxQ'T7!-*%,-{1`SVHZzP^,~LVr$#/e'H0Hk|^p1l:Jz$+e|UEO)kcfHQTucV.#(*
+]G~0!l/D\)IzU`ck^!AVK/1bvP-:*P)qGG2jPxD*FgNq;Q/K9+_}^fT@906#3T_puwW%tN@FaVfH6Nb}
+6#6NVrMi!5O}62F$^%ga,]5$8;[xG2ePf}h?MOu[%kdy9'QYu$C[-R%.jv-^3QF(87H(E'k[A(SCSxeU
+3$i)W%}K6xjfmO'p*-OkzX0~E)V:89y7?]GsXMe.tPj~"=F.h#6TnkZheo];JR}qxN?nq(dqM[A(]-}Z
+Ds[NrjpXqTc{+.x4;kH,fZOURfnTFY"tlzOp|mV-_gChxy)J%GMrD:%5#EDe_k3qH:?-Yr}_UYE-nxv'
+B8/?nLUFJ/0tSqCSi+g+@BopL,j-uHd@+{+iW#ISMag^9Qc#=/w}V.JVoH0Ov]Q{POp)eVdsE?Vw}.Q=
+;^NO.,wsCqT{-oSs\bG|^$J2CyeQ;uw;X]jW^ygFIiWaPNbF\*v?75UViI/$pN8JNeu$5vpSAGTG_D@8
+o{yjH?v7f5DdvhcrbkKxvxpu`m.[=8RuT@Z3Jxm9@kRK52|DNgV{=V."hMQK-?%?O,~^2B+P//0Z=0HB
++^QdZ*#aD{-4:Y#Pr#LNLK!3h0#0.|iYKZr[vy"_|71ENNW5h/}K/=D4lO!}T;Kcj2!_[e5K!w~xfUs.
+u?H2Cp})g+yO{d'R6|cgZ*capka.0~a+87\7lXbeJEx~Xfv1GDbq!OAW'!o(S4Q3Dfn7InN,H6#%j0`v
+hWR{tW\Y^6k.{:C(Cn9_BcxeMa8vPMH}#olL^HD(J|,v*vt-h`:GU%d=mzU8PipSjl8w2slfP*=hTOug
+9eRbN@CoF*W_=,%rD]o=tu"|1|fd:gU$}z_i"(j;M0#yeon6/]fa-ov/#H.M#S1~[:qP{Npv/v^MQG2I
+p2Ta%j\Ui+JsN01q)Q?Za='e!`r7k\X`UYmM=H_cv!k01SxjOJUvE-Ogk.7-^M]ZpjlP.Y:HAAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="panelSwatches.panel" event="MOUSE_MPRC"
+                        id="_Er" modifiers="16" x="93" y="57"/>
+        <BasicSequence id="_F4"
+                       name="After picking a colour from the palette assert">
+          <CheckImageStep client="$(client)" component="panelSwatches"
+                          id="_F5">
+            <ImageNode height="199" name="checkimage" width="607">
+              <webp size="1090">UaRz~oIAv(*wpBQPT?'+qBAA1*\txAs49;46nz}%DsASB2Y^aiBiuoA.Ak!}41B.@UBvM%U{Aec^+:e*[5
+%tnz!8#u!B!B`M`M`XW0U.,,i+-+i+c}~CqM5w:uq#:,2X~{yd#%s})%@9}~X~@={;~s0;Cfzl\Xka`P
+UDf#:WDDsRiXvu'v}'{@(yaBg^?x{GX~92Vcgw`.0?z!0{=TLm?DF1wb5=9|Z-%t3)Vfo4%@8cTgU({h
+ncnW[R"U/2z.|4h(90PnbB$r4r+t.."iI(#H)ap5gu}4qCPJlLJT:Wma"nfX;5'vDb$FGJlL[z"T!4b;
+numK8kUFeSsT@aEkHim}QV+twZkT}'H`"C-E1g@t!,Fice~/`@^G:WQ]6lRlG3]Vl0*aHLcn(Txd,Fds
+m0M/TMs_2|wB5GGv02'Qavm*0?odYTt1ue:!|C'QijVi~-2VGd~g)$%dNLdsp0{J*t'(g\kS_dk?XP`L
+,w=pDqrnh7|fj=T'_(h4M]5_QSdsq0'Wyb70UkhW;qUI#VQ1xa%sza;32C[HS3s6r)L@jrNT^O'=/fGe
+F;4oeO8Uc:ii\YE|Wi;.M75t[1VBb-zC$+$J}G9?6tL,xCp7RK*5yUtZ$n"y7=(3D31CDNTF%5:WIglL
+6O$Fu0o/r4'UccfKRhC+`)48]Fg/~sF}UzRR)]3^Cb+)3j:WR1'v%D$F}zlL${6twIw*!L=?|LC@|LK@
+|L|*_X*V$Fa1lLyQ:W2Kw*!L\;_XO$'vYO$F\]TX`]TX=]TX?]TX';[_W/RUd/[Ud/%Ui-bhg/~sw,m*
++vD:rCy@^JY@uUtZo[|LG@-"5C{)cBK`8t}};WD|;W=~;WeWlL_slLEc$F,v=CiUAwkp"y5^|Lq,_Xpg
+$FC@TXL@TXD@TXF@TXV+nuIy=C9g$F$O$FTl$F1fWzi'6~WTxelsf7[JM0/mvN6e5tW2ZBN\xCqI$F9*
+nuE.'WBKs_)m}bE_6twQ;WYIlLI@|L_]|LG=_XS0'v5;[_PO`]}4d9'v3%lL/^aBZoEFH,[UWO[]v`p8
+h@+0YYw6_gNoYk%;+6IPMS3a(en]/Y:\wl)%F[SZba!3:*)`A.W4}%A27YNIw*!Lh)_Xe:mBQK%FIFi+
+xC;`$J}G:6=Cl?%twCBz1CoOTF6!#J}Gy$:W;b6tZ9XBxg3CH%_mA(dSz=B'{;H=.+WL5D:W4EKX9Lh?
+-"ZB}L;W]a"n'";TnL6tB*7t`/~?!uym$Fb:lLGknCvrhMEv;~52YPKV!:D5LwkT`NL?%t.$(q\ClLZ;
+`o\Fopx{:~[}wT%+=o)hZm-Lpi}0jJN'E9hp|{sp)h_~t})%@9}~X~(E}dA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckImageStep client="$(client)" component="panelPreview"
+                          id="_F6">
+            <ImageNode height="86" name="checkimage" width="612">
+              <webp size="2236">UaRz*kRAv(*wpBQPT?fDEDAA;jfXVAQM1?*'kmyfzmb$O=0mb$O=0mb$+*qm$%v}E4*2pKy'a$+l1g0vX=
+?\0mgNY[*:0mtqjOq9O=E.r5y0_dgmb$GZ:w?6Z\0maTuH*'|s;C'M76b{y^Q=0mb$O=0mb$O="0f(G{
+-n1ZVH5w"o.KXpDr5VK)-!:+Ht1\R@ScMXK"L\O'^(bCdH2e^'\;6FyD4o1W8eUcmARC7Xz|DHN/DXPA
+y)17Bt)PU+rKyLQtfBY.lngBQ}J`o_HZQArssoZ"qCqK2me#!(=AkSI$zX/'7hfY[QN:~ewW7C'!%$KA
+G.BDHv.L(hT9}QFXDAc{e+{y;v*A]];MQQ"'TonC9%$$dADQ!tzG$_-"%B8CZ9'W`EJCB*:?Ha!y?X%h
+H)`YgyKtKKq1M3R)u\F4HA)o5yx(ua`'A?{(XC:]='@CBhX+mvuy~fy"QJ~FYbln'B_Y6yw;]kEt0~$'
+KU7}=m-(]LhEQg8[Ut[K@CQ}b^%Ahgr^(Kq19Kcs`@(BuK!cup[sw"eEqI)_bo1A5R|\2X]QkRBx(,yD
+jP=-^,8QZJ^3,AT|F`n3}xHk}~,Q~R\f}.e^Cg/%''lU*SKb!!*f|rJ)40R'4x!4N'):OLBr.#CNT:6L
+CVdx:5F'Ee"Ap8H#JdXyhs8BjXgox7nf+dVSU!#F?OutUeUqNjuLRHY7MB7-D7_!]rQDI`dHT%z`[|Bz
++8s~~@}pO#5\q/_PbhF`r{-p#n~Lip4=m|_bSly\McOO]Ckfx8'3.d"qREYD.R~H^-}x8o2PjK0l`"2F
+AwG:2kdK_!y7ES.C[h$Hm=2!RUlo~VQ3*5z=^?QmjQLkV;^lsU.%rj{LUap5N)0jG(]iMa[EzdJdh}%c
+3C4HYVmfICo!0+y:PUE9"n*RNkZu:68M$#]qTXW|bj9@;Cy[CDQU!j?f(@@{pW27d27ON(tDUHvD)nIE
+G5"yGxbX4E{8F`EN-,"Bo^m:UxUdqijVXflzoO#@a@s\nPg!?vRp)W{D5I/R,lHMGJK#~)(gkdG~`kuq
+i${B\vHH!dnO_sDO!'B5`~B7.M7!]khlKu_c`D?#i@OLKE_K!';,M#-Vok\9ql%XtEr0_Q$@e6k:DCD]
+Rx)xM0'5|jk%OH'5?H%l.?/z0b\.J81,T'4xXR3'@:j.TFsOzcY8F1h!!]0P!@.dBX*84692|ndJERHn
+%*WM%irKYURK:QDH/7~Bwed6L;|pkGM@Pq0Be*iqk:An#$AEH8t!5Nq}6D#94Fs_R$RK(i@#+h$w48No
+]%mW@hC#DP^Ebx\7Xy~d}Df?LsnuSdCdAR!fE\?;QW:7CqQ_p21mT?xj'IL?"*he,;aHv5+9rvktc;VR
+0LLI\Cn=:?@T]sasAKd"h,IO~B~#A[YUOW#CIHGom{#F/THH].Y$9rfhZj:`(We])NLVHoGw@w_(|I_)
+Nt8i.Yjw:W4xEUd+`|Et/YBG$M`q5MXBKp#5$)8J(E,'qki:l$?JFr[R~H|eSB4x}hWG[=*0aDu0@vkU
+Gr+\v}=%Nr\FyIa'|;F4AYfI5^GJ;_9%3r"sp/oT)8mZ]?g(,|CB[|$m@tkad~:C"y8)GgMBzlA*qL8l
+$(^%#zu.oIOFSLCK$2lfemY|(VsI's$AE|Ye\NAG[kXQRux9^UU_$FBo'JrZxAdYDtM:|wE_gt\!RzDD
+[JU|$XiSVjCN)W|wLH9ybQf7D5/EojSLTz!J*`HM(MM-Aa$lSEl,B@muy+_cI_7t:b2-fUL!7fiL[{?G
+ypKGds@[I^Te_Yzt(Q%l1:VHxd[TSY\I5wU)jqfzK7`B`foF_a'JtG9yR`6ML9H;V?U+Sl)FH*uvyw"y
+3D@K2-LS]:k-_IAx7^,otb9g,|iv\d~AcDA=S;zJBK\C1fVRz'RQTM8aq-KIt)ACIH#M=t}xBQdx#}z(
+|P*p8R~Hi`__'CTJ";uag$@V#2lfHb=.tv6Y_dAik+G!99KhrQt9UZ`R$G2n+RwZ`+%M-L98yH^f8H9/
++GO@:Z3}x@reqDOi2Ma!T@nk;It$stdf|rHKRfmMq*$tz6G!4elfMPOF=igEA7f6^H1JO(x\/trslpX-
+?O8Svxat+7K3rhEMZ-I6c9D1~-h3W;9rKc7hY=)g}^-Kj!LJ}]{E?Id]YQ}NS=boZmhP~QA6vHAns~Nz
+r{)ry1o!zZOJ;5HgFl)-UTx8#Av+_7ttN;a9s0*#:s4YZh:*%1)=c3|1AMKghWu2a6LT-Ic3.@+8[fi3
+dk9tD[Jx#gBrL.5e3pDwo6(;yLrHp0-k`:s-0r3fm`#y\#Tvch0f4-+[@rb.N/}(lx\d~AZ83O49]e0`
+3?2}EZyn=SL'FW.j6OeSmXmG4P~$Rv6G(f,2:aa1"D;*;61+]O\vh}"i2Z,5{0Kz"j)9j*6IRO{B1f#*
+Km~$jWh@M$C1(qk{o0~T(]{Geb|CRvEY`a4wxYBHb|6LmxcYOc\B"Qcj2-fUL!7f.Z1}#Gc)pRUN:Vpi
+UobmX1Y8=@iMg/,ZhV=:yUuLI3NG]*2+_cwcxn$PP*5DAX[lX4}F%n+S)lITmT[[e0:^ZS(Z:{HXk;CU
+aoY$,Z8H(:]id8O6GE}W?S@/5x?O9#PCizI[*y\#F5M2@.:2F}u|!drufd_DF9nt,,Sg;gVNS+SL5+6w
+-1@1upT4$xUJDg4PS\{q%a+[[sFD*nSn!8]f!nN7%*WMS#?}~u@bRfA?MvPa=%SDI`lT;!O293Uj6Y_d
+Aik+znchV-Gj)hsSF:19}te?~tA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)" component="buttonOK3"
+                        event="MOUSE_MPRC" id="_Es" modifiers="16"/>
+        <BasicSequence id="_F7" name="After Ok assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
+                          id="_FG">
+            <ImageNode height="21" name="checkimage" width="21">
+              <webp size="56">UaRz{hAAv(*wpBQPT?gwEAAAxXCtCAg""~9{!TAtVLQt#BeG9r@sFuk1-Fu~?A#7%~-N</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_FH" name="Set project as checked">
+      <BasicSequence id="_FI" name="Check-Uncheck">
+        <BasicSequence id="_FO" name="Before check assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                           id="_FP">
+            <text>false</text>
+          </CheckStringStep>
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                          id="_FQ">
+            <ImageNode height="21" name="checkimage" width="26">
+              <webp size="140">UaRzADBAv(*wpBQPT?K]OAAA9zCtCAICX/0mc0I`"';p7X9\:Ec`E5~;'Q3!}?92mnJW5yu(EAu7'2j2s6
+y^]OUF7"Olb$1g-5THlXnZnO:u'y`|5^b+L'1f)%=v*~p"?f1aC]qdio^Moa%mMyWjwQ3+@RryB[mfEc
+f`b08cqBAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                        event="MOUSE_MPRC" id="_FJ" modifiers="16"/>
+        <BasicSequence id="_FR" name="After check assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                           id="_FS">
+            <text>true</text>
+          </CheckStringStep>
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                          id="_FT">
+            <ImageNode height="21" name="checkimage" width="26">
+              <webp size="170">UaRzJYBAv(*wpBQPT?'+SAAA9zCtCAoCX/]ciCluTWNBbt3B5FYU5~'o%Lbv)zl:hlBF@~{mB"tT\DJGBf
+dcYEcTPjkC^,:'%##-2`|oT_cTu1)a9\@Zs4CJ8D+BkXqAZD8kAs`a~F"~/h*cM*,t_`F?0-RcMa('N-
+7syraB'M#!};g;wrcL)MGanb:nDBOG=iN)vV~e|6W!z68FA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                        event="MOUSE_MPRC" id="_FK" modifiers="16"/>
+        <BasicSequence id="_FU" name="After uncheck assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                           id="_FV">
+            <text>false</text>
+          </CheckStringStep>
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;1&amp;4"
+                          id="_FW">
+            <ImageNode height="21" name="checkimage" width="26">
+              <webp size="142">UaRzlEBAv(*wpBQPT?=ZPAAA9zCtCAYCX/0mc0*OO*;p7X9\:Ec`z8U:'Q3!}?H4GnJW5yu(EAu7'2j2s6
+y^]OVykL\h[\5H2djH=B~(A!u8LP,D|tKR%KV8Nq2Y_X[~Utj%Kc!4-Ko4:(RI,;'F~U+:fc5Q_8?4"V
+meyXE~!+40hA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <CleanupSequence id="_7R" name="Teardown">
+      <WindowEventStep client="$(client)" component="frameJTimeSched"
+                       event="WINDOW_CLOSING" id="_7S"/>
+      <ClientStopper client="$(client)" id="_7T"/>
+      <ProcessWaiter client="$(client)" id="_7U"/>
+    </CleanupSequence>
+  </TestSet>
   <PackageRoot id="_3"/>
   <ExtraSequence id="_4"/>
   <WindowList id="_5">
@@ -826,6 +1846,66 @@ cJ^*}HDigF.Mx~H96#!shBAG*`/%,?frl{G}KM{EudcZqUw}gwKcCA</webp>
           <extrafeature name="qfs:systemclass" negate="false" regexp="false"
                         state="0">javax.swing.JTable</extrafeature>
         </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:10:19_overall_|_0:00:18_today"
+                       uid="_AT">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:10:19 overall | 0:00:18 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:12:19_overall_|_0:02:18_today"
+                       uid="_Bi">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:12:19 overall | 0:02:18 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:25:19_overall_|_0:00:18_today"
+                       uid="_C9">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:25:19 overall | 0:00:18 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:14:19_overall_|_0:04:18_today"
+                       uid="_Cj">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:14:19 overall | 0:04:18 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:04:18_today"
+                       uid="_Ck">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:19 overall | 0:04:18 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
       </ComponentStep>
       <ComponentStep class="Label" classcount="1" classindex="0"
                      feature="6 projects | 0:05:19 overall | 0:00:18 today"
@@ -929,6 +2009,329 @@ cJ^*}HDigF.Mx~H96#!shBAG*`/%,?frl{G}KM{EudcZqUw}gwKcCA</webp>
                       state="0">javax.swing.JButton</extrafeature>
         <extrafeature name="qfs:genericclass" negate="false" regexp="false"
                       state="0">Button</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="Input" height="135" id="dialogInput"
+                modal="true" uid="_7V" width="307" x="990" y="581">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:label" negate="false" regexp="false" state="1">Input</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="TextField" classcount="1" classindex="0"
+                     height="20"
+                     id="dialogInput.textEnter_new_quota_for_time_today:"
+                     uid="_7W" width="224" x="65" y="60">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.plaf.basic.BasicOptionPaneUI$$MultiplexingTextField</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Enter new quota for time today:</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.plaf.basic.BasicOptionPaneUI$$MultiplexingTextField</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="2" classindex="0" feature="OK"
+                     height="26" id="buttonOK" uid="_7X" width="61" x="89"
+                     y="89">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">OK</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="TextField" classcount="1" classindex="0"
+                     height="20"
+                     id="dialogInput.textEnter_new_quota_for_time_overall:"
+                     uid="_7o" width="224" x="65" y="60">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.plaf.basic.BasicOptionPaneUI$$MultiplexingTextField</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">TextField</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Enter new quota for time overall:</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.plaf.basic.BasicOptionPaneUI$$MultiplexingTextField</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="10" classindex="4" height="96"
+                     id="dialogInput.panel" uid="_8q" width="291" x="8"
+                     y="31">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JOptionPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JOptionPane</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Label" classcount="2" classindex="0"
+                     feature="Enter new quota for time overall:" height="16"
+                     id="labelEnter_new_quota_for_time_overall:" uid="_94"
+                     width="224" x="65" y="41">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Label</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Enter new quota for time overall:</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Label" classcount="2" classindex="0"
+                     feature="Enter new quota for time today:" height="16"
+                     id="labelEnter_new_quota_for_time_today:" uid="_97"
+                     width="224" x="65" y="41">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Label</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Enter new quota for time today:</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JLabel</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="Notes" height="163" id="dialogNotes"
+                modal="true" uid="_9Q" width="459" x="914" y="567">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">de.dominik_geyer.jtimesched.gui.NotesDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:label" negate="false" regexp="false" state="1">Notes</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Panel" classcount="7" classindex="4" height="83"
+                     id="dialogNotes.scroll" uid="_9R" width="443" x="8"
+                     y="31">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JScrollPane</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JScrollPane</extrafeature>
+        <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Panel:ScrollPanel</extrafeature>
+        <ComponentStep class="TextArea" classcount="1" classindex="0"
+                       id="dialogNotes.text" uid="_9S">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JTextArea</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TextArea</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTextArea</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="6" classindex="4"
+                     feature="Cancel" height="26" id="buttonCancel" uid="_9k"
+                     width="73" x="307" y="119">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Cancel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="6" classindex="5" feature="OK"
+                     height="26" id="buttonOK2" uid="_9t" width="51" x="390"
+                     y="119">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">OK</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Panel" classcount="7" classindex="6" height="41"
+                     id="dialogNotes.panel" uid="_9-" width="443" x="8"
+                     y="114">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JPanel</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JPanel</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" height="42" id="dialog4" modal="true" uid="_Ds"
+                width="301" x="1292" y="728">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">de.dominik_geyer.jtimesched.gui.ColorDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Button" classcount="8" classindex="5" height="32"
+                     id="button4" uid="_Dt" width="32" x="190" y="5">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" height="42" id="dialog5" modal="true" uid="_D-"
+                width="301" x="1373" y="759">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">de.dominik_geyer.jtimesched.gui.ColorDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Panel" classcount="5" classindex="4" height="42"
+                     id="panel2" uid="_E0" width="301" x="0" y="0">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JPanel</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Panel</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JPanel</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" height="42" id="dialog6" modal="true" uid="_E9"
+                width="301" x="1276" y="615">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">de.dominik_geyer.jtimesched.gui.ColorDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Button" classcount="8" classindex="6"
+                     feature="ToolTip: choose custom color" height="32"
+                     id="buttonTipChoose_custom_color" uid="_EA" width="32"
+                     x="227" y="5">
+        <extrafeature name="imagehash" negate="false" regexp="false"
+                      state="1">-1471575199</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">color-custom</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" feature="Choose a custom color" height="388"
+                id="dialogChoose_a_custom_color" modal="true" uid="_EB"
+                width="628" x="1113" y="442">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">javax.swing.ColorChooserDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:label" negate="false" regexp="false" state="1">Choose a custom color</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.ColorChooserDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="ColorPicker" classcount="1" classindex="0"
+                     height="313"
+                     id="dialogChoose_a_custom_color.colorChooser" uid="_EC"
+                     width="612" x="8" y="31">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JColorChooser</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">ColorPicker</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JColorChooser</extrafeature>
+        <ComponentStep class="TabPanel" classcount="1" classindex="0"
+                       height="227" id="dialogChoose_a_custom_color.tabbed"
+                       uid="_ED" width="612" x="0" y="0">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JTabbedPane</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">TabPanel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTabbedPane</extrafeature>
+          <ComponentStep class="Panel" classcount="39" classindex="0"
+                         feature="Tab: Swatches" height="199"
+                         id="panelSwatches" uid="_EE" width="607" x="2"
+                         y="25">
+            <extrafeature name="qfs:class" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:genericclass" negate="false"
+                          regexp="false" state="0">Panel</extrafeature>
+            <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                          state="0">javax.swing.JPanel</extrafeature>
+            <extrafeature name="qfs:type" negate="false" regexp="false"
+                          state="0">Panel:TabPanelContent</extrafeature>
+            <ComponentStep class="Panel" classcount="6" classindex="3"
+                           height="98" id="panelSwatches.panel" uid="_EF"
+                           width="340" x="98" y="50">
+              <extrafeature name="qfs:class" negate="false" regexp="false"
+                            state="0">javax.swing.colorchooser.MainSwatchPanel</extrafeature>
+              <extrafeature name="qfs:genericclass" negate="false"
+                            regexp="false" state="0">Panel</extrafeature>
+              <extrafeature name="qfs:systemclass" negate="false"
+                            regexp="false" state="0">javax.swing.colorchooser.MainSwatchPanel</extrafeature>
+            </ComponentStep>
+          </ComponentStep>
+        </ComponentStep>
+        <ComponentStep class="Panel" classcount="41" classindex="39"
+                       feature="Preview" height="86" id="panelPreview"
+                       uid="_EU" width="612" x="0" y="227">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Panel</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JPanel</extrafeature>
+          <extrafeature name="qfs:type" negate="false" regexp="false"
+                        state="0">Panel:TitledPanel</extrafeature>
+        </ComponentStep>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="43" classindex="42"
+                     feature="Reset" height="26" id="buttonReset" uid="_EG"
+                     width="67" x="347" y="349">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">Reset</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+      <ComponentStep class="Button" classcount="43" classindex="40"
+                     feature="OK" height="26" id="buttonOK3" uid="_El"
+                     width="51" x="213" y="349">
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">OK</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" height="42" id="dialog7" modal="true" uid="_Ej"
+                width="301" x="1281" y="612">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">de.dominik_geyer.jtimesched.gui.ColorDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Button" classcount="8" classindex="6"
+                     feature="ToolTip: choose custom color" height="32"
+                     id="buttonTipChoose_custom_color2" uid="_Ek" width="32"
+                     x="227" y="5">
+        <extrafeature name="imagehash" negate="false" regexp="false"
+                      state="1">-1471575199</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">color-custom</extrafeature>
         <extrafeature name="qfs:systemclass" negate="false" regexp="false"
                       state="0">javax.swing.JButton</extrafeature>
       </ComponentStep>
