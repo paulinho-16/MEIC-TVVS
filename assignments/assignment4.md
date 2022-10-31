@@ -2,7 +2,23 @@
 
 // TODO: introdução -> explicar Model-based Testing e conceitos relacionados (state machine, transition tree, etc) + dizer coisas gerais do report (explicar QF-Test, etc)
 
+
+Model Base Testing is a black-box testing technique in which a model of a software system is used to help systematically deriving tests for that system
+
+(Falar de models em si?)
+Models are simplifications of the real system that allow testing specific properties, making it easier to fragment the tests and evaluate small individual instances of the project.
+
+The behaviour of each model was analyzed using:
+- State Machines - To display all possible states of each model, as well as the available actions that result into a change of state. 
+- Transition Trees - To display all possible paths of exucution in the system
+- Transition Tables - As an alternative tabular way to display a State Machine.
+
+Afterwards, QF-Test was used as a software tool to test the behaviour of each available path in each chosen model.
+This testing tool is able to simulate a specific chain of actions on the assignment's Graphical User Interface, as well as asserting conditions for expected outputs.
+
 // TODO: falar da config do QF_Test, metemos working directory para ele ir buscar os projetos já existentes
+
+To try out these techniques, three use cases were selected and tested following a black-box approach.
 
 ### 1) Use Case 1: Add and Delete Projects
 
