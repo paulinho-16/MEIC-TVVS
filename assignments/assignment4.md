@@ -69,7 +69,7 @@ Through the following Transition Table, it can be concluded that there are:
 
 Neste caso ->>>> sneak path pode ser dar add project em edit mode, que funciona
 
-### 2) Use Case 2: Edit project attributes
+### 2) Use Case 2: Edit Project attributes
 
 #### Description
 
@@ -127,7 +127,7 @@ Through the following Transition Table, it can be concluded that there are:
 
 // TODO: falar do sneak path deste use case e da sua implementação
 
-### 3) Use Case 3: Start and stop a project
+### 3) Use Case 3: Start and Stop Projects
 
 #### Description
 
@@ -166,6 +166,10 @@ Through the following table, it can be concluded that there are:
 // TODO: enumerar os testes derivados e falar da sua implementação no QF-Test, e também falar do outcome e explicá-lo
 
 // TODO: falar do sneak path deste use case e da sua implementação
+
+// TODO: falar que verificamos se as cells não são editáveis
+
+// TODO: falar do "delay before" do clique do pause
 
 ## ***QF-Test*** tool feedback
 
