@@ -22,15 +22,15 @@ In order to start the **QF-Test** tests from an initial state with some existing
 
 For each use case, we tested every regular path and we additionally tested three sneak paths, all from the second use case.
 
-//  TODO: falar do cleanup
+// TODO: falar do cleanup
 
-### 1) Use Case 1: Add and Delete Projects
+## 1) Use Case 1: Add and Delete Projects
 
-#### Description
+### Description
 
 One of the main functionalities of the *jTimeSched* project is to add and delete projects. Therefore, it is important to create a model for testing this crucial functionality, since the mal-functioning of these functionalities could compromise the entire application.
 
-#### *Model-based Testing*
+### *Model-based Testing*
 
 1. **State Machine**
 
@@ -65,7 +65,7 @@ Through the following *Transition Table*, it can be concluded that there are:
 
 ![Use Case 1 Transition Table](./images/transition_table1.png)
 
-#### ***QF-Test*** tests
+### ***QF-Test*** tests
 
 // TODO: enumerar os testes derivados e falar da sua implementação no QF-Test, e também falar do outcome e explicá-lo
 
@@ -73,17 +73,15 @@ Through the following *Transition Table*, it can be concluded that there are:
 
 // TODO: talvez usar como sneaky a self-transition de add, mas se o fizermos mudar texto após o diagrama da state machine
 
-// TODO: alterar diagrama para tirar a self-transition
+## 2) Use Case 2: Edit Project attributes
 
-### 2) Use Case 2: Edit Project attributes
-
-#### Description
+### Description
 
 In this project, it is essential to be able to edit the many fields of a project, namely its checked state, title, colour, date of creation, time overall and time today. Additionaly, we discovered other edition functionalities: the user can add notes to a projet and enter time quotas for both the overall and today times.
 This edition possibilities ensures more flexibility to the user, who may fix some mistakes in the times of the projects, for example. As such, we decided to test this use case, to guarantee consistency upon these edition actions.
 This section aims to test a model associated with all the possible editions.
 
-#### *Model-based Testing*
+### *Model-based Testing*
 
 1. **State Machine**
 
@@ -131,7 +129,7 @@ Through the following *Transition Table*, it can be concluded that there are:
 
 ![Use Case 2 Transition Table](./images/transition_table2.png)
 
-#### ***QF-Test*** tests
+### ***QF-Test*** tests
 
 // TODO: enumerar os testes derivados e falar da sua implementação no QF-Test, e também falar do outcome e explicá-lo
 
@@ -141,15 +139,15 @@ Through the following *Transition Table*, it can be concluded that there are:
  - de quota para checked
  - um dos cancel?
 
-### 3) Use Case 3: Start and Stop Projects
+## 3) Use Case 3: Start and Stop Projects
 
-#### Description
+### Description
 
 Finally, we must test the purpose of the entire application: the capability of counting the time spent in each of the projects.
 The extreme importance of this functionality led us to choose testing this use case, despite its model being quite trivial.
 For example, we must ensure that only a project that is not already running can be started.
 
-#### *Model-based Testing*
+### *Model-based Testing*
 
 1. **State Machine**
 
@@ -180,7 +178,7 @@ Through the following table, it can be concluded that there are:
 
 ![Use Case 3 Transition Table](./images/transition_table3.png)
 
-#### ***QF-Test*** tests
+### ***QF-Test*** tests
 
 // TODO: enumerar os testes derivados e falar da sua implementação no QF-Test, e também falar do outcome e explicá-lo
 
@@ -196,12 +194,12 @@ Through the following table, it can be concluded that there are:
 
 -----
 
-#### Group 10
+## Group 10
 
 - Hugo Guimarães, up201806490
 - Paulo Ribeiro, up201806505
 
-#### Sources
+## Sources
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-4.pdf)
 - [Model-based Testing - Guru99](https://www.guru99.com/model-based-testing-tutorial.html)
