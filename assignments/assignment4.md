@@ -22,6 +22,8 @@ In order to start the **QF-Test** tests from an initial state with some existing
 
 For each use case, we tested every regular path and we additionally tested three sneak paths, all from the second use case.
 
+//  TODO: falar do cleanup
+
 ### 1) Use Case 1: Add and Delete Projects
 
 #### Description
@@ -70,6 +72,8 @@ Through the following *Transition Table*, it can be concluded that there are:
 // TODO: falar do sneak path deste use case e da sua implementação
 
 // TODO: talvez usar como sneaky a self-transition de add, mas se o fizermos mudar texto após o diagrama da state machine
+
+// TODO: alterar diagrama para tirar a self-transition
 
 ### 2) Use Case 2: Edit Project attributes
 
@@ -134,14 +138,16 @@ Through the following *Transition Table*, it can be concluded that there are:
 // TODO: falar do sneak path deste use case e da sua implementação
 // TODO: sneak paths:
  - editar tempos num projeto a correr
- - de edit text para new quota
+ - de quota para checked
  - um dos cancel?
 
 ### 3) Use Case 3: Start and Stop Projects
 
 #### Description
 
-Finally, we must test the purpose of the entire application: the capability of counting the time spent in each of the projects. The extreme importance of this functionality led us to choose testing this use case, despite its model being quite trivial. For example, we must ensure that only a project that is not already running can be started.
+Finally, we must test the purpose of the entire application: the capability of counting the time spent in each of the projects.
+The extreme importance of this functionality led us to choose testing this use case, despite its model being quite trivial.
+For example, we must ensure that only a project that is not already running can be started.
 
 #### *Model-based Testing*
 

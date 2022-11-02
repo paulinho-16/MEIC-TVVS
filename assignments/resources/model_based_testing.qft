@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE RootStep>
 <RootStep id="_0" name="root"
-          signature="1B86177C353F9BDD6AA4368F483E6D61552E3A3E"
+          signature="6600AF1C884A880DCD5DF87150A380330E624746"
           version="6.0.3">
   <include>qfs.qft</include>
   <TestSet id="_1" name="Add and Delete Projects">
@@ -1674,6 +1674,356 @@ meyXE~!+40hA</webp>
         </BasicSequence>
       </BasicSequence>
     </TestCase>
+    <TestCase id="_G1"
+              name="Sneak Path - Can't edit times of a running project">
+      <BasicSequence id="_GY"
+                     name="Start-TryEditTimes-EditDateCreated-EditTitle">
+        <BasicSequence id="_Gx" name="Before edits assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Title&amp;5"
+                           id="_Gy">
+            <text>Go shopping</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Created&amp;5"
+                           id="_Gz">
+            <text>2022-10-31</text>
+          </CheckStringStep>
+          <CheckBooleanStep checktype="item_editable" client="$(client)"
+                            component="frameJTimeSched.table6_projects_|_0:10:46_overall_|_0:05:27_today@Time Overall&amp;5"
+                            id="_H2"/>
+          <CheckBooleanStep checktype="item_editable" client="$(client)"
+                            component="frameJTimeSched.table6_projects_|_0:10:46_overall_|_0:05:27_today@Time Today&amp;5"
+                            id="_H3"/>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today&amp;7&amp;5"
+                        event="MOUSE_MPRC" id="_GZ" modifiers="16"/>
+        <BasicSequence id="_Gq" name="After Start assert">
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:26_overall_|_0:00:07_today&amp;7&amp;5"
+                          id="_Gr">
+            <ImageNode height="21" name="checkimage" width="21">
+              <webp size="618">UaRzK*EAv(*wpBQPT?37:AAAxXCtCAfdRHVxiOJ$JFDt`'CnT#b_vN*EY9O=tzO|%"1\nO2{22Z.tR\|O(
+oZx(0mctk0+VB,d=JQ+^auVR4Fnsi_8FFRG?3YoI{!\A_IPPXt!d(L6GGS*0JAOtAARfYmbROOO2Ct:C
+T:M/IivfLmHAnZs$Z*}u383=FzdD}1'B1a'Egwa/a@Ss$k=63(DPiCITPI/'`RO2Mz^(Wk=f@$VGq-|M
+@bYX=i=My|%t^d[jAZdX0IR)(y(ZJScwqUNR)8+6ZS@Ru6,i*t7jh{[BI^VewG]FoEL/rzN~=CWHlO2X
+@rq|1ht-M().CKEF9Y]Bfv)@gnofV3Px33no]-NetDL\EUWh#(7]4~}0CP,dufI7QcMv2ERh')bLvZ{'
+o{]c}Bk:B4NGp1YLE"%I(.kh$A7y#z/0('xZW!D+lRaQu(a"J=Oki.%p\:SsnM;=%#O=Wcb$Ub{V:N,@
+/'TY[~TA'9n.Xe8d\@-hs=+%y@Vk5qo6~U}!"M@ZB|/;j\?!Sx'oUYBWBhPNd2A)*^9N-;cTc~4dGbJ_
+N$]4jJeNAZV0Bh+tGojHYz-sYxa%/cgj;`YBm9:$U[eO))v0wLYAL7=g^r*+$4p'xz:t-tO{?aD|sI'n
+,oV#}QFF77sX?jU\m#\j_LHDf4O%Na2.2m+P#5W.pl=8[Pu8jsPCCnAbhze,]4x@XxiW9Sa6K\XJS\VZ
+P;~|Rcy=mQs~H`?hH+Qa}|SgL4@:^bBXLcCAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:22_overall_|_0:00:03_today@Time Today&amp;5"
+                        event="MOUSE_DBLCLK" id="_Ga" modifiers="16"/>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:24_overall_|_0:00:05_today@Time Overall&amp;5"
+                        event="MOUSE_DBLCLK" id="_Gb" modifiers="16"/>
+        <BasicSequence id="_Gu" name="Can't edit times assert">
+          <CheckBooleanStep checktype="item_editable" client="$(client)"
+                            component="frameJTimeSched.table6_projects_|_0:06:13_overall_|_0:00:54_today@Time Overall&amp;5"
+                            id="_Gv" state="false"/>
+          <CheckBooleanStep checktype="item_editable" client="$(client)"
+                            component="frameJTimeSched.table6_projects_|_0:06:18_overall_|_0:00:59_today@Time Today&amp;5"
+                            id="_Gw" state="false"/>
+        </BasicSequence>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:30_overall_|_0:00:11_today@Created&amp;5"
+                        event="MOUSE_DBLCLK" id="_Gc" modifiers="16"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_MOVED"
+                        id="_Gd" modifiers="0" x="1" y="10"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_PRESSED"
+                        id="_Ge" modifiers="16" x="1" y="10"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:32_overall_|_0:00:13_today@Time Overall&amp;5"
+                        event="MOUSE_DRAGGED" id="_Gf" modifiers="16"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:32_overall_|_0:00:13_today@Time Overall&amp;5"
+                        event="MOUSE_RELEASED" id="_Gg" modifiers="16"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="frameJTimeSched.text" id="_Gh">
+          <text>2022-10-30</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="frameJTimeSched.text"
+                      event="KEY_PTR" id="_Gi" keychar="10" keycode="10"
+                      modifiers="0"/>
+        <MouseEventStep clicks="2" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:40_overall_|_0:00:21_today@Title&amp;5"
+                        event="MOUSE_DBLCLK" id="_Gj" modifiers="16"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_MOVED"
+                        id="_Gk" modifiers="0" x="82" y="10"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.text" event="MOUSE_PRESSED"
+                        id="_Gl" modifiers="16" x="82" y="10"/>
+        <MouseEventStep clicks="0" client="$(client)"
+                        component="frameJTimeSched" event="MOUSE_DRAGGED"
+                        id="_Gm" modifiers="16" x="-162" y="158"/>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched" event="MOUSE_RELEASED"
+                        id="_Gn" modifiers="16" x="-162" y="158"/>
+        <TextInputStep clear="true" client="$(client)"
+                       component="frameJTimeSched.text" id="_Go">
+          <text>Go shopping (urgent)</text>
+        </TextInputStep>
+        <KeyEventStep client="$(client)" component="frameJTimeSched.text"
+                      event="KEY_PTR" id="_Gp" keychar="10" keycode="10"
+                      modifiers="0"/>
+        <BasicSequence id="_H4" name="After edits assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:12:19_overall_|_0:02:18_today@Title&amp;5"
+                           id="_H5">
+            <text>Go shopping (urgent)</text>
+          </CheckStringStep>
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:12:19_overall_|_0:02:18_today@Created&amp;5"
+                           id="_H6">
+            <text>2022-10-30</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_H9" name="Sneak Path - Checked while editing quota">
+      <BasicSequence id="_HA" name="NewQuota-Checked">
+        <BasicSequence id="_HL" name="Before checked assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today&amp;1&amp;5"
+                           id="_HN">
+            <text>false</text>
+          </CheckStringStep>
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today&amp;1&amp;5"
+                          id="_HY">
+            <ImageNode height="21" name="checkimage" width="26">
+              <webp size="140">UaRzADBAv(*wpBQPT?K]OAAA9zCtCAICX/0mc0I`"';p7X9\:Ec`E5~;'Q3!}?92mnJW5yu(EAu7'2j2s6
+y^]OUF7"Olb$1g-5THlXnZnO:u'y`|5^b+L'1f)%=v*~p"?f1aC]qdio^Moa%mMyWjwQ3+@RryB[mfEc
+f`b08cqBAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today@Time Today&amp;5"
+                        event="MOUSE_MPRC" id="_HB" modifiers="4"
+                        popup="true"/>
+        <BasicSequence id="_HD" name="After Today Quota assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="dialogInput.panel" id="_HE"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="dialogInput.panel" id="_HF"/>
+          <CheckStringStep client="$(client)"
+                           component="labelEnter_new_quota_for_time_today:"
+                           id="_HG">
+            <text>Enter new quota for time today:</text>
+          </CheckStringStep>
+          <CheckStringStep client="$(client)"
+                           component="dialogInput.textEnter_new_quota_for_time_today:"
+                           id="_HH">
+            <text>0:00:00</text>
+          </CheckStringStep>
+          <CheckBooleanStep checktype="editable" client="$(client)"
+                            component="dialogInput.textEnter_new_quota_for_time_today:"
+                            id="_HI"/>
+          <CheckBooleanStep checktype="focused" client="$(client)"
+                            component="dialogInput.textEnter_new_quota_for_time_today:"
+                            id="_HJ"/>
+          <CheckImageStep client="$(client)" component="dialogInput.panel"
+                          id="_HK">
+            <ImageNode height="96" name="checkimage" width="291">
+              <webp size="2030">UaRz_,PAv(*wpBQPT?2O*CAA0Y^(XA|Hr=B"_J"|z@4cQ%ulAhbm'#O=0m.pX$U#F.P|^}_a}+[}A,f:X2
+(Z`az=M2`OL$]%O=_.]XBrT_xW?9SkXL:V,beMoz#Z.eD8wV#jv~`?{.tNt_M6:vfT?5_c.09c)V,(c/
+l~0\v=B"bUQys:/`ANl%c[i_b\|6zd\fV|7K~b47~xANi")?4+vpAtU"PkM#vf\zTD"LRogE6RZ;Xn9Z
+,(_tTirP,k9(6wdSB,M~9L*$Ozoc2IH;Y#uWzcyqeCsuj-u'$Xy;|};:zs(uer@+V{ZnK|^snMji%3dd
+Bf]9{`5YvFuWq7'?JgZz4(`YPjG)me6![P2Zskt89rNlqBCY'_(E#TscE'^wxK/djFBteT:NWY+3`FP3
+b4?vzL_)'B/32YEB8uv*2{ti(ZB#=5eMaDhM/B9N1FgQ[9.WCUS4)O/.WYZN={b2Z)7nnL_v3/w85li6
+{EXPQvSM\S1Yj)KH3fPLzTUq@h[I1ktN2GGwm!Aw3/dm]:OKOG\iADPpzn~Iwb.hcU*y;v`MB.3A"U5F
+[W`@\V_ho!@W_!$N5^Khg4)hg6!Bv(EHgJ"CAM0(=DIY5tm)'tGGn2yvjVk4Vw/uEsFDZB9hu/0M1d6y
+{)w9avT6ct:A^Wqy\tTdQtq]vj(ZB#[W^CYLZXoRo_LCxCn$"_kWiuexF7B:i{-,F{f_+ji)7"AYDAiG
+lLZlv+vxtIt_ER;h`FwAln:a8F},sTIuzPf++6uW|L`/oBg@rzu6MDEAdx}YMwfTI}D?9=|pb1D_`}Fs
+_;6gtXfV~4`F~44!oaA^\eo}1u4XPDBNVF$$:$o1~N54)F@Tf(!TRc#M%M+z~RqD91CACyl[=/6*LP?X
+{q|k-|j'Gpm]a(ACraBd~NuP"*Lv#Zf;DL=/..v(6M8cM8IA[N@Jn%,jDY7nO01L316t=vscEEuwh@IM
+SYv`Du0j0ABZlJ+'j?s85QN`JHa+#w}y(o[}Cb,x.0g)T.i:d|(BWZ\ya%Ht^)gF3;#WmZk^GWk_l6H]
+zbBtiv:*YFwU7WC{\(?{(X_XtZquexYkv/5R%{%/*PH"LD%MH?r]10@m^_W)oZ1a}e$Bc_Ff!dzMCSc[
+z;AY#wL$_))km)1(m*wonGl$EWfr%$C0S/y))'%{]TP,DsM]n~Gc1R4;hm4#2_z!\zG#z3NbdBMT8%?)
+zdex/8"q?U}le\v:UDmxk]L9k{X#;v]QA*AC:L*q9,xR;\F.R|NeKk{IZL5(`FeHxb'$CyWBlF1`k%yD
+fnB?}+%mzFvq~cBpni/N5(`F5GHZc`^S]0'?ai[mZ}N+si{nD-p{H\piTv=zzDKKCgc]sHmNlS?oU!lc
+X_}^{DJIo{n\bG=M}4(,X!94$T,Z?+LUxJDJpl6,)Hio{g~^-="~zWVt@L8O,3*?_BJ-C!o(r@zM(HEK
+xMN'LLH`8uvGsc@@WOVz7!Z1U18Pu34~R|K$Z:`DWOooGm3\s:]*mxTD.r.g?o,BFFBQ6R17t(.C^%b2
+0G]S#U{~`5/^OFEP@m@Z3]GUGd;*A#A0M-jdGNV!t+tO!O}dT`p$/r^tPoM6ph/5A0zd$7xzi3W`nG0f
+^%faYjyeJdy6-*^~c@6d.q"RSz@T:.{,g.:d`AulWZ#c/xl~(ftT:?1JOiSKL'*YSZsl(B((z\kNbIR\
+]me\U,6d+j=V!lCrSqZ(cr5)o._/prr9_/z3$Y1$WyK*#jA..`c4csN3V`N.y{p%7.]xV7@"0{_,kvNw
+|BgVr[*GZKLYVuPn.RCQy)-:v\dj}p~;Y7m.j55t`p'4[a:8f*YjEgm}Yk'G9!OdJ6|2t4diy:fy,+.d
+f$IO8U`]MLb_p_!Y$THW"t]7]Xjjc^"hzkmv3-9,d%cGbx9_qIx+C^6ZVvRS.ur'zF72y"O[/8SiF$}S
+Ly!xaIZ`17zxG#,M~d5GC!wm}L-FtBbKfqIz\ghKq;U78S3aMMXo%IE94m#F-tvDD1K$@v?("XC=64(+
+.(H0mQbXACHO,;If^!?+!.2!%e.fw]l#*Y4,\'F=7z=#WdMYo]#x~c.YC9zt_:b2IICcA}aK^!N/0kc"
+:kydUmsi'QXL?ZxW]%xzTVL+|3:M~n)?P+YVhOR"63F_+1MWmiWH_4~N.u8l0VXxeXh,;~7FiJ[Nt\88
+ZbdxLSa-l3oNNcs9[5myL2(7a.fzH=C1i[K$\.S\OSFg;KgBVrnI?,1z1{Bx.B1O]kmJ/_0Mk['%QfAi
+@Y]lwE-e#U,]XL)SE_V9IR-,1~9HGVY'RgRi1;NsgP6ku-H7(e{cq}"l7ZYT$c0ShyUm[|T|*`x_Sil]
+K$VzVh,V!l)xQ022jrv-,.areTkQ9'DJb8cB^dn_A?b~D|!pJwNa#:'Vi[o~1}O;bgiM8O/c*{e'$cmm
+IdP5Vy~bu_ybZ0"'~zA0-A$7xzBh]0AdUc`7@Mc[(@WH]+t0hjKp.rlXIoM6k$Z-^V$LMU0^).:=n?KU
+S~8xLx?s|V5AA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <ComponentWaiter client="$(client)" component="dialogInput" id="_HC"/>
+        <TryStep id="_HU">
+          <MouseEventStep clicks="1" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today&amp;1&amp;5"
+                          event="MOUSE_MPRC" id="_HT" modifiers="16"/>
+          <CatchSequence exception="TestException" id="_HV" maxerror="0"/>
+        </TryStep>
+        <BasicSequence id="_HP" name="After checked assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today&amp;1&amp;5"
+                           id="_HQ">
+            <text>false</text>
+          </CheckStringStep>
+          <CheckImageStep checktype="item_image" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today&amp;1&amp;5"
+                          id="_HX">
+            <ImageNode height="21" name="checkimage" width="26">
+              <webp size="140">UaRzADBAv(*wpBQPT?K]OAAA9zCtCAICX/0mc0I`"';p7X9\:Ec`E5~;'Q3!}?92mnJW5yu(EAu7'2j2s6
+y^]OUF7"Olb$1g-5THlXnZnO:u'y`|5^b+L'1f)%=v*~p"?f1aC]qdio^Moa%mMyWjwQ3+@RryB[mfEc
+f`b08cqBAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
+    <TestCase id="_HZ"
+              name="Sneak Path - Can't edit title while editing colour">
+      <BasicSequence id="_Hc" name="EditColour-CustomColour-EditText">
+        <BasicSequence id="_Hh" name="Before colour edit assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today@Title&amp;5"
+                           id="_I1">
+            <text>Go shopping</text>
+          </CheckStringStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today&amp;3&amp;5"
+                        event="MOUSE_MPRC" id="_Hd" modifiers="16"/>
+        <ComponentWaiter client="$(client)" component="dialog8" id="_He"/>
+        <BasicSequence id="_Hj" name="After colour panel assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panel2" id="_Hk"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panel2" id="_Hl"/>
+          <CheckImageStep client="$(client)" component="panel2" id="_Hm">
+            <ImageNode height="42" name="checkimage" width="301">
+              <webp size="1028">UaRzk|HAv(*wpBQPT?K]iBAAHv^WKA+K#!O=%#ZKULYl/J1^1'Q=0mb$O={ge|`ngdVsuJs#_k_c%h8w)O
+$#ZBOBVRAAOOwmb$PmRS^gWjaTJ,`uafdG441^)m~RZt]y]FGi]y^FnT0p~[52Z8zkj$pMMH1^oO!;un
+(7vF|3B"Kv-BMv_ljGmW[?v'r~}I]H2}',Hj3?w1^6~s}*VVR2!)VVzUgvf'bvBO~h/;=up^Vt/+`Rx]
+-/Zmo'){iYAeV0vaLUIl3CqH0q}X]=fK*1lp01oPA%EDl@IYxP4wDwAc%_Uv5-1pQH$803R7DNlv!3nz
+NEt/ggVWTtn5d8;,|?tK}fDh.(tYRN{E$R88kqte]as\VFM?]'2QN}Qz/podc!;G,YL{pJ3k2'Jt/cD)
+M6S]8JX5(jS$}cca-zT:B-:x/zD8KP(tx/!0+HAA3g?B$G5iyoqIQe{'i4V8E:X8fY'`2I=ecKb.dX5Y
+?i|OuPS-IgO9(xX[Bv/YtH9dOp_w!Z'86gt?v$wqHC}10R7VYd9J)$;fWgW:e:6LQ(qIe=I`wq27jN`I
+lBm[rw:jTB#V:bt*zLYGM^60HYMi_~i(E1v2.@By-cJ]kadY,5Mz)`%N:|x!XM56uRm.`+w={pBS23]m
+(o}Uu%:m$4Rv;qI5fi%=Y7q]ZMjz?he~:@@*PERu+)QHAArCj]vVz%r@Dp:bzSmo=J\kiP2,{}Wdqda,
++!^qi_qN3;ivL0!$xGH3M0%T1a1J.-knq{8l]C*67Rauk;RO6T!]6g!C3mfg5E;k~,tyYB:IOIUp|aiJ
+F:31pcsEcf{HrN`aP-GW)!tX@MjPeH}{}B#T_Y3+Msfc,qS)"ECa7M@{0bbQ6}UJj.]t(@G?qRrXowN;
++?%|;$z:rxX:5^1C"~1FUtN%~^UgUH^ABtBm+:|!"BxS-\U[mBP2_YkODO^-8_AT6P|1tQ+:eyUcjmDY
+R)7cYJ'FD\KZdnicxd=-Vy1aN@4=}-%0XOej!e,wt--s[5Y2eCMy?II(jewhFKF2xP0K!Cb.K:xri'M(
+D@62l$kJVA6*w_x^3o}J|y']%Jll)6#~~`"zRn2vhT4u_?k\.B|}9(QzOn`!eW0Bl0{PWAp1|ZB9.[Q^
+^q?3WPg(5}i1(k39{jiUnopoW|~Dw{::qxc3}Y95%D,rHGb|+ghbNmL\NIo+E"$pc@nRr:y{=UYq*:B2
+9H6%Bb76,\Kx'o(V#GG7mTntx5P{vQ?50|3%@Xos`.Ch6]Kym73u/3U]8*E/AA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <MouseEventStep clicks="1" client="$(client)"
+                        component="buttonTipChoose_custom_color3"
+                        event="MOUSE_MPRC" id="_Hf" modifiers="16"/>
+        <ComponentWaiter client="$(client)"
+                         component="dialogChoose_a_custom_color" id="_Hg"/>
+        <BasicSequence id="_Hn" name="After custom colour panel assert">
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panelSwatches" id="_Ho"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panelSwatches" id="_Hp"/>
+          <CheckImageStep client="$(client)" component="panelSwatches"
+                          id="_Hq">
+            <ImageNode height="199" name="checkimage" width="607">
+              <webp size="984">UaRzp4HAv(*wpBQPT?JldBAA1*\txAGK4kb$*)p-2^.tB*c4%G:1f|sOcC9Grl.pcT`2rb(N@zS]_osqQ;
+bf"#%F`c\SIRqLqL?MLYtZxzD2~1/1/1=1/~"*pMozs4,KZ2W#T}+hoz62jp/6.-P$O=KkC=n1O=eA0m
+8lgqZq_{Sx.w*~3+O=WGBSghG-kB,[Ei5yrW^~1~b}\~"s#$ku^8nVV`{:yz`)|"Bx}+F\XOP^0UoDCI
+p=fK-u3}Z]JA9)SG-rL.|@vIxV`a\)(Kcxq-T"iag7_J7GD5w[x;(q~6!H*/bDxe\Bt~)UBK;*{7AB76
+r?ptPn-Wljyxw8;Hee`DPP.B20ekOiH$}4qtr3=v67SzUkv_`%#Qpb(WDg7i]IPRxklX!8}(m`sD{yy?
+!bX*ZQgT8CQacJ\6jnSg:6qw*x@`yL4egMVJdLO?fGmdXLZLgu(#SCDCuL9)-TOYYH6Y]-Bf$L'UI*Sa
+1%cL/57DwfWkyWBZ,y-2?fzSvCV=N=+PRgzjR74,[Z.O|l]P_sMG!OF6(C}CR01U:.+S[q4iqt^b-WVT
+iL4%Aq[jIE~RFCu\CBY^tt5p-WGgB_w8EI1p7D;7=vGP?T|"E8A'"9;B7lv_g}gYY}#QJc=5!:|Qp{qO
+!#ptk82!3cbf!P^,VITv8%)ujq#y.r#yts#yE|hL09iLzQiLzQhL:bUr[jDEPP\BkK|"o$r?GI{2ABep
+iLk'o{Wq@BG_-WC'[LBij_x\@X.va`pty'ptCe)W.6iLb}hL.Q/FJCL`*W*~\Ce(U)?Q0_'D8}vtI4!F
+75U)~"W-ut6{-W\!hLDoiL$O@$\BX[-Wf3=v~6r?#OiqCE33rtSS!FP$s+Bkj_x\B0,vf2-W,9guw8NH
+}@^D'iFCM-\C,e3L'D=`stD|%;-(TIaq~AxQhL-OlxGI|j9DPP?Bx^n9RiSnQj=mQj`mQjl'g+P9g+x3
+g+E'0yg9s+B\2r6prcpiqe/gj)UYQjH#%tvt*[\CpQd/-%qDP#TX2Df#g++mQjo62!u]?Nqm(W46hLBe
+#yj2g+om3]r4Lov\2r6pANpieC#y*cYN;i.BRjnu;Hm+f32B!c3L(WwiiL16+Y]@9Dso;BWU$%/.DFDC
+|sX.FLKV!:M5+*;=-BzD|X7b@"]"I\CoxIM9z}`~k~k.G%Y}$9}^T@cxs:ekK2Vw-E^~i_d+VL|s/~O~
+1{)B,FAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+          <CheckBooleanStep checktype="visible" client="$(client)"
+                            component="panelPreview" id="_Hr"/>
+          <CheckBooleanStep checktype="enabled" client="$(client)"
+                            component="panelPreview" id="_Hs"/>
+          <CheckImageStep client="$(client)" component="panelPreview"
+                          id="_Ht">
+            <ImageNode height="86" name="checkimage" width="612">
+              <webp size="2146">UaRzs#QAv(*wpBQPT?37^CAA;jfXVA+KX50m-M)fb$kPb$O=0mb$AV0mb$O=0m:RRzv]iEGUH9Oj3Nh-wm
+JukyUf(hy;gNA\[#s7h|fW""B_"k$gE^EB4`URSk;Cwm3c)=S5_~,aww6k@J?TOCm/]X!MRo1NZGGC3%
+`wR-pGT*%jP"%lAT@2q+_9.xtNEHi=e4MFw-OA[VemMALy]JLtIu1CAB:ETr)M7#d.xABwnyteI!?'KA
+?N@Ajn"h_tbK5A(lsc{WTBhh3h2W%=~;T!9LtA3$_p8F$;_9_hUB#nT3Dt=!D)ZxM}X4XirLpJT3NAa`
+CAFCF~LAmKn'iQ2(KBgW"y3V-60KITPrXbtJKo0K+JBt4lDNvnS0SVUR.W#?BtJEAM{\3bABlb*(F2rX
+|LUrG'r-w%xWkJ#;*,HKpC--;;mF\}AA!mS/mB'EXLB(!rI73}{f(_C,L){y$B|3M\^|{yQ/6#=L"(~|
+OwjL+c#T0WaOoo3DTQBmG\jn^L7A%9dkAA[/UZPB=\MV'vcCP,_ULbIv"ASLo6~;DU-.T+s3}lVF,G~D
+QHWX/urC1f6O"8,5#ya,!?_FUJRau-,+R`=w6QN^y,_.w9atNWsY"Al8l%rZ~1S#1xiO!gmqQyXu1Aww
+~B.eAV4na4QYyhPj7@?'VC2bO-g=eY#A-a6svTT{S:Ss4XG|/-J2W2eQ*h|pGrFc7[\XOJux$+7ujis:
+|!_[ey2Y3R@+[*qZ2;pc/YB5(f_k-p,QjCQ`8IBAX(O],P6c:r0_gAIw=8?s:'xU[He3b:iUWAyu9p@G
+5?YR#jp%M1pes$u]OwZ.0KSx[peRr?E'qWG4J6YtblR@p1|9hq9@@QxkSH`,Q^Z$Ehn2%,]U7VLsEAsB
+qg~e!!C"v(-OJvD_ULQv5-IWQO1E7sF@(6F5t3T@^LN3ZA^TiL}BGO`1Gnm.OjOtNG$`7'L|e3HN'B-"
+#ix(t-J20)Ed_X{6.E'Tkzd6$1-|XAJRiL*@Xac7DB'+4F'Wr~Z~b0peeCpd?jFH`,[|x,qy;\GD+'(6
+l~)yhW@^WCvD}B=fQ^]*mod0GwM;;FUJSqFc;%E7#j5$JHm9NS(6;/AUCMNqji.Ha7tU5~mq)Qz=e*a_
+(~p}-Oa)AIC2]/fZPU%+2^]bBYgY]D3ZT|fs@:JSyNpv^*[Gm/cx{,c_u^sBN9g9uM}`jGRz-*@-lxu=
+IBh$3SaMut8}+Q3^,`64u4\f/=Z=o'~dKKY~Kk:EbhuSxAuFoN\=}afL\+;guk,@k-Nu^RajjC-^9O~o
+zPohNW?0sPFd3X7Pa-LdeV5m?q59?e}?#{\TtnGX#f2$8B~Al85Q1v+_460KRV:;jaP}WCqpbJzCg#j#
+^h\Uqj?9|@__[J/\:fb{M_DM!UG-DS9eUm`.@h`*v@om|}bP#o{*jz"|dfP9BOtjO+8Ry73alWFH_DxL
+IF/J}{f63]E7nS2sGu)h{6v`/yPoZ]^5sC`9abH===])nUa}~wTy3smpiymi-I,8vs\EC,o?RhVu5*Z3
+aW1!}]?o_~RU{*"rxg(v.iysLs\fEhZZi#dJ,!=/%;w7CRd|Tdo5%.kbBG+[%jbIw$$l\gQN*kO[bVm?
+@.{RoR!D.zDq9lrhxQ'T7!-*%,-{1`SVHZzP^,~LVr$#/e'H0Hk|^p1l:Jz$+e|UEO)kcfHQTucV.#(*
+]G~0!l/D\)IzU`ck^!AVK/1bvP-:*P)qGG2jPxD*FgNq;Q/K9+_}^fT@906#3T_puwW%tN@FaVfH6Nb}
+6#6NVrMi!5O}62F$^%ga,]5$8;[xG2ePf}h?MOu[%kdy9'QYu$C[-R%.jv-^3QF(87H(E'k[A(SCSxeU
+3$i)W%}K6xjfmO'p*-OkzX0~E)V:89y7?]GsXMe.tPj~"=F.h#6TnkZheo];JR}qxN?nq(dqM[A(]-}Z
+Ds[NrjpXqTc{+.x4;kH,fZOURfnTFY"tlzOp|mV-_gChxy)J%GMrD:%5#EDe_k3qH:?-Yr}_UYE-nxv'
+B8/?nLUFJ/0tSqCSi+g+@BopL,j-uHd@+{+iW#ISMag^9Qc#=/w}V.JVoH0Ov]Q{POp)eVdsE?Vw}.Q=
+;^NO.,wsCqT{-oSs\bG|^$J2CyeQ;uw;X]jW^ygFIiWaPNbF\*v?75UViI/$pN8JNeu$5vpSAGTG_D@8
+o{yjH?v7f5DdvhcrbkKxvxpu`m.[=8RuT@Z3Jxm9@kRK52|DNgV{=V."hMQK-?%?O,~^2B+P//0Z=0HB
++^QdZ*#aD{-4:Y#Pr#LNLK!3h0#0.|iYKZr[vy"_|71ENNW5h/}K/=D4lO!}T;Kcj2!_[e5K!w~xfUs.
+u?H2Cp})g+yO{d'R6|cgZ*capka.0~a+87\7lXbeJEx~Xfv1GDbq!OAW'!o(S4Q3Dfn7InN,H6#%j0`v
+hWR{tW\Y^6k.{:C(Cn9_BcxeMa8vPMH}#olL^HD(J|,v*vt-h`:GU%d=mzU8PipSjl8w2slfP*=hTOug
+9eRbN@CoF*W_=,%rD]o=tu"|1|fd:gU$}z_i"(j;M0#yeon6/]fa-ov/#H.M#S1~[:qP{Npv/v^MQG2I
+p2Ta%j\Ui+JsN01q)Q?Za='e!`r7k\X`UYmM=H_cv!k01SxjOJUvE-Ogk.7-^M]ZpjlP.Y:HAAA</webp>
+            </ImageNode>
+          </CheckImageStep>
+        </BasicSequence>
+        <TryStep id="_Hx">
+          <MouseEventStep clicks="2" client="$(client)"
+                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today@Title&amp;5"
+                          event="MOUSE_DBLCLK" id="_Hw" modifiers="16"/>
+          <CatchSequence exception="TestException" id="_Hy" maxerror="0"/>
+        </TryStep>
+        <BasicSequence id="_Hz" name="After edit text assert">
+          <CheckStringStep checktype="item" client="$(client)"
+                           component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today@Title&amp;5"
+                           id="_H-">
+            <text>Go shopping</text>
+          </CheckStringStep>
+        </BasicSequence>
+      </BasicSequence>
+    </TestCase>
     <CleanupSequence id="_7R" name="Teardown">
       <WindowEventStep client="$(client)" component="frameJTimeSched"
                        event="WINDOW_CLOSING" id="_7S"/>
@@ -2081,6 +2431,222 @@ cJ^*}HDigF.Mx~H96#!shBAG*`/%,?frl{G}KM{EudcZqUw}gwKcCA</webp>
                         state="0">Table</extrafeature>
           <extrafeature name="qfs:label" negate="false" regexp="false"
                         state="1">6 projects | 0:05:48 overall | 0:00:47 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:00_today"
+                       uid="_G2">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:19 overall | 0:00:00 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:22_overall_|_0:00:03_today"
+                       uid="_G3">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:22 overall | 0:00:03 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:26_overall_|_0:00:07_today"
+                       uid="_G4">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:26 overall | 0:00:07 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:27_overall_|_0:00:08_today"
+                       uid="_G5">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:27 overall | 0:00:08 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:28_overall_|_0:00:09_today"
+                       uid="_G6">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:28 overall | 0:00:09 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:31_overall_|_0:00:12_today"
+                       uid="_G7">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:31 overall | 0:00:12 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:35_overall_|_0:00:16_today"
+                       uid="_G8">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:35 overall | 0:00:16 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:41_overall_|_0:00:22_today"
+                       uid="_G9">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:41 overall | 0:00:22 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:58_overall_|_0:00:39_today"
+                       uid="_GA">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:58 overall | 0:00:39 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:24_overall_|_0:00:05_today"
+                       uid="_GS">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:24 overall | 0:00:05 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:30_overall_|_0:00:11_today"
+                       uid="_GT">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:30 overall | 0:00:11 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:32_overall_|_0:00:13_today"
+                       uid="_GU">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:32 overall | 0:00:13 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:39_overall_|_0:00:20_today"
+                       uid="_GV">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:39 overall | 0:00:20 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:40_overall_|_0:00:21_today"
+                       uid="_GW">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:40 overall | 0:00:21 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:05:48_overall_|_0:00:29_today"
+                       uid="_GX">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:05:48 overall | 0:00:29 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:06:13_overall_|_0:00:54_today"
+                       uid="_Gs">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:06:13 overall | 0:00:54 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:06:18_overall_|_0:00:59_today"
+                       uid="_Gt">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:06:18 overall | 0:00:59 today</extrafeature>
+          <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                        state="0">javax.swing.JTable</extrafeature>
+        </ComponentStep>
+        <ComponentStep class="Table" classcount="1" classindex="0"
+                       id="frameJTimeSched.table6_projects_|_0:10:46_overall_|_0:05:27_today"
+                       uid="_H0">
+          <extrafeature name="qfs:class" negate="false" regexp="false"
+                        state="0">de.dominik_geyer.jtimesched.gui.table.ProjectTable</extrafeature>
+          <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                        state="0">Table</extrafeature>
+          <extrafeature name="qfs:label" negate="false" regexp="false"
+                        state="1">6 projects | 0:10:46 overall | 0:05:27 today</extrafeature>
           <extrafeature name="qfs:systemclass" negate="false" regexp="false"
                         state="0">javax.swing.JTable</extrafeature>
         </ComponentStep>
@@ -2501,6 +3067,30 @@ cJ^*}HDigF.Mx~H96#!shBAG*`/%,?frl{G}KM{EudcZqUw}gwKcCA</webp>
       <ComponentStep class="Button" classcount="8" classindex="6"
                      feature="ToolTip: choose custom color" height="32"
                      id="buttonTipChoose_custom_color2" uid="_Ek" width="32"
+                     x="227" y="5">
+        <extrafeature name="imagehash" negate="false" regexp="false"
+                      state="1">-1471575199</extrafeature>
+        <extrafeature name="qfs:class" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+        <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                      state="0">Button</extrafeature>
+        <extrafeature name="qfs:label" negate="false" regexp="false"
+                      state="1">color-custom</extrafeature>
+        <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                      state="0">javax.swing.JButton</extrafeature>
+      </ComponentStep>
+    </WindowStep>
+    <WindowStep class="Dialog" height="42" id="dialog8" modal="true" uid="_Ha"
+                width="301" x="1132" y="532">
+      <extrafeature name="qfs:class" negate="false" regexp="false" state="0">de.dominik_geyer.jtimesched.gui.ColorDialog</extrafeature>
+      <extrafeature name="qfs:genericclass" negate="false" regexp="false"
+                    state="0">Dialog</extrafeature>
+      <extrafeature name="qfs:systemclass" negate="false" regexp="false"
+                    state="0">javax.swing.JDialog</extrafeature>
+      <extrafeature name="qfs:type" negate="false" regexp="false" state="0">Window:Dialog</extrafeature>
+      <ComponentStep class="Button" classcount="8" classindex="6"
+                     feature="ToolTip: choose custom color" height="32"
+                     id="buttonTipChoose_custom_color3" uid="_Hb" width="32"
                      x="227" y="5">
         <extrafeature name="imagehash" negate="false" regexp="false"
                       state="1">-1471575199</extrafeature>
