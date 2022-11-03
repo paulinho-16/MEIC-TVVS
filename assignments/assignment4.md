@@ -165,7 +165,7 @@ The following figure contains a *Transition Tree* which contains *seven* regular
 
 Through the following *Transition Table*, it can be concluded that there are:
 - 16 normal paths
-- 68 sneaky paths (we test three of them which we consider relevant in our context)
+- 68 sneaky paths (we tested three of them which we consider relevant in our context)
 
 ![Use Case 2 Transition Table](./images/transition_table2.png)
 
