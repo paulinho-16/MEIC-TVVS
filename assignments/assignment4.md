@@ -1,24 +1,24 @@
 # Assignment 4 - Model-based Testing (Black-box Testing)
 
-*Model-based Testing* is a black-box testing technique where the run time behaviour of the software under test is checked against predictions made by a model, which is a description of a system's behavior. The model can then help systematically deriving tests for that system.
+*Model-based Testing* is a black-box testing technique where the run time behaviour of the software under test is checked against predictions made by a model, which is a description of a system's behaviour. The model can then help systematically deriving tests for that system.
 
 To try out this technique, we thought of three different use cases of the *jTimeSched* project.
 For each one, we present the reason we decided to test it and its purpose.
 Afterwards, we apply *Model-based Testing*, by presenting their:
-- *State Machine*: to display all possible states of the system, as well as the available actions that result into a change of state.
+- *State Machine*: to display all possible states of the system, as well as the available actions that result in a change of state.
 - *Transition Tree*: to display all possible paths of execution in the system
-- *Transition Table*: an alternative tabular way to display a State Machine, which allows a better visualization of the sneaky paths.
+- *Transition Table*: an alternative tabular way to display a State Machine, which allows better visualization of the sneaky paths.
 
 After these steps, we can derive the tests based on the existing paths and their expected behaviour. Based on the transition tree of each use case, we derive the regular paths to be tested, where each test case corresponds to a path from the root of the tree to one of the leaves.
-Besides this, we can also test the sneak paths, which are related to the unspecified behaviour, as we need to evaluate how the system behaves in unexpected scenarios.
+Besides this, we can also test the sneak paths, which are related to unspecified behaviour, as we need to evaluate how the system behaves in unexpected scenarios.
 
-After these steps, **QF-Test** was used as a software tool to test the behaviour of each available path the system.
-This testing tool is able to simulate a specific chain of actions on the assignment's Graphical User Interface, as well as asserting conditions for expected outputs.
+After these steps, **QF-Test** was used as a software tool to test the behaviour of each available path in the system.
+This testing tool can simulate a specific chain of actions on the assignment's Graphical User Interface, as well as asserting conditions for expected outputs.
 
 Even though the [documentation](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/assignments/jtimesched-javadoc/index.html) of the project at hand is non-existent, limited only to the signature of the functions, we were fully capable of following a black-box approach.
 To develop the tests, we only needed to know how the program works and its main functionalities, which we could derive after some time of experimenting, therefore we avoided being influenced when writing the tests.
 
-In order to start the **QF-Test** tests from an initial state with some existing projects, it was necessary to select the working directory for the program to find the configuration file containing some projects.
+To start the **QF-Test** tests from an initial state with some existing projects, it was necessary to select the working directory for the program to find the configuration file containing some projects.
 
 For each use case, we tested every regular path and we additionally tested three sneak paths, all from the second use case.
 
@@ -26,14 +26,14 @@ For each use case, we tested every regular path and we additionally tested three
 
 ### Description
 
-One of the main functionalities of the *jTimeSched* project is to add and delete projects. Therefore, it is important to create a model for testing this crucial functionality, since the mal-functioning of these functionalities could compromise the entire application.
+One of the main functionalities of the *jTimeSched* project is to add and delete projects. Therefore, it is important to create a model for testing this crucial functionality, since the malfunctioning of these functionalities could compromise the entire application.
 
 ### *Model-based Testing*
 
 1. **State Machine**
 
 The *State Machine* diagram has the following states:
-- **Start**: the initial state of the application, before any user interacion, which contains a table with some predefined projects
+- **Start**: the initial state of the application, before any user interaction, which contains a table with some predefined projects
 - **Edit**: the currently selected project title is being edited, this state happens by default when the user creates a new project
 - **Created**: the state after a new project has been added to the table
 - **Deleted** - the state after a project has been deleted from the table
@@ -49,7 +49,7 @@ The self-transition of **add** in the **Edit** state exists because the user can
 
 1. **Transition Tree**
 
-The following figure contains a *Transition Tree* that represents all the *six* regular paths for the use case. As all of them were tested, they are detailed in the following subsection.
+The following figure contains a *Transition Tree* that represents all *six* regular paths for the use case. As all of them were tested, they are detailed in the following subsection.
 
 ![Use Case 1 Transition Tree](./images/transition_tree1.png)
 
@@ -120,7 +120,7 @@ All these tests pass, as expected.
 ### Description
 
 In this project, it is essential to be able to edit the many fields of a project, namely its checked state, title, colour, date of creation, time overall and time today. Additionaly, we discovered other edition functionalities: the user can add notes to a projet and enter time quotas for both the overall and today times.
-This edition possibilities ensures more flexibility to the user, who may fix some mistakes in the times of the projects, for example. As such, we decided to test this use case, to guarantee consistency upon these edition actions.
+This editing possibilities ensure more flexibility to the user, who may fix some mistakes in the times of the projects, for example. As such, we decided to test this use case, to guarantee consistency upon these edition actions.
 This section aims to test a model associated with all the possible editions.
 
 ### *Model-based Testing*
@@ -133,21 +133,21 @@ The *State Machine* diagram has the following states:
 - **Edit Notes**: represents the state where the project's notes are being edited
 - **New Quota**: represents the state where a *Time Quota* for a time field of the project, which works as an objective time to reach in the respective project, is being edited; this edition happens on a pop-up window
 - **Edit Colour**: represents the state where the project's colour is being edited; consists of some predefined colour for quick selection and one option for accessing an advanced menu, moving to the following state
-- **Custom Colour**: represents a specific state where an advanced menu for colour selection is being used, as a pop-up window; the available formats are Swatches (colour pallete), HSV, HSL, RGB and CMYK
+- **Custom Colour**: represents a specific state where an advanced menu for colour selection is being used, as a pop-up window; the available formats are Swatches (colour palette), HSV, HSL, RGB and CMYK
 
 It also contains the following events:
 - **edit_checked**: pressing the checkbox that marks a project as checked/unchecked (finished/unfinished)
-- **edit_title**: double clicking the title of the project to edit it
-- **edit_created**: double clicking project's creation date to edit it
-- **edit_overall**: double clicking project's overall time to edit it
-- **edit_today**: double clicking project's today time to edit it
-- **edit_notes**: right click project's title cell to edit its notes
-- **quota_overall**: right click project's overall time to edit its quota
-- **quota_today**: right click project's today time to edit its quota
-- **edit_colour**: click project's colour to edit it
+- **edit_title**: double-clicking the title of the project to edit it
+- **edit_created**: double-clicking the project's creation date to edit it
+- **edit_overall**: double-clicking the project's overall time to edit it
+- **edit_today**: double-clicking the project's today time to edit it
+- **edit_notes**: right click the project's title cell to edit its notes
+- **quota_overall**: right click the project's overall time to edit its quota
+- **quota_today**: right click the project's today time to edit its quota
+- **edit_colour**: click the project's colour to edit it
 - **custom_colour**: press the *custom colour* icon in the *edit_colour* bar to select a custom colour
 - **ok**: confirming the edition of the field mentioned in *edit_notes*, *quota_overall*, *quota_today* and *custom_colour*, closing the respective pop-up windows
-- **reset**: reset button for the *custom_colour* advanced menu, discarding the user picks and restauring the default colour
+- **reset**: reset button for the *custom_colour* advanced menu, discarding the user picks and restoring the default colour
 - **pick**: select a quick colour in the *edit_colour* bar
 - **save**: saving changes after editing the text fields, done by pressing the *Enter* key
 
@@ -222,7 +222,7 @@ For this use case, we made two types of tests, namely:
 - Set Custom Colour
     - This test case starts by checking the current image of the project.
       Then, the basic colour selection menu is opened, whose image is also checked.
-      Afterwards, the custom colour pallete is prompted, and a specific custom colour is selected.
+      Afterwards, the custom colour palette is prompted, and a specific custom colour is selected.
       Finally, an assertion is made to verify if the colour from the project has been adequately changed.
       This way, we tested the transition from the *Custom Colour* state to the *Update* state
 
@@ -272,7 +272,7 @@ Both regular and sneak path tests pass.
 ### Description
 
 Finally, we must test the purpose of the entire application: the capability of counting the time spent in each of the projects.
-The extreme importance of this functionality led us to choose testing this use case, despite its model being quite trivial.
+The extreme importance of this functionality led us to choose to test this use case, despite its model being quite trivial.
 For example, we must ensure that only a project that is not already running can be started.
 
 ### *Model-based Testing*
