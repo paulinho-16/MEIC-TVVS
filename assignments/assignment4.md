@@ -5,7 +5,7 @@
 To try out this technique, we thought of three different use cases of the *jTimeSched* project.
 For each one, we present the reason we decided to test it and its purpose.
 Afterwards, we apply *Model-based Testing*, by presenting their:
-- *State Machine*: to display all possible states of the system, as well as the available actions that result into a change of state. 
+- *State Machine*: to display all possible states of the system, as well as the available actions that result into a change of state.
 - *Transition Tree*: to display all possible paths of execution in the system
 - *Transition Table*: an alternative tabular way to display a State Machine, which allows a better visualization of the sneaky paths.
 
@@ -21,8 +21,6 @@ To develop the tests, we only needed to know how the program works and its main 
 In order to start the **QF-Test** tests from an initial state with some existing projects, it was necessary to select the working directory for the program to find the configuration file containing some projects.
 
 For each use case, we tested every regular path and we additionally tested three sneak paths, all from the second use case.
-
-// TODO: falar do cleanup
 
 ## 1) Use Case 1: Add and Delete Projects
 
@@ -55,8 +53,6 @@ The following figure contains a *Transition Tree* that represents all the *six* 
 
 ![Use Case 1 Transition Tree](./images/transition_tree1.png)
 
-// TODO: trocar Edit_3 e Edit_2 e Deleted tb
-
 1. **Transition Table**
 
 Through the following *Transition Table*, it can be concluded that there are:
@@ -67,11 +63,57 @@ Through the following *Transition Table*, it can be concluded that there are:
 
 ### ***QF-Test*** tests
 
-// TODO: enumerar os testes derivados e falar da sua implementação no QF-Test, e também falar do outcome e explicá-lo
+The *Setup* node of this use case is responsible for initializing the client and for launching the Java SUT console in case it is not running yet.
+In addition, we also use a procedure from the **qfs** library to obtain the current date on which the tests are running, to compare later in the tests.
+In the *Cleanup* node, we close the application window and disconnect the client, so that it can be started again in the following tests.
 
-// TODO: falar do sneak path deste use case e da sua implementação
+For this use case, the six regular paths deduced from the transition tree were tested, namely:
+- Adding a project right after adding another but without saving the title edit
+    - We start by creating a new project, then we check its default attributes ("New project" as title, the times zeroed, it must be unchecked, etc.), besides checking if the title field is focused and the date created is the one saved in the *Setup* node.
+      Then, we change the title, check if the input text has actually changed, and only then we directly add a new project, without pressing *Enter* (saving it).
+      Finally, we test the same attributes as before but for the recently added project. As we don't leave the *Exit* state, this test represents the self-transition *add* on the *State Machine* diagram.
 
-// TODO: talvez usar como sneaky a self-transition de add, mas se o fizermos mudar texto após o diagrama da state machine
+![Use Case 1 Test Case 1](./images/mbt_usecase1_test1.png)
+
+- Deleting a project right after adding a new project without saving the title edit
+    - This test case starts by fetching the text of a GUI component that contains the total number of projects and their overall and today times, which will be compared later.
+      Afterwards, we add a new project and edit its title, verifying its attributes and the input content. Then, we delete this project and assert that the state has returned to the initial one, by comparing the above mentioned component and by checking the table content row by row.
+      This way, we test the *delete* transition from the *Edit* to the *Deleted* state.
+
+![Use Case 1 Test Case 2](./images/mbt_usecase1_test2.png)
+
+- Adding a project right after saving a previously added project
+    - This test case starts by pressing the *Add Project* button to create the first project and check its default attributes while editing.
+      Afterwards, the project's name is changed, the *Enter* key is pressed and it is asserted that the project name has been correctly changed.
+      Finally, the *Add Project* button is clicked again and we check its default attributes.
+      This way, we test the transition from the *Created* to the *Edit* state.
+
+![Use Case 1 Test Case 3](./images/mbt_usecase1_test3.png)
+
+- Deleting a project after adding a new project and saving its title
+    - This test case starts by fetching the GUI component with the table statistics. Then, we create a new project and assert that its attributes are correct, change the project's title and save it by pressing *Enter*, then check the content of the input.
+      Afterwards, we delete this recently created project and then compare the statistics component and the table content row by row, asserting that the state has returned to the initial one.
+      This way, we test the transition from the *Created* to the *Deleted* state.
+
+![Use Case 1 Test Case 4](./images/mbt_usecase1_test4.png)
+
+- Adding a project after deleting another
+    - We start by deleting a project from the table and then checking if the statistic component was correctly updated, as well as verifying the table content row by row.
+      After this, we add a new project, and after checking its default attributes, we edit its title and change its colour.
+      The test case ends by checking if these attributes were really changed.
+      This way, we test the transition from the *Deleted* to the *Edit* state.
+
+![Use Case 1 Test Case 5](./images/mbt_usecase1_test5.png)
+
+- Deleting a project after deleting a previous project
+    - This test case starts by fetching the GUI component with the table statistics. Then, an assertion is made to verify the content of the table row by row.
+      Afterwards, a specific project is deleted, which is then verified through a new table assertion.
+      Finally, another project is deleted and a new table assertion is made to verify the number of existing projects, as well as each project's attributes.
+      This way, we test the self-transition in the *Deleted* state.
+
+![Use Case 1 Test Case 6](./images/mbt_usecase1_test6.png)
+
+All these tests pass, as expected.
 
 ## 2) Use Case 2: Edit Project attributes
 
@@ -95,7 +137,7 @@ The *State Machine* diagram has the following states:
 
 It also contains the following events:
 - **edit_checked**: pressing the checkbox that marks a project as checked/unchecked (finished/unfinished)
-- **edit_title**: double clicking the title of the project to edit it 
+- **edit_title**: double clicking the title of the project to edit it
 - **edit_created**: double clicking project's creation date to edit it
 - **edit_overall**: double clicking project's overall time to edit it
 - **edit_today**: double clicking project's today time to edit it
@@ -110,8 +152,6 @@ It also contains the following events:
 - **save**: saving changes after editing the text fields, done by pressing the *Enter* key
 
 ![Use Case 2 State Machine](./images/state_machine2.png)
-
-// TODO: seta do edit_title está invertida e a do save também
 
 The initial state is **Updated**, as the application starts with the predefined projects saved upon the last execution of the program. In the diagram we can see, for example, the possibility of choosing a quick colour (**pick**) or opening the custom colour menu.
 
@@ -131,13 +171,101 @@ Through the following *Transition Table*, it can be concluded that there are:
 
 ### ***QF-Test*** tests
 
-// TODO: enumerar os testes derivados e falar da sua implementação no QF-Test, e também falar do outcome e explicá-lo
+For this use case, we made two types of tests, namely:
+- Seven tests to evaluate all the regular paths deducted from the transition tree
+- Three tests to evaluate three selected sneak paths that we considered relevant
 
-// TODO: falar do sneak path deste use case e da sua implementação
-// TODO: sneak paths:
- - editar tempos num projeto a correr
- - de quota para checked
- - um dos cancel?
+#### Regular Tests
+
+- Setting *Time Overall* and *Time Today* quotas
+    - This test case starts by checking the initial images of the *Time Overall* and *Time Today* fields (which contain a blue square if a quota currently exists).
+      Then, a right mouse click is performed to the *Time Overall* field to open the dialog input, whose default attributes ("0:00:00" times, image...) are then verified.
+      Afterwards, an input value is added to the dialog box, and this change is verified through an image comparison to the *Time Overall* tooltip.
+      Finally, the same steps are applied to the *Time Today* field, whose behaviour is similar.
+      This way, we test all transitions from the *Edit Quota* state. 
+
+![Use Case 2 Test Case 1](./images/mbt_usecase2_test1.png)
+
+- Setting a project's notes
+    - In this program, the notes of a project are displayed as a tooltip if we hover the mouse on top of the title field.
+      We start this test by checking if the notes of a project are empty (no tooltip displayed). Then, by right-clicking the title field, we open the notes window.
+      After waiting for this component to open, we assert that the window is visible and enabled and the input is empty and editable.
+      Afterwards, we edit the notes and, after pressing *Ok*, we verify the tooltip of the title cell to check if the new notes are displayed.
+      This way, we test all the transitions of the *Edit Notes* state.
+
+![Use Case 2 Test Case 2](./images/mbt_usecase2_test2.png)
+
+- Editing the text fields of a project
+    - This test aims to test the title, DateCreated, TimeOverall, TimeToday fields by evaluating its values before and after the introduced changes.
+      Also, there is an additional assertion being made, given that when the *TimeToday* variable is changed, its value is added to the *Time Overall* field.
+      This way, we test the transitions from the *Updated* state to the *Edit Text* state.
+
+![Use Case 2 Test Case 3](./images/mbt_usecase2_test3.png)
+
+- Setting the colour of a project using Quick Colour selection
+    - This test case starts by verifying the current colour of a project by checking its image.
+    Then, the color dialog component is opened through a mouse click, assertions are made to verify that the dialog is opened, and a colour is selected.
+      Finally, an image check is made to verify if the selected colour has been attributed to the project.
+      This way, we test the transitions between the *Updated* state and the *Edit Colour* state. 
+
+![Use Case 2 Test Case 4](./images/mbt_usecase2_test4.png)
+
+- Resetting the colour of the Custom Colour menu
+    - The program has a complex colour selection menu, in which we can pick a colour using many formats.
+    This menu contains a *Reset* button which discards the user picks, defining a previously defined colour, and this test case pretends to test that functionality.
+    We start by clicking the colour field, which opens the quick selection pop-up. One of the options leads us to the custom colour menu. Both of these windows' visibility are tested, as well as some components presence, one of them being the default initial colour.
+    Then, we choose one colour from the colour palette, verify if the preview component has changed, and finally we click on the *Reset* button, verifying afterwards if the preview returned to the default colour.
+    This way, we test the self-transition *reset* in the *Custom Colour* state.
+
+![Use Case 2 Test Case 5](./images/mbt_usecase2_test5.png)
+
+- Set Custom Colour
+    - This test case starts by checking the current image of the project.
+      Then, the basic colour selection menu is opened, whose image is also checked.
+      Afterwards, the custom colour pallete is prompted, and a specific custom colour is selected.
+      Finally, an assertion is made to verify if the colour from the project has been adequately changed.
+      This way, we tested the transition from the *Custom Colour* state to the *Update* state
+
+![Use Case 2 Test Case 6](./images/mbt_usecase2_test6.png)
+
+- Set Project as Checked/Unchecked
+    - This test case starts by verifying that the project is currently unchecked (The activity is not yet done).
+      Then, the checkmark is clicked and an asseertion is made to verify that the project is now checked.
+      Finally, the checkmarked is pressed again, and its veryfied if the checkbox ends the test case unchecked, just like its initial state.
+      This way, we tested the *edit_checked* self transition from the *Updated* state.
+
+![Use Case 2 Test Case 7](./images/mbt_usecase2_test7.png)
+
+#### Sneak Paths
+
+- Can't edit times from a running projects
+    - This test case starts by analyzing the project's current text fields.
+      Then, the run project button is pressed and assertions are made to verify that the project has started running.
+      Afterwards, its is verified  that the *Time Overall* and *Time Today* fields are uneditable, and that the remaining fields (*Date Created* and *Title*) are allowed to be edited and that their changes apply sucessfully.
+      This way, we tested the sneak path between *Updated* to *Edit Text* with the *project is running* restriction, which is unsuccessful.
+
+![Use Case 2 Sneak Path 1](./images/mbt_usecase2_sneak1.png)
+
+- Can't check/uncheck projects while editing a quota
+    - This test case asserts that a user can't interact with the main window while another is opened, in this case, we verify that it can't check/uncheck projects while editing a quota.
+    The test starts by confirming that the project is initially unchecked. Then, we right-click on the *Time Today* field to edit its quota, and this opens a new window for this edition.
+    After verifying the visibility of this window, we tried to click on the check field of the main window, in the background.
+    Upon noticing that the tool doesn't register this click, we had to record it with the quota window closed and then insert it a *Try* node, to handle the exception thrown, and this way the test passes.
+    Finally, we end the test by checking if the project at hand is still unchecked.
+    This way, we tested the sneak path that happens upon a *edit_checked* event in the *New Quota* state.
+
+![Use Case 2 Sneak Path 2](./images/mbt_usecase2_sneak2.png)
+
+- Can't edit title while editing colour
+    - This test case starts by checking the current text content of the *Title* field.
+      Then, the colour panel is opened, followed by the custom colour panel.
+      After checking that the custom colour panel is opened, an attempt to edit the project's *Title* field is made through a **Try** statement, which raises a *TestException* Exception.
+      Finally, we verify that the current text in the *Title* field is still the same as the initial value, to ensure that no way unintended changes were made.
+      This way, we tested the sneak path between the *Custom Colour* and *Edit Text* states, ensuring that the sneak transition does not occur. 
+
+![Use Case 2 Sneak Path 3](./images/mbt_usecase2_sneak3.png)
+
+Both regular and sneak path tests pass.
 
 ## 3) Use Case 3: Start and Stop Projects
 
@@ -180,17 +308,26 @@ Through the following table, it can be concluded that there are:
 
 ### ***QF-Test*** tests
 
-// TODO: enumerar os testes derivados e falar da sua implementação no QF-Test, e também falar do outcome e explicá-lo
+For this use case, only a single path was deduced from the transition tree, which we tested by:
 
-// TODO: falar do sneak path deste use case e da sua implementação
+- Start and Pause a project
+    - This test case starts by checking the initial state by asserting that both *Overall* and *Today* times are zeroed and the project is paused.
+    Then, we start it and check if it's running, besides ensuring that both times are now non-editable.
+    Finally, we stop the project after three seconds, which we configured by inserting a delay of 3000 ms before the click on the pause button.
+    Right after pausing it, we check if both times are now set as "0:00:03" and assert that the project is paused.
+    This way, we test all the transitions in the *State Machine* diagram.
 
-// TODO: falar que verificamos se as cells não são editáveis
+![Use Case 3 Test Case 1](./images/mbt_usecase3_test1.png)
 
-// TODO: falar do "delay before" do clique do pause
+The test passes, as expected.
 
 ## ***QF-Test*** tool feedback
 
 // TODO: meter feedback do QF-Test (opinião, coisas a melhorar)
+
+Our experience with the **QF-Tool** was generally positive.
+We will now highlight some features that we think would be excellent additions to the tool, as they would make the user's life easier in some cases that we came across throughout this work:
+    - 
 
 -----
 
