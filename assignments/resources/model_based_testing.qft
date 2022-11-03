@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE RootStep>
 <RootStep id="_0" name="root"
-          signature="6600AF1C884A880DCD5DF87150A380330E624746"
+          signature="0AEABD5ED58572705DB16C11346BB01FD257BEA9"
           version="6.0.3">
   <include>qfs.qft</include>
   <TestSet id="_1" name="Add and Delete Projects">
@@ -1173,15 +1173,6 @@ D@62l$kJVA6*w_x^3o}J|y']%Jll)6#~~`"zRn2vhT4u_?k\.B|}9(QzOn`!eW0Bl0{PWAp1|ZB9.[Q^
     </TestCase>
     <TestCase id="_E8" name="Set custom colour and reset">
       <BasicSequence id="_EH" name="Colour-Custom-Reset">
-        <BasicSequence id="_EO" name="Before colour edit assert">
-          <CheckImageStep checktype="item_image" client="$(client)"
-                          component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
-                          id="_EP">
-            <ImageNode height="21" name="checkimage" width="21">
-              <webp size="58">UaRzgjAAv(*wpBQPT?37EAAAxXCtCAg"g`0[A"[{]|YVZlE"YE_[O('{(GB5X4+'zz:vTAA</webp>
-            </ImageNode>
-          </CheckImageStep>
-        </BasicSequence>
         <MouseEventStep clicks="1" client="$(client)"
                         component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;3&amp;5"
                         event="MOUSE_MPRC" id="_EI" modifiers="16"/>
