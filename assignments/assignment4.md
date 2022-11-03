@@ -323,11 +323,13 @@ The test passes, as expected.
 
 ## ***QF-Test*** tool feedback
 
-// TODO: meter feedback do QF-Test (opinião, coisas a melhorar)
-
 Our experience with the **QF-Tool** was generally positive.
 We will now highlight some features that we think would be excellent additions to the tool, as they would make the user's life easier in some cases that we came across throughout this work:
-    - 
+    - When using the tool to test a Web page, in the "Open Browser Window" action there should be an option to open the window in Full-screen or fully expanded, since by default it does not fill the entire screen, which can lead to disappearance of some buttons in the interface due to the responsiveness of the site to be tested.
+    To solve this problem, it was necessary to find out the "width" and "height" of the screen and change these fields, but it would be useful for the program to do this automatically when we select a checkbox to open the already expanded window
+    - When selecting a table, there should be a button to count its number of rows, without having to specify its content
+    - It should be possible to test that bar on top of application windows, with the name and icon of the window
+    - When recording double clicks, the click coordinates should be saved, as it may have a different effect depending on the location of the click. For example, if we edit text input, the click location would indicate the cursor positioning in that input.
 
 -----
 
