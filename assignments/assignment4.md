@@ -1,6 +1,6 @@
 # Assignment 4 - Model-based Testing (Black-box Testing)
 
-*Model-based Testing* is a black-box testing technique where the runtime behaviour of the software under test is checked against predictions made by a model, which is a description of a system's behaviour. The model can then help systematically deriving tests for that system.
+*Model-based Testing* is a black-box testing technique where the runtime behaviour of the software under test is checked against predictions made by a model, which is a description of a system's behaviour. The model can then help systematically derive tests for that system.
 
 To try out this technique, we thought of three different use cases of the *jTimeSched* project.
 For each one, we present the reason we decided to test it and its purpose.
@@ -70,8 +70,8 @@ In the *Cleanup* node, we close the application window and disconnect the client
 For this use case, the six regular paths deduced from the *Transition Tree* were tested, namely:
 - Adding a project right after adding another but without saving the title edition
     - We start by creating a new project, then we check its default attributes ("New project" as title, the times zeroed, it must be unchecked, etc.), besides checking if the title field is focused and the date created is the one saved in the *Setup* node.
-      Then, we change the title, check if the input text has actually changed, and only then we directly add a new project, without pressing *Enter* (saving it).
-      Finally, we test the same attributes as before but for the recently added project. As we don't leave the *Exit* state, this test represents the self-transition *add* on the *State Machine* diagram.
+      Then, we change the title, check if the input text has actually changed, and only then do we directly add a new project, without pressing *Enter* (saving it).
+      Finally, we test the same attributes as before but for the recently added project. As we don't leave the *Exit* state, this test represents the self-transition *add* in the *State Machine* diagram.
 
 ![Use Case 1 Test Case 1](./images/mbt_usecase1_test1.png)
 
@@ -91,7 +91,7 @@ For this use case, the six regular paths deduced from the *Transition Tree* were
 ![Use Case 1 Test Case 3](./images/mbt_usecase1_test3.png)
 
 - Deleting a project after adding a new project and saving its title
-    - This test case starts by fetching the GUI component with the table statistics. Then, we create a new project and assert that its attributes are correct, change the project's title and save it by pressing *Enter*, then check the content of the input.
+    - This test case starts by fetching the GUI component with the table statistics. Then, we create a new project and assert that its attributes are correct, change the project's title and save it by pressing *Enter*, and then check the content of the input.
       Afterwards, we delete this recently created project and then compare the statistics component and the table content row by row, asserting that the state has returned to the initial one.
       This way, we test the transition from the *Created* to the *Deleted* state.
 
@@ -119,8 +119,8 @@ All these tests pass, as expected.
 
 ### Description
 
-In this project, it is essential to be able to edit the many fields of a project, namely its checked state, title, colour, date of creation, time overall and time today. Additionaly, we discovered other edition functionalities: the user can add notes to a project and enter time quotas for both the overall and today times.
-This editing possibilities ensure more flexibility to the user, who may fix some mistakes in the times of the projects, for example. As such, we decided to test this use case, to guarantee consistency upon these edition actions.
+In this project, it is essential to be able to edit the many fields of a project, namely its checked state, title, colour, date of creation, time overall and time today. Additionally, we discovered other edition functionalities: the user can add notes to a project and enter time quotas for both the overall and today times.
+These editing possibilities ensure more flexibility to the user, who may fix some mistakes in the times of the projects, for example. As such, we decided to test this use case, to guarantee consistency upon these edition actions.
 This section aims to test a model associated with all the possible editions.
 
 ### *Model-based Testing*
@@ -153,7 +153,7 @@ It also contains the following events:
 
 ![Use Case 2 State Machine](./images/state_machine2.png)
 
-The initial state is **Updated**, as the application starts with the predefined projects saved upon the last execution of the program. In the diagram we can see, for example, the possibility of choosing a quick colour (**pick**) or opening the custom colour menu.
+The initial state is **Updated**, as the application starts with the predefined projects saved upon the last execution of the program. In the diagram, we can see, for example, the possibility of choosing a quick colour (**pick**) or opening the custom colour menu.
 
 1. **Transition Tree**
 
@@ -213,16 +213,16 @@ For this use case, we made two types of tests, namely:
 
 - Resetting the colour of the Custom Colour menu
     - The program has a complex colour selection menu, in which we can pick a colour using many formats.
-    This menu contains a *Reset* button which discards the user picks, defining a previously defined colour, and this test case aims to test that functionality.
-    We start by clicking the colour field, which opens the quick selection pop-up. One of the options leads us to the custom colour menu. Both of these windows' visibility are tested, as well as some components presence, one of them being the default initial colour.
-    Then, we choose one colour from the colour palette, verify if the preview component has changed, and finally we click on the *Reset* button, verifying if the preview returned to the default colour.
+    This menu contains a *Reset* button which discards the user's picks, defining a previously defined colour, and this test case aims to test that functionality.
+    We start by clicking the colour field, which opens the quick selection pop-up. One of the options leads us to the custom colour menu. Both of these windows' visibility is tested, as well as some components' presence, one of them being the default initial colour.
+    Then, we choose one colour from the colour palette, verify if the preview component has changed, and finally, we click on the *Reset* button, verifying if the preview returned to the default colour.
     This way, we test the self-transition *reset* in the *Custom Colour* state.
 
 ![Use Case 2 Test Case 5](./images/mbt_usecase2_test5.png)
 
 - Set Custom Colour
     - This test case starts by checking the current image of the project.
-      Then, the basic colour selection menu is opened, whose image is also checked.
+      Then, the basic colour selection menu is opened, and whose image is also checked.
       Afterwards, the custom colour palette is prompted, and a specific custom colour is selected.
       Finally, an assertion is made to verify if the colour from the project has been adequately changed.
       This way, we test the transition from the *Custom Colour* state to the *Updated* state
@@ -232,17 +232,17 @@ For this use case, we made two types of tests, namely:
 - Set Project as Checked/Unchecked
     - This test case starts by verifying that the project is currently unchecked (the activity is not yet done).
       Then, the checkmark is clicked and an assertion is made to verify that the project is now checked.
-      Finally, the checkmark is pressed again, and its verifyed if the checkbox ends the test case unchecked, just like its initial state.
-      This way, we test the *edit_checked* self transition from the *Updated* state
+      Finally, the checkmark is pressed again, and its verified if the checkbox ends the test case unchecked, just like in its initial state.
+      This way, we test the *edit_checked* self-transition from the *Updated* state
 
 ![Use Case 2 Test Case 7](./images/mbt_usecase2_test7.png)
 
 #### **Sneak Paths**
 
-- Can't edit times from a running projects
+- Can't edit times from a running project
     - This test case starts by analyzing the project's current text fields.
       Then, the run project button is pressed and assertions are made to verify that the project has started running.
-      Afterwards, its is verified  that the *Time Overall* and *Time Today* fields are uneditable, and that the remaining fields (*Date Created* and *Title*) are allowed to be edited and that their changes apply sucessfully.
+      Afterwards, it is verified  that the *Time Overall* and *Time Today* fields are uneditable, that the remaining fields (*Date Created* and *Title*) are allowed to be edited and that their changes apply successfully.
       This way, we test the sneak path between *Updated* to *Edit Text* with the *project is running* restriction, which is unsuccessful
 
 ![Use Case 2 Sneak Path 1](./images/mbt_usecase2_sneak1.png)
@@ -272,7 +272,7 @@ Both regular and sneak path tests pass.
 
 ### Description
 
-Finally, we must test the purpose of the entire application: the capability of counting the time spent in each project.
+Finally, we must test the purpose of the entire application: the capability of counting the time spent on each project.
 The extreme importance of this functionality led us to choose to test this use case, despite its model being quite trivial.
 For example, we must ensure that only a project that is not already running can be started.
 
