@@ -1,13 +1,13 @@
 # Assignment 4 - Model-based Testing (Black-box Testing)
 
-*Model-based Testing* is a black-box testing technique where the run time behaviour of the software under test is checked against predictions made by a model, which is a description of a system's behaviour. The model can then help systematically deriving tests for that system.
+*Model-based Testing* is a black-box testing technique where the runtime behaviour of the software under test is checked against predictions made by a model, which is a description of a system's behaviour. The model can then help systematically deriving tests for that system.
 
 To try out this technique, we thought of three different use cases of the *jTimeSched* project.
 For each one, we present the reason we decided to test it and its purpose.
 Afterwards, we apply *Model-based Testing*, by presenting their:
 - *State Machine*: to display all possible states of the system, as well as the available actions that result in a change of state.
 - *Transition Tree*: to display all possible paths of execution in the system
-- *Transition Table*: an alternative tabular way to display a State Machine, which allows better visualization of the sneaky paths.
+- *Transition Table*: an alternative tabular way to display a *State Machine*, which allows better visualization of the sneak paths.
 
 After these steps, we can derive the tests based on the existing paths and their expected behaviour. Based on the transition tree of each use case, we derive the regular paths to be tested, where each test case corresponds to a path from the root of the tree to one of the leaves.
 Besides this, we can also test the sneak paths, which are related to unspecified behaviour, as we need to evaluate how the system behaves in unexpected scenarios.
@@ -36,12 +36,12 @@ The *State Machine* diagram has the following states:
 - **Start**: the initial state of the application, before any user interaction, which contains a table with some predefined projects
 - **Edit**: the currently selected project title is being edited, this state happens by default when the user creates a new project
 - **Created**: the state after a new project has been added to the table
-- **Deleted** - the state after a project has been deleted from the table
+- **Deleted**: the state after a project has been deleted from the table
 
 It also contains the following events:
 - **add**: the *Add Project* button has been pressed, and the user is prompted to enter a name for the project
 - **save**: the project's name is saved after its edition, finishing the process of its creation after pressing *Enter*
-- **delete** - a project is deleted by double-clicking the *Delete Project* icon
+- **delete**: a project is deleted by double-clicking the *Delete Project* icon
 
 ![Use Case 1 State Machine](./images/state_machine1.png)
 
@@ -67,17 +67,17 @@ The *Setup* node of this use case is responsible for initializing the client and
 In addition, we also use a procedure from the **qfs** library to obtain the current date on which the tests are running, to compare later in the tests.
 In the *Cleanup* node, we close the application window and disconnect the client, so that it can be started again in the following tests.
 
-For this use case, the six regular paths deduced from the transition tree were tested, namely:
-- Adding a project right after adding another but without saving the title edit
+For this use case, the six regular paths deduced from the *Transition Tree* were tested, namely:
+- Adding a project right after adding another but without saving the title edition
     - We start by creating a new project, then we check its default attributes ("New project" as title, the times zeroed, it must be unchecked, etc.), besides checking if the title field is focused and the date created is the one saved in the *Setup* node.
       Then, we change the title, check if the input text has actually changed, and only then we directly add a new project, without pressing *Enter* (saving it).
       Finally, we test the same attributes as before but for the recently added project. As we don't leave the *Exit* state, this test represents the self-transition *add* on the *State Machine* diagram.
 
 ![Use Case 1 Test Case 1](./images/mbt_usecase1_test1.png)
 
-- Deleting a project right after adding a new project without saving the title edit
+- Deleting a project right after adding a new project without saving the title edition
     - This test case starts by fetching the text of a GUI component that contains the total number of projects and their overall and today times, which will be compared later.
-      Afterwards, we add a new project and edit its title, verifying its attributes and the input content. Then, we delete this project and assert that the state has returned to the initial one, by comparing the above mentioned component and by checking the table content row by row.
+      Afterwards, we add a new project and edit its title, verifying its attributes and input content. Then, we delete this project and assert that the state has returned to the initial one, by comparing the aforementioned component and by checking the table content row by row.
       This way, we test the *delete* transition from the *Edit* to the *Deleted* state.
 
 ![Use Case 1 Test Case 2](./images/mbt_usecase1_test2.png)
@@ -165,7 +165,7 @@ The following figure contains a *Transition Tree* which contains *seven* regular
 
 Through the following *Transition Table*, it can be concluded that there are:
 - 16 normal paths
-- 68 sneaky paths (we test three of them which we consider relevant in our context)
+- 68 sneak paths (we test three of them which we consider relevant in our context)
 
 ![Use Case 2 Transition Table](./images/transition_table2.png)
 
