@@ -9,7 +9,7 @@ Afterwards, we apply *Model-based Testing*, by presenting their:
 - *Transition Tree*: to display all possible paths of execution in the system
 - *Transition Table*: an alternative tabular way to display a *State Machine*, which allows better visualization of the sneak paths.
 
-After these steps, we can derive the tests based on the existing paths and their expected behaviour. Based on the transition tree of each use case, we derive the regular paths to be tested, where each test case corresponds to a path from the root of the tree to one of the leaves.
+After these steps, we can derive the tests based on the existing paths and their expected behaviour. Based on the *Transition Tree* of each use case, we derive the regular paths to be tested, where each test case corresponds to a path from the root of the tree to one of the leaves.
 Besides this, we can also test the sneak paths, which are related to unspecified behaviour, as we need to evaluate how the system behaves in unexpected scenarios.
 
 After these steps, **QF-Test** was used as a software tool to test the behaviour of each available path in the system.
@@ -119,7 +119,7 @@ All these tests pass, as expected.
 
 ### Description
 
-In this project, it is essential to be able to edit the many fields of a project, namely its checked state, title, colour, date of creation, time overall and time today. Additionaly, we discovered other edition functionalities: the user can add notes to a projet and enter time quotas for both the overall and today times.
+In this project, it is essential to be able to edit the many fields of a project, namely its checked state, title, colour, date of creation, time overall and time today. Additionaly, we discovered other edition functionalities: the user can add notes to a project and enter time quotas for both the overall and today times.
 This editing possibilities ensure more flexibility to the user, who may fix some mistakes in the times of the projects, for example. As such, we decided to test this use case, to guarantee consistency upon these edition actions.
 This section aims to test a model associated with all the possible editions.
 
@@ -131,9 +131,9 @@ The *State Machine* diagram has the following states:
 - **Updated**: indicates that the table of projects is currently updated, with existing changes to a specific field of a project saved
 - **Edit Text**: represents the state where a text field is being edited, such as the title of the project or the times
 - **Edit Notes**: represents the state where the project's notes are being edited
-- **New Quota**: represents the state where a *Time Quota* for a time field of the project, which works as an objective time to reach in the respective project, is being edited; this edition happens on a pop-up window
-- **Edit Colour**: represents the state where the project's colour is being edited; consists of some predefined colour for quick selection and one option for accessing an advanced menu, moving to the following state
-- **Custom Colour**: represents a specific state where an advanced menu for colour selection is being used, as a pop-up window; the available formats are Swatches (colour palette), HSV, HSL, RGB and CMYK
+- **New Quota**: represents the state where a *Time Quota*, which works as an objective time to reach in the respective project, is being edited for a time field of the project; this edition happens on a pop-up window
+- **Edit Colour**: represents the state where the project's colour is being edited; consists of a bar selection of some predefined colour and one option for accessing an advanced menu, moving to the following state
+- **Custom Colour**: represents a specific state where an advanced menu for colour selection is being used, in a pop-up window; the available formats are Swatches (colour palette), HSV, HSL, RGB and CMYK
 
 It also contains the following events:
 - **edit_checked**: pressing the checkbox that marks a project as checked/unchecked (finished/unfinished)
@@ -141,12 +141,12 @@ It also contains the following events:
 - **edit_created**: double-clicking the project's creation date to edit it
 - **edit_overall**: double-clicking the project's overall time to edit it
 - **edit_today**: double-clicking the project's today time to edit it
-- **edit_notes**: right click the project's title cell to edit its notes
-- **quota_overall**: right click the project's overall time to edit its quota
-- **quota_today**: right click the project's today time to edit its quota
+- **edit_notes**: right-click the project's title cell to edit its notes
+- **quota_overall**: right-click the project's overall time to edit its quota
+- **quota_today**: right-click the project's today time to edit its quota
 - **edit_colour**: click the project's colour to edit it
 - **custom_colour**: press the *custom colour* icon in the *edit_colour* bar to select a custom colour
-- **ok**: confirming the edition of the field mentioned in *edit_notes*, *quota_overall*, *quota_today* and *custom_colour*, closing the respective pop-up windows
+- **ok**: confirming editions in pop-up windows like in *edit_notes*, *quota_overall*, *quota_today* and *custom_colour*, closing the respective windows
 - **reset**: reset button for the *custom_colour* advanced menu, discarding the user picks and restoring the default colour
 - **pick**: select a quick colour in the *edit_colour* bar
 - **save**: saving changes after editing the text fields, done by pressing the *Enter* key
@@ -172,13 +172,14 @@ Through the following *Transition Table*, it can be concluded that there are:
 ### ***QF-Test*** tests
 
 For this use case, we made two types of tests, namely:
-- Seven tests to evaluate all the regular paths deducted from the transition tree
+- Seven tests to evaluate all the regular paths deducted from the *Transition Tree*
 - Three tests to evaluate three selected sneak paths that we considered relevant
 
 #### Regular Tests
 
 - Setting *Time Overall* and *Time Today* quotas
-    - This test case starts by checking the initial images of the *Time Overall* and *Time Today* fields (which contain a blue square if a quota currently exists).
+    - In this program, the time cells of the table contain a small blue square in case a time quota is set. The quota value can be checked if we hover the      mouse on top of the time fields.
+      This test case starts by checking the initial images of the *Time Overall* and *Time Today* cells, to ensure that a quota is not set (no blue squares).
       Then, a right mouse click is performed to the *Time Overall* field to open the dialog input, whose default attributes ("0:00:00" times, image...) are then verified.
       Afterwards, an input value is added to the dialog box, and this change is verified through an image comparison to the *Time Overall* tooltip.
       Finally, the same steps are applied to the *Time Today* field, whose behaviour is similar.
@@ -196,15 +197,15 @@ For this use case, we made two types of tests, namely:
 ![Use Case 2 Test Case 2](./images/mbt_usecase2_test2.png)
 
 - Editing the text fields of a project
-    - This test aims to test the title, DateCreated, TimeOverall, TimeToday fields by evaluating its values before and after the introduced changes.
-      Also, there is an additional assertion being made, given that when the *TimeToday* variable is changed, its value is added to the *Time Overall* field.
+    - This test aims to test the title, date of creation, time overall, and time today fields by evaluating its values before and after the introduced changes.
+      Also, there is an additional assertion being made, given that when the *Time Today* variable is changed, its value is added to the *Time Overall* field.
       This way, we test the transitions from the *Updated* state to the *Edit Text* state.
 
 ![Use Case 2 Test Case 3](./images/mbt_usecase2_test3.png)
 
 - Setting the colour of a project using Quick Colour selection
     - This test case starts by verifying the current colour of a project by checking its image.
-    Then, the color dialog component is opened through a mouse click, assertions are made to verify that the dialog is opened, and a colour is selected.
+    Then, the colour dialog component is opened through a mouse click, assertions are made to verify that the dialog is opened, and a colour is selected.
       Finally, an image check is made to verify if the selected colour has been attributed to the project.
       This way, we test the transitions between the *Updated* state and the *Edit Colour* state. 
 
@@ -212,9 +213,9 @@ For this use case, we made two types of tests, namely:
 
 - Resetting the colour of the Custom Colour menu
     - The program has a complex colour selection menu, in which we can pick a colour using many formats.
-    This menu contains a *Reset* button which discards the user picks, defining a previously defined colour, and this test case pretends to test that functionality.
+    This menu contains a *Reset* button which discards the user picks, defining a previously defined colour, and this test case aims to test that functionality.
     We start by clicking the colour field, which opens the quick selection pop-up. One of the options leads us to the custom colour menu. Both of these windows' visibility are tested, as well as some components presence, one of them being the default initial colour.
-    Then, we choose one colour from the colour palette, verify if the preview component has changed, and finally we click on the *Reset* button, verifying afterwards if the preview returned to the default colour.
+    Then, we choose one colour from the colour palette, verify if the preview component has changed, and finally we click on the *Reset* button, verifying if the preview returned to the default colour.
     This way, we test the self-transition *reset* in the *Custom Colour* state.
 
 ![Use Case 2 Test Case 5](./images/mbt_usecase2_test5.png)
@@ -224,44 +225,44 @@ For this use case, we made two types of tests, namely:
       Then, the basic colour selection menu is opened, whose image is also checked.
       Afterwards, the custom colour palette is prompted, and a specific custom colour is selected.
       Finally, an assertion is made to verify if the colour from the project has been adequately changed.
-      This way, we tested the transition from the *Custom Colour* state to the *Update* state
+      This way, we test the transition from the *Custom Colour* state to the *Updated* state
 
 ![Use Case 2 Test Case 6](./images/mbt_usecase2_test6.png)
 
 - Set Project as Checked/Unchecked
-    - This test case starts by verifying that the project is currently unchecked (The activity is not yet done).
-      Then, the checkmark is clicked and an asseertion is made to verify that the project is now checked.
-      Finally, the checkmarked is pressed again, and its veryfied if the checkbox ends the test case unchecked, just like its initial state.
-      This way, we tested the *edit_checked* self transition from the *Updated* state.
+    - This test case starts by verifying that the project is currently unchecked (the activity is not yet done).
+      Then, the checkmark is clicked and an assertion is made to verify that the project is now checked.
+      Finally, the checkmark is pressed again, and its verifyed if the checkbox ends the test case unchecked, just like its initial state.
+      This way, we test the *edit_checked* self transition from the *Updated* state
 
 ![Use Case 2 Test Case 7](./images/mbt_usecase2_test7.png)
 
-#### Sneak Paths
+#### **Sneak Paths**
 
 - Can't edit times from a running projects
     - This test case starts by analyzing the project's current text fields.
       Then, the run project button is pressed and assertions are made to verify that the project has started running.
       Afterwards, its is verified  that the *Time Overall* and *Time Today* fields are uneditable, and that the remaining fields (*Date Created* and *Title*) are allowed to be edited and that their changes apply sucessfully.
-      This way, we tested the sneak path between *Updated* to *Edit Text* with the *project is running* restriction, which is unsuccessful.
+      This way, we test the sneak path between *Updated* to *Edit Text* with the *project is running* restriction, which is unsuccessful
 
 ![Use Case 2 Sneak Path 1](./images/mbt_usecase2_sneak1.png)
 
 - Can't check/uncheck projects while editing a quota
-    - This test case asserts that a user can't interact with the main window while another is opened, in this case, we verify that it can't check/uncheck projects while editing a quota.
+    - This test case asserts that a user can't interact with the main window while another is opened. In this case, we verify that it can't check/uncheck projects while editing a quota.
     The test starts by confirming that the project is initially unchecked. Then, we right-click on the *Time Today* field to edit its quota, and this opens a new window for this edition.
     After verifying the visibility of this window, we tried to click on the check field of the main window, in the background.
-    Upon noticing that the tool doesn't register this click, we had to record it with the quota window closed and then insert it a *Try* node, to handle the exception thrown, and this way the test passes.
+    Upon noticing that the tool doesn't register this click, we had to record it with the quota window closed and then insert a *Try* node, to handle the exception thrown, and this way the test passes.
     Finally, we end the test by checking if the project at hand is still unchecked.
-    This way, we tested the sneak path that happens upon a *edit_checked* event in the *New Quota* state.
+    This way, we test the sneak path that happens upon a *edit_checked* event in the *New Quota* state
 
 ![Use Case 2 Sneak Path 2](./images/mbt_usecase2_sneak2.png)
 
 - Can't edit title while editing colour
     - This test case starts by checking the current text content of the *Title* field.
       Then, the colour panel is opened, followed by the custom colour panel.
-      After checking that the custom colour panel is opened, an attempt to edit the project's *Title* field is made through a **Try** statement, which raises a *TestException* Exception.
-      Finally, we verify that the current text in the *Title* field is still the same as the initial value, to ensure that no way unintended changes were made.
-      This way, we tested the sneak path between the *Custom Colour* and *Edit Text* states, ensuring that the sneak transition does not occur. 
+      After checking that the custom colour panel is opened, an attempt to edit the project's *Title* field is made through a *Try* statement, which raises a *TestException* Exception.
+      Finally, we verify that the current text in the *Title* field is still the same as the initial value, to ensure that no unintended changes were made.
+      This way, we test the sneak path between the *Custom Colour* and *Edit Text* states, ensuring that the sneak transition does not occur
 
 ![Use Case 2 Sneak Path 3](./images/mbt_usecase2_sneak3.png)
 
@@ -271,7 +272,7 @@ Both regular and sneak path tests pass.
 
 ### Description
 
-Finally, we must test the purpose of the entire application: the capability of counting the time spent in each of the projects.
+Finally, we must test the purpose of the entire application: the capability of counting the time spent in each project.
 The extreme importance of this functionality led us to choose to test this use case, despite its model being quite trivial.
 For example, we must ensure that only a project that is not already running can be started.
 
@@ -308,7 +309,7 @@ Through the following table, it can be concluded that there are:
 
 ### ***QF-Test*** tests
 
-For this use case, only a single path was deduced from the transition tree, which we tested by:
+For this use case, only a single path was deduced from the *Transition Tree*:
 
 - Start and Pause a project
     - This test case starts by checking the initial state by asserting that both *Overall* and *Today* times are zeroed and the project is paused.
@@ -325,11 +326,11 @@ The test passes, as expected.
 
 Our experience with the **QF-Tool** was generally positive.
 We will now highlight some features that we think would be excellent additions to the tool, as they would make the user's life easier in some cases that we came across throughout this work:
-    - When using the tool to test a Web page, in the "Open Browser Window" action there should be an option to open the window in Full-screen or fully expanded, since by default it does not fill the entire screen, which can lead to disappearance of some buttons in the interface due to the responsiveness of the site to be tested.
-    To solve this problem, it was necessary to find out the "width" and "height" of the screen and change these fields, but it would be useful for the program to do this automatically when we select a checkbox to open the already expanded window
-    - When selecting a table, there should be a button to count its number of rows, without having to specify its content
-    - It should be possible to test that bar on top of application windows, with the name and icon of the window
-    - When recording double clicks, the click coordinates should be saved, as it may have a different effect depending on the location of the click. For example, if we edit text input, the click location would indicate the cursor positioning in that input.
+- When using the tool to test a webpage, in the "Open Browser Window" action there should be an option to open the window in fullscreen or fully expanded, since by default it does not fill the entire screen, which can lead to disappearance of some buttons in the interface due to the responsiveness of the site to be tested.
+To solve this problem, it was necessary to find out the "width" and "height" of the screen and change these fields, but it would be useful for the program to do this automatically when we select a checkbox to open the already expanded window
+- When selecting a table, there should be a button to count its number of rows, without having to specify its content
+- It should be possible to test the bar on top of application windows, with the name and icon of the window
+- When recording double-clicks, the click coordinates should be saved, as it may have a different effect depending on the location of the click. For example, if we edit text input, the click location would indicate the cursor positioning in that input.
 
 -----
 
