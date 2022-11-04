@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE RootStep>
 <RootStep id="_0" name="root"
-          signature="0AEABD5ED58572705DB16C11346BB01FD257BEA9"
+          signature="21E88054BD98CAF5CF30C55B89853F2AE459F473"
           version="6.0.3">
   <include>qfs.qft</include>
   <TestSet id="_1" name="Add and Delete Projects">
@@ -488,11 +488,6 @@ cJ^*}HDigF.Mx~H96#!shBAG*`/%,?frl{G}KM{EudcZqUw}gwKcCA</webp>
                         component="frameJTimeSched.table6_projects_|_0:05:19_overall_|_0:00:18_today&amp;0&amp;5"
                         event="MOUSE_DBLCLK" id="_5b" modifiers="16"/>
         <BasicSequence id="_5k" name="After Delete assert">
-          <CheckStringStep client="$(client)"
-                           component="label5_projects_|_0:05:19_overall_|_0:00:18_today"
-                           id="_5l">
-            <text>5 projects | 0:05:19 overall | 0:00:18 today</text>
-          </CheckStringStep>
           <CheckItemsStep checktype="column" client="$(client)"
                           component="frameJTimeSched.table5_projects_|_0:05:19_overall_|_0:00:18_today@Title"
                           id="_5m">
@@ -628,11 +623,6 @@ cJ^*}HDigF.Mx~H96#!shBAG*`/%,?frl{G}KM{EudcZqUw}gwKcCA</webp>
             <item>Feed the dog</item>
             <item>Water the garden</item>
           </CheckItemsStep>
-          <CheckStringStep client="$(client)"
-                           component="label5_projects_|_0:05:19_overall_|_0:00:18_today"
-                           id="_72">
-            <text>5 projects | 0:05:19 overall | 0:00:18 today</text>
-          </CheckStringStep>
         </BasicSequence>
         <MouseEventStep clicks="2" client="$(client)"
                         component="frameJTimeSched.table5_projects_|_0:05:19_overall_|_0:00:18_today&amp;0&amp;4"
