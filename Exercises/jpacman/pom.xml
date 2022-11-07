@@ -79,9 +79,15 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert-core</artifactId>
+      <version>2.0M10</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.jupiter.version}</version>
+      <version>5.2.0-M1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -101,6 +107,11 @@
       <artifactId>junit-platform-launcher</artifactId>
       <version>${junit.platform.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-surefire-provider</artifactId>
+      <version>1.2.0-M1</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -262,10 +273,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire.plugin.version}</version>
+        <version>2.21.0</version>
         <configuration>
           <trimStackTrace>false</trimStackTrace>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.2.0-M1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.2.0</version>
+          </dependency>
+        </dependencies>
       </plugin>
 
       <plugin>
@@ -281,7 +304,7 @@
           </execution>
           <execution>
             <id>default-report</id>
-            <phase>prepare-package</phase>
+            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
