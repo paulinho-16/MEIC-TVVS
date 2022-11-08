@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectTime.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jTimeSched -- Time tracking application</a> &gt; <a href="index.source.html" class="el_package">de.dominik_geyer.jtimesched.project</a> &gt; <span class="el_source">ProjectTime.java</span></div><h1>ProjectTime.java</h1><pre class="source lang-java linenums">/* jTimeSched - A simple and lightweight time tracking tool
+ * Copyright (C) 2010-2012 Dominik D. Geyer &lt;dominik.geyer@gmail.com&gt;
+ * See LICENSE.txt for details.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package de.dominik_geyer.jtimesched.project;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class ProjectTime {
+    private static final String fmtDate = &quot;yyyy-MM-dd&quot;;
+
+    private ProjectTime() {
+    }
+
+    public static String formatSeconds(int s) {
+<span class="nc" id="L34">        return String.format(&quot;%d:%02d:%02d&quot;, s / 3600, (s % 3600) / 60, (s % 60));</span>
+    }
+
+    public static int parseSeconds(String strTime) throws ParseException {
+<span class="nc" id="L38">        Pattern p = Pattern.compile(&quot;(\\d+):([0-5]?\\d):([0-5]?\\d)&quot;);    // 0:00:00</span>
+<span class="nc" id="L39">        Matcher m = p.matcher(strTime);</span>
+
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (!m.matches()) {</span>
+<span class="nc" id="L42">            throw new ParseException(&quot;Invalid seconds-string&quot;, 0);</span>
+        }
+
+<span class="nc" id="L45">        int hours = Integer.parseInt(m.group(1));</span>
+<span class="nc" id="L46">        int minutes = Integer.parseInt(m.group(2));</span>
+<span class="nc" id="L47">        int seconds = Integer.parseInt(m.group(3));</span>
+
+<span class="nc" id="L49">        return (hours * 3600 + minutes * 60 + seconds);</span>
+    }
+
+    public static String formatDate(Date d) {
+<span class="nc" id="L53">        SimpleDateFormat sdf = new SimpleDateFormat(ProjectTime.fmtDate);</span>
+<span class="nc" id="L54">        return sdf.format(d);</span>
+    }
+
+    public static Date parseDate(String strDate) throws ParseException {
+<span class="nc" id="L58">        SimpleDateFormat sdf = new SimpleDateFormat(ProjectTime.fmtDate);</span>
+<span class="nc" id="L59">        return sdf.parse(strDate);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Project.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jTimeSched -- Time tracking application</a> &gt; <a href="index.source.html" class="el_package">de.dominik_geyer.jtimesched.project</a> &gt; <span class="el_source">Project.java</span></div><h1>Project.java</h1><pre class="source lang-java linenums">/* jTimeSched - A simple and lightweight time tracking tool
+ * Copyright (C) 2010-2012 Dominik D. Geyer &lt;dominik.geyer@gmail.com&gt;
+ * See LICENSE.txt for details.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package de.dominik_geyer.jtimesched.project;
+
+import java.awt.Color;
+import java.util.Date;
+
+
+public class Project {
+    private String title;
+    private String notes;
+
+    private Date timeCreated;
+    private Color color;
+    private boolean checked;
+
+    private int secondsOverall;
+    private int secondsToday;
+
+    private int quotaOverall;
+    private int quotaToday;
+
+    private boolean running;
+    private Date timeStart;
+
+    public Project() {
+<span class="nc" id="L43">        this(&quot;project&quot;);</span>
+<span class="nc" id="L44">    }</span>
+
+<span class="nc" id="L46">    public Project(String name) {</span>
+<span class="nc" id="L47">        this.title = name;</span>
+<span class="nc" id="L48">        this.notes = &quot;&quot;;</span>
+<span class="nc" id="L49">        this.color = null;</span>
+
+<span class="nc" id="L51">        this.timeStart = new Date();</span>
+<span class="nc" id="L52">        this.timeCreated = new Date();</span>
+<span class="nc" id="L53">    }</span>
+
+
+    public String getTitle() {
+<span class="nc" id="L57">        return title;</span>
+    }
+
+    public void setTitle(String name) {
+<span class="nc" id="L61">        this.title = name;</span>
+<span class="nc" id="L62">    }</span>
+
+    public String getNotes() {
+<span class="nc" id="L65">        return notes;</span>
+    }
+
+    public void setNotes(String notes) {
+<span class="nc" id="L69">        this.notes = notes;</span>
+<span class="nc" id="L70">    }</span>
+
+    public Date getTimeCreated() {
+<span class="nc" id="L73">        return new Date(timeCreated.getTime());</span>
+    }
+
+    public Date getTimeStart() {
+<span class="nc" id="L77">        return new Date(timeStart.getTime());</span>
+    }
+
+    public boolean isRunning() {
+<span class="nc" id="L81">        return this.running;</span>
+    }
+
+    public Color getColor() {
+<span class="nc" id="L85">        return color;</span>
+    }
+
+    public void setColor(Color color) {
+<span class="nc" id="L89">        this.color = color;</span>
+<span class="nc" id="L90">    }</span>
+
+    public boolean isChecked() {
+<span class="nc" id="L93">        return checked;</span>
+    }
+
+    public void setChecked(boolean checked) {
+<span class="nc" id="L97">        this.checked = checked;</span>
+<span class="nc" id="L98">    }</span>
+
+    public void setTimeCreated(Date timeCreated) {
+<span class="nc" id="L101">        this.timeCreated = new Date(timeCreated.getTime());</span>
+<span class="nc" id="L102">    }</span>
+
+    public void setRunning(boolean running) {
+<span class="nc" id="L105">        this.running = running;</span>
+<span class="nc" id="L106">    }</span>
+
+    public void setTimeStart(Date timeStart) {
+<span class="nc" id="L109">        this.timeStart = new Date(timeStart.getTime());</span>
+<span class="nc" id="L110">    }</span>
+
+    protected int getElapsedSeconds() throws ProjectException {
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (!this.isRunning()) {</span>
+<span class="nc" id="L114">            throw new ProjectException(&quot;Timer not running&quot;);</span>
+        }
+
+<span class="nc" id="L117">        Date currentTime = new Date();</span>
+<span class="nc" id="L118">        return (int) ((currentTime.getTime() - this.timeStart.getTime()) / 1000);</span>
+    }
+
+    public void start() throws ProjectException {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (this.isRunning()) {</span>
+<span class="nc" id="L123">            throw new ProjectException(&quot;Timer already running&quot;);</span>
+        }
+
+        // save current time
+<span class="nc" id="L127">        this.timeStart = new Date();</span>
+
+<span class="nc" id="L129">        this.running = true;</span>
+<span class="nc" id="L130">    }</span>
+
+    public void pause() throws ProjectException {
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (!this.isRunning()) {</span>
+<span class="nc" id="L134">            throw new ProjectException(&quot;Timer not running&quot;);</span>
+        }
+
+<span class="nc" id="L137">        int secondsElapsed = this.getElapsedSeconds();</span>
+<span class="nc" id="L138">        this.secondsOverall += secondsElapsed;</span>
+<span class="nc" id="L139">        this.secondsToday += secondsElapsed;</span>
+
+<span class="nc" id="L141">        this.running = false;</span>
+<span class="nc" id="L142">    }</span>
+
+    public void toggle() {
+        try {
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (this.isRunning()) {</span>
+<span class="nc" id="L147">                this.pause();</span>
+            } else {
+<span class="nc" id="L149">                this.start();</span>
+            }
+<span class="nc" id="L151">        } catch (ProjectException e) {</span>
+            // I don't care... eat it
+<span class="nc" id="L153">        }</span>
+<span class="nc" id="L154">    }</span>
+
+    public int getSecondsToday() {
+<span class="nc" id="L157">        int seconds = this.secondsToday;</span>
+
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (this.isRunning()) {</span>
+            try {
+<span class="nc" id="L161">                seconds += this.getElapsedSeconds();</span>
+<span class="nc" id="L162">            } catch (ProjectException e) {</span>
+<span class="nc" id="L163">                e.printStackTrace();</span>
+<span class="nc" id="L164">            }</span>
+        }
+
+<span class="nc" id="L167">        return seconds;</span>
+    }
+
+    public int getSecondsOverall() {
+<span class="nc" id="L171">        int seconds = this.secondsOverall;</span>
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (this.isRunning()) {</span>
+            try {
+<span class="nc" id="L175">                seconds += this.getElapsedSeconds();</span>
+<span class="nc" id="L176">            } catch (ProjectException e) {</span>
+<span class="nc" id="L177">                e.printStackTrace();</span>
+<span class="nc" id="L178">            }</span>
+        }
+
+<span class="nc" id="L181">        return seconds;</span>
+    }
+
+    public void setSecondsOverall(int secondsOverall) {
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        if (secondsOverall &lt; 0) {</span>
+<span class="nc" id="L186">            secondsOverall = 0;</span>
+        }
+
+<span class="nc" id="L189">        this.secondsOverall = secondsOverall;</span>
+<span class="nc" id="L190">    }</span>
+
+    public void setSecondsToday(int secondsToday) {
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (secondsToday &lt; 0) {</span>
+<span class="nc" id="L194">            secondsToday = 0;</span>
+        }
+
+<span class="nc" id="L197">        this.secondsToday = secondsToday;</span>
+<span class="nc" id="L198">    }</span>
+
+    public void adjustSecondsToday(int secondsToday) {
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (secondsToday &lt; 0) {</span>
+<span class="nc" id="L202">            secondsToday = 0;</span>
+        }
+
+<span class="nc" id="L205">        int secondsDelta = secondsToday - this.secondsToday;</span>
+
+<span class="nc" id="L207">        this.setSecondsOverall(this.getSecondsOverall() + secondsDelta);</span>
+<span class="nc" id="L208">        this.setSecondsToday(secondsToday);</span>
+<span class="nc" id="L209">    }</span>
+
+    public void resetToday() {
+<span class="nc" id="L212">        this.secondsToday = 0;</span>
+<span class="nc" id="L213">        this.quotaToday = 0;</span>
+
+        // reset time-started
+<span class="nc" id="L216">        this.timeStart = new Date();</span>
+<span class="nc" id="L217">    }</span>
+
+    public int getQuotaOverall() {
+<span class="nc" id="L220">        return quotaOverall;</span>
+    }
+
+    public void setQuotaOverall(int quotaOverall) {
+<span class="nc" id="L224">        this.quotaOverall = quotaOverall;</span>
+<span class="nc" id="L225">    }</span>
+
+    public int getQuotaToday() {
+<span class="nc" id="L228">        return quotaToday;</span>
+    }
+
+    public void setQuotaToday(int quotaToday) {
+<span class="nc" id="L232">        this.quotaToday = quotaToday;</span>
+<span class="nc" id="L233">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L237">        return String.format(&quot;Project [title=%s, running=%s, secondsOverall=%d, secondsToday=%d, checked=%s]&quot;,</span>
+            title,
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            (running) ? &quot;yes&quot; : &quot;no&quot;,</span>
+<span class="nc" id="L240">            secondsOverall, secondsToday,</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            (checked) ? &quot;yes&quot; : &quot;no&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

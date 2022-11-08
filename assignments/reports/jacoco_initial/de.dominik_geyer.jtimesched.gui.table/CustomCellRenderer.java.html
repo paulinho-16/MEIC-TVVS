@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomCellRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jTimeSched -- Time tracking application</a> &gt; <a href="index.source.html" class="el_package">de.dominik_geyer.jtimesched.gui.table</a> &gt; <span class="el_source">CustomCellRenderer.java</span></div><h1>CustomCellRenderer.java</h1><pre class="source lang-java linenums">/* jTimeSched - A simple and lightweight time tracking tool
+ * Copyright (C) 2010-2012 Dominik D. Geyer &lt;dominik.geyer@gmail.com&gt;
+ * See LICENSE.txt for details.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package de.dominik_geyer.jtimesched.gui.table;
+
+import de.dominik_geyer.jtimesched.gui.JTimeSchedFrame;
+import de.dominik_geyer.jtimesched.project.Project;
+import de.dominik_geyer.jtimesched.project.ProjectTableModel;
+import de.dominik_geyer.jtimesched.project.ProjectTime;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.util.Date;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.TableCellRenderer;
+
+
+@SuppressWarnings(&quot;serial&quot;)
+public class CustomCellRenderer extends JLabel implements TableCellRenderer {
+<span class="nc" id="L39">    public static final Color COLOR_RUNNING = new Color(0xFF, 0xE9, 0x7F);</span>
+
+<span class="nc" id="L41">    public CustomCellRenderer() {</span>
+<span class="nc" id="L42">        this.setOpaque(true);</span>
+<span class="nc" id="L43">    }</span>
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table,
+                                                   Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+<span class="nc" id="L49">        ProjectTableModel tstm = (ProjectTableModel) table.getModel();</span>
+<span class="nc" id="L50">        int modelRow = table.convertRowIndexToModel(row);</span>
+<span class="nc" id="L51">        int modelColumn = table.convertColumnIndexToModel(column);</span>
+<span class="nc" id="L52">        Project prj = tstm.getProjectAt(modelRow);</span>
+
+
+<span class="nc" id="L55">        String text = null;</span>
+
+<span class="nc bnc" id="L57" title="All 5 branches missed.">        switch (modelColumn) {</span>
+            case ProjectTableModel.COLUMN_TITLE:
+<span class="nc" id="L59">                this.setText((String) value);</span>
+
+                // row-color
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                if (table instanceof ProjectTable) {</span>
+<span class="nc" id="L63">                    ProjectTable pt = (ProjectTable) table;</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                    if (pt.isHighlightRow(modelRow)) {</span>
+<span class="nc" id="L65">                        this.setBorder(new LineBorder(Color.BLACK, 2));</span>
+                    } else {
+<span class="nc" id="L67">                        this.setBorder(null);</span>
+                    }
+<span class="nc" id="L69">                } else {</span>
+<span class="nc" id="L70">                    throw new ClassCastException(&quot;Wrong cast type to ProjectTable variable&quot;);</span>
+                }
+
+<span class="nc bnc" id="L73" title="All 2 branches missed.">                if (!prj.getNotes().isEmpty()) {</span>
+<span class="nc" id="L74">                    String tooltip = prj.getNotes()</span>
+<span class="nc" id="L75">                        .replaceAll(&quot;&amp;&quot;, &quot;&amp;amp;&quot;)</span>
+<span class="nc" id="L76">                        .replaceAll(&quot;(\r\n|\n)&quot;, &quot;&lt;br/&gt;&quot;)</span>
+<span class="nc" id="L77">                        .replaceAll(&quot; &quot;, &quot;&amp;nbsp;&quot;)</span>
+<span class="nc" id="L78">                        .replaceAll(&quot;\t&quot;, &quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&quot;);</span>
+
+<span class="nc" id="L80">                    this.setToolTipText(&quot;&lt;html&gt;&lt;strong&gt;&lt;u&gt;Notes:&lt;/u&gt;&lt;/strong&gt;&lt;br/&gt;&lt;br/&gt;&quot;</span>
+                        + tooltip
+                        + &quot;&lt;/html&gt;&quot;);
+<span class="nc" id="L83">                } else {</span>
+<span class="nc" id="L84">                    this.setToolTipText(null);</span>
+                }
+
+<span class="nc" id="L87">                break;</span>
+            case ProjectTableModel.COLUMN_CREATED:
+<span class="nc" id="L89">                text = ProjectTime.formatDate((Date) value);</span>
+<span class="nc" id="L90">                this.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L91">                this.setText(text);</span>
+<span class="nc" id="L92">                break;</span>
+            case ProjectTableModel.COLUMN_ACTION_DELETE:
+<span class="nc" id="L94">                this.setToolTipText(&quot;remove project&quot;);</span>
+<span class="nc" id="L95">                this.setIcon(JTimeSchedFrame.getImageIcon(&quot;project-delete.png&quot;));</span>
+<span class="nc" id="L96">                this.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L97">                break;</span>
+            case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+                ImageIcon ii;
+                //String tooltip;
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                if (prj.isRunning()) {</span>
+                    //tooltip = &quot;pause&quot;;
+<span class="nc" id="L103">                    ii = JTimeSchedFrame.getImageIcon(&quot;pause.png&quot;);</span>
+                } else {
+                    //tooltip = &quot;start&quot;;
+<span class="nc" id="L106">                    ii = JTimeSchedFrame.getImageIcon(&quot;start.png&quot;);</span>
+                }
+                //this.setToolTipText(tooltip);
+<span class="nc" id="L109">                this.setIcon(ii);</span>
+<span class="nc" id="L110">                this.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L111">                break;</span>
+            default:
+<span class="nc" id="L113">                throw new IllegalStateException(&quot;Unexpected value: &quot; + modelColumn);</span>
+        }
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (prj.isRunning()) {</span>
+<span class="nc" id="L117">            this.setFont(this.getFont().deriveFont(Font.BOLD));</span>
+<span class="nc" id="L118">            this.setBackground(CustomCellRenderer.COLOR_RUNNING);</span>
+        } else {
+<span class="nc" id="L120">            this.setFont(this.getFont().deriveFont(Font.PLAIN));</span>
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            if (isSelected) {</span>
+<span class="nc" id="L123">                this.setBackground(table.getSelectionBackground());</span>
+            } else {
+<span class="nc" id="L125">                this.setBackground(table.getBackground());</span>
+            }
+        }
+
+<span class="nc" id="L129">        return this;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

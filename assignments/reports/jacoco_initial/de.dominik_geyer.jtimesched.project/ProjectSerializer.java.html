@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectSerializer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jTimeSched -- Time tracking application</a> &gt; <a href="index.source.html" class="el_package">de.dominik_geyer.jtimesched.project</a> &gt; <span class="el_source">ProjectSerializer.java</span></div><h1>ProjectSerializer.java</h1><pre class="source lang-java linenums">/* jTimeSched - A simple and lightweight time tracking tool
+ * Copyright (C) 2010-2012 Dominik D. Geyer &lt;dominik.geyer@gmail.com&gt;
+ * See LICENSE.txt for details.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package de.dominik_geyer.jtimesched.project;
+
+import de.dominik_geyer.jtimesched.JTimeSchedApp;
+import java.awt.Color;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
+
+public class ProjectSerializer {
+    private String filename;
+
+<span class="nc" id="L48">    public ProjectSerializer(String filename) {</span>
+<span class="nc" id="L49">        this.filename = filename;</span>
+<span class="nc" id="L50">    }</span>
+
+
+    // Calling this method from a shutdown hook won't work because
+    // SAXTransformerFactory which uses the Services API which might
+    // become unavailable. Also, it's not thread safe.
+    public synchronized void writeXml(List&lt;Project&gt; projects) throws TransformerConfigurationException, SAXException, IOException {
+<span class="nc" id="L57">        OutputStreamWriter out = new OutputStreamWriter(</span>
+            new FileOutputStream(this.filename), &quot;UTF8&quot;);
+<span class="nc" id="L59">        final StreamResult streamResult = new StreamResult(out);</span>
+<span class="nc" id="L60">        SAXTransformerFactory tf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();</span>
+
+        // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6296446
+<span class="nc" id="L63">        tf.setAttribute(&quot;indent-number&quot;, new Integer(4));</span>
+
+<span class="nc" id="L65">        TransformerHandler hd = tf.newTransformerHandler();</span>
+<span class="nc" id="L66">        Transformer serializer = hd.getTransformer();</span>
+<span class="nc" id="L67">        serializer.setOutputProperty(OutputKeys.ENCODING, &quot;UTF-8&quot;);</span>
+        //serializer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, &quot;projects.dtd&quot;);
+<span class="nc" id="L69">        serializer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);</span>
+<span class="nc" id="L70">        hd.setResult(streamResult);</span>
+<span class="nc" id="L71">        hd.startDocument();</span>
+<span class="nc" id="L72">        AttributesImpl atts = new AttributesImpl();</span>
+
+<span class="nc" id="L74">        addXmlAttribute(atts, &quot;version&quot;, JTimeSchedApp.getAppVersion());</span>
+<span class="nc" id="L75">        startXmlElement(hd, &quot;projects&quot;, atts);</span>
+
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (Project p : projects) {</span>
+<span class="nc" id="L78">            startXmlElement(hd, &quot;project&quot;, null);</span>
+
+<span class="nc" id="L80">            addXmlElement(hd, &quot;title&quot;, null, p.getTitle());</span>
+<span class="nc" id="L81">            addXmlElement(hd, &quot;notes&quot;, null, p.getNotes());</span>
+<span class="nc" id="L82">            addXmlElement(hd, &quot;created&quot;, null, new Long(p.getTimeCreated().getTime()));</span>
+<span class="nc" id="L83">            addXmlElement(hd, &quot;started&quot;, null, new Long(p.getTimeStart().getTime()));</span>
+<span class="nc" id="L84">            addXmlElement(hd, &quot;running&quot;, null, &quot;no&quot; /*p.isRunning() ? &quot;yes&quot; : &quot;no&quot;*/);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            addXmlElement(hd, &quot;checked&quot;, null, p.isChecked() ? &quot;yes&quot; : &quot;no&quot;);</span>
+
+<span class="nc" id="L87">            atts.clear();</span>
+<span class="nc" id="L88">            addXmlAttribute(atts, &quot;overall&quot;, new Integer(p.getSecondsOverall()));</span>
+<span class="nc" id="L89">            addXmlAttribute(atts, &quot;today&quot;, new Integer(p.getSecondsToday()));</span>
+<span class="nc" id="L90">            addXmlElement(hd, &quot;time&quot;, atts, null);</span>
+
+<span class="nc" id="L92">            atts.clear();</span>
+<span class="nc" id="L93">            addXmlAttribute(atts, &quot;overall&quot;, new Integer(p.getQuotaOverall()));</span>
+<span class="nc" id="L94">            addXmlAttribute(atts, &quot;today&quot;, new Integer(p.getQuotaToday()));</span>
+<span class="nc" id="L95">            addXmlElement(hd, &quot;quota&quot;, atts, null);</span>
+
+<span class="nc" id="L97">            Color color = p.getColor();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (color != null) {</span>
+<span class="nc" id="L99">                atts.clear();</span>
+<span class="nc" id="L100">                addXmlAttribute(atts, &quot;red&quot;, new Integer(color.getRed()));</span>
+<span class="nc" id="L101">                addXmlAttribute(atts, &quot;green&quot;, new Integer(color.getGreen()));</span>
+<span class="nc" id="L102">                addXmlAttribute(atts, &quot;blue&quot;, new Integer(color.getBlue()));</span>
+<span class="nc" id="L103">                addXmlAttribute(atts, &quot;alpha&quot;, new Integer(color.getAlpha()));</span>
+<span class="nc" id="L104">                addXmlElement(hd, &quot;color&quot;, atts, null);</span>
+            }
+
+<span class="nc" id="L107">            endXmlElement(hd, &quot;project&quot;);</span>
+<span class="nc" id="L108">        }</span>
+<span class="nc" id="L109">        endXmlElement(hd, &quot;projects&quot;);</span>
+
+<span class="nc" id="L111">        hd.endDocument();</span>
+
+<span class="nc" id="L113">        out.flush();</span>
+<span class="nc" id="L114">        out.close();</span>
+<span class="nc" id="L115">    }</span>
+
+    public ArrayList&lt;Project&gt; readXml() throws ParserConfigurationException, SAXException, IOException {
+<span class="nc" id="L118">        ArrayList&lt;Project&gt; arPrj = new ArrayList&lt;Project&gt;();</span>
+
+<span class="nc" id="L120">        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span>
+<span class="nc" id="L121">        DocumentBuilder builder = factory.newDocumentBuilder();</span>
+<span class="nc" id="L122">        Document document = builder.parse(new File(this.filename));</span>
+
+<span class="nc" id="L124">        Element root = document.getDocumentElement();</span>
+<span class="nc" id="L125">        NodeList nl = root.getElementsByTagName(&quot;project&quot;);</span>
+        //NodeList nl = root.getChildNodes();
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        for (int i = 0; i &lt; nl.getLength(); i++) {</span>
+<span class="nc" id="L128">            Element pe = (Element) nl.item(i);</span>
+
+<span class="nc" id="L130">            Project p = new Project();</span>
+
+            Element e;
+<span class="nc" id="L133">            e = getFirstElement(pe, &quot;title&quot;);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (e.getFirstChild() != null) {</span>
+<span class="nc" id="L135">                p.setTitle(e.getFirstChild().getNodeValue());</span>
+            } else {
+<span class="nc" id="L137">                p.setTitle(&quot;&quot;);</span>
+            }
+
+<span class="nc" id="L140">            e = getFirstElement(pe, &quot;created&quot;);</span>
+<span class="nc" id="L141">            long ts = Long.parseLong(e.getFirstChild().getNodeValue());</span>
+<span class="nc" id="L142">            p.setTimeCreated(new Date(ts));</span>
+
+<span class="nc" id="L144">            e = getFirstElement(pe, &quot;started&quot;);</span>
+<span class="nc" id="L145">            ts = Long.parseLong(e.getFirstChild().getNodeValue());</span>
+<span class="nc" id="L146">            p.setTimeStart(new Date(ts));</span>
+
+<span class="nc" id="L148">            e = getFirstElement(pe, &quot;running&quot;);</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">            p.setRunning((e.getFirstChild().getNodeValue().equals(&quot;yes&quot;)) ? true : false);</span>
+
+<span class="nc" id="L151">            e = getFirstElement(pe, &quot;checked&quot;);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            p.setChecked((e.getFirstChild().getNodeValue().equals(&quot;yes&quot;)) ? true : false);</span>
+
+<span class="nc" id="L154">            e = getFirstElement(pe, &quot;time&quot;);</span>
+<span class="nc" id="L155">            int seconds = Integer.parseInt(e.getAttribute(&quot;overall&quot;));</span>
+<span class="nc" id="L156">            p.setSecondsOverall(seconds);</span>
+<span class="nc" id="L157">            seconds = Integer.parseInt(e.getAttribute(&quot;today&quot;));</span>
+<span class="nc" id="L158">            p.setSecondsToday(seconds);</span>
+
+            NodeList pnl;
+<span class="nc" id="L161">            pnl = pe.getElementsByTagName(&quot;quota&quot;);</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (pnl.getLength() != 0) {</span>
+<span class="nc" id="L163">                e = (Element) pnl.item(0);</span>
+<span class="nc" id="L164">                seconds = Integer.parseInt(e.getAttribute(&quot;overall&quot;));</span>
+<span class="nc" id="L165">                p.setQuotaOverall(seconds);</span>
+<span class="nc" id="L166">                seconds = Integer.parseInt(e.getAttribute(&quot;today&quot;));</span>
+<span class="nc" id="L167">                p.setQuotaToday(seconds);</span>
+            }
+
+<span class="nc" id="L170">            pnl = pe.getElementsByTagName(&quot;color&quot;);</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">            if (pnl.getLength() != 0) {</span>
+<span class="nc" id="L172">                e = (Element) pnl.item(0);</span>
+<span class="nc" id="L173">                int r = Integer.parseInt(e.getAttribute(&quot;red&quot;));</span>
+<span class="nc" id="L174">                int g = Integer.parseInt(e.getAttribute(&quot;green&quot;));</span>
+<span class="nc" id="L175">                int b = Integer.parseInt(e.getAttribute(&quot;blue&quot;));</span>
+<span class="nc" id="L176">                int a = Integer.parseInt(e.getAttribute(&quot;alpha&quot;));</span>
+
+<span class="nc" id="L178">                p.setColor(new Color(r, g, b, a));</span>
+            }
+
+<span class="nc" id="L181">            pnl = pe.getElementsByTagName(&quot;notes&quot;);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (pnl.getLength() != 0) {</span>
+<span class="nc" id="L183">                e = (Element) pnl.item(0);</span>
+
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                if (e.getFirstChild() != null) {</span>
+<span class="nc" id="L186">                    String notes = e.getFirstChild().getNodeValue();</span>
+
+<span class="nc" id="L188">                    p.setNotes(notes);</span>
+                }
+            }
+
+<span class="nc" id="L192">            arPrj.add(p);</span>
+<span class="nc" id="L193">            System.out.println(p);</span>
+        }
+
+<span class="nc" id="L196">        return arPrj;</span>
+    }
+
+    protected Element getFirstElement(Element e, String name) {
+<span class="nc" id="L200">        return ((Element) e.getElementsByTagName(name).item(0));</span>
+    }
+
+    protected static void startXmlElement(TransformerHandler hd, String element, AttributesImpl atts) throws SAXException {
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (atts == null) {</span>
+<span class="nc" id="L205">            atts = new AttributesImpl();</span>
+        }
+<span class="nc" id="L207">        hd.startElement(&quot;&quot;, &quot;&quot;, element, atts);</span>
+<span class="nc" id="L208">    }</span>
+
+    protected static void endXmlElement(TransformerHandler hd, String element) throws SAXException {
+<span class="nc" id="L211">        hd.endElement(&quot;&quot;, &quot;&quot;, element);</span>
+<span class="nc" id="L212">    }</span>
+
+    protected static void addXmlElement(TransformerHandler hd, String element, AttributesImpl atts, Object data) throws SAXException {
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        if (atts == null) {</span>
+<span class="nc" id="L216">            atts = new AttributesImpl();</span>
+        }
+<span class="nc" id="L218">        hd.startElement(&quot;&quot;, &quot;&quot;, element, atts);</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (data != null) {</span>
+<span class="nc" id="L220">            String strData = data.toString();</span>
+<span class="nc" id="L221">            hd.characters(strData.toCharArray(), 0, strData.length());</span>
+        }
+<span class="nc" id="L223">        hd.endElement(&quot;&quot;, &quot;&quot;, element);</span>
+<span class="nc" id="L224">    }</span>
+
+    protected static void addXmlAttribute(AttributesImpl atts, String attribute, Object data) {
+<span class="nc" id="L227">        atts.addAttribute(&quot;&quot;, &quot;&quot;, attribute, &quot;CDATA&quot;, data.toString());</span>
+<span class="nc" id="L228">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
