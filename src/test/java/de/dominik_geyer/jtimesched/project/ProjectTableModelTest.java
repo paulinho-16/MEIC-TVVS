@@ -51,9 +51,15 @@ public class ProjectTableModelTest {
         assertFalse(tableModel.isCellEditable(1, column));
     }
 
-    @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception")
-    @CsvSource(value = {"-2,2", "3,3", "-1,2", "2,1", "0,-2", "0,9", "1,-1", "1,8"})
-    public void testIsCellEditable_InvalidCell_ShouldThrowException(int row, int column) {
+    @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception due to invalid row")
+    @CsvSource(value = {"-2,2", "3,3", "-1,2", "2,1"})
+    public void testIsCellEditable_InvalidRow_ShouldThrowException(int row, int column) {
         assertThrows(IndexOutOfBoundsException.class, () -> tableModel.isCellEditable(row, column));
+    }
+
+    @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception due to invalid column")
+    @CsvSource(value = {"0,-2", "0,9", "1,-1", "1,8"})
+    public void testIsCellEditable_InvalidColumn_ShouldThrowException(int row, int column) {
+        assertThrows(IllegalStateException.class, () -> tableModel.isCellEditable(row, column));
     }
 }

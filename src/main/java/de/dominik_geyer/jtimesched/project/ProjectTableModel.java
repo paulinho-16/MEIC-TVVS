@@ -141,6 +141,9 @@ public class ProjectTableModel extends AbstractTableModel {
                 // running tasks cannot be edited
                 return (prj.isRunning() ? false : true);
             default:
+                if ((column < 0) || (column > 7)) {
+                    throw new IllegalStateException("Non-existing column: " + column);
+                }
                 return false;
         }
     }
