@@ -10,6 +10,8 @@
 
 // TODO: introdução a dizer quais as classes que decidimos testar e porquê
 
+// TODO: no formatDate remover testes inúteis -> após perguntar ao stor o que está pinned
+
 ### Class X
 
 // TODO: descrever unit testes para a class X
