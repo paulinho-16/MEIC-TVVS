@@ -1,10 +1,14 @@
 package de.dominik_geyer.jtimesched.project;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import de.dominik_geyer.jtimesched.JTimeSchedApp;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,13 +26,26 @@ public class ProjectTableModelTest {
     private ProjectTableModel tableModel;
 
     @BeforeEach
-    void setup() {
+    void setup() throws ProjectException, NoSuchFieldException, IllegalAccessException {
         Project proj1 = new Project("Test Project 1");
         Project proj2 = new Project("Test Project 2");
+        Project proj3 = new Project("Test Project 3");
+
+        proj3.start();
+        proj3.setChecked(true);
 
         projects.add(proj1);
         projects.add(proj2);
+        projects.add(proj3);
         tableModel = new ProjectTableModel(projects);
+
+
+        Field reader = JTimeSchedApp.class.getDeclaredField("LOGGER");
+        reader.setAccessible(true);
+        JTimeSchedApp mainClass = new JTimeSchedApp();
+        Logger l = Logger.getLogger("JTimeSched");
+        l.setLevel(Level.ALL);
+        reader.set(mainClass, l);
     }
 
     @Test
@@ -42,10 +59,11 @@ public class ProjectTableModelTest {
     }
 
     @ParameterizedTest(name = "Test #{index} with input ({arguments})")
-    @CsvSource(value = {"0,1", "0,2", "0,3","0,4", "0,5", "0,6", "0,7", "0,8"})
+    @CsvSource(value = {"0,1", "0,2", "0,3","0,4", "0,5", "0,6", "0,7", "0,8","2,1","2,7"})
     public void testGetValueAt(int row, int column){
         tableModel.getValueAt(row,column);
 
+        // Last 2 tests are for branch if conditions on project3
         // Assert the result of the getter as an object
 
     }
@@ -149,47 +167,72 @@ public class ProjectTableModelTest {
 
     @Nested
     public class SetValueAtTest{
-        // Este teste tem muitas cahamdas ao Logger e não estamos a conseguir tratar disso
-        private Project proj;
 
-        @BeforeEach
-        void setup() {
-            proj = new Project();
-
-            proj.setChecked(true);/*
-            proj.setSecondsOverall(10);
-            proj.setSecondsToday(5);
-            proj.setTitle("Third Project");
-            proj.setColor(Color.green);
-            proj.setNotes("hello notes");
-            proj.setQuotaOverall(2);
-            proj.setQuotaToday(1);
-            proj.setRunning(true);*/
-
-        }
 
         @Test
         public void testSetCheck(){
 
-            tableModel.setValueAt(false,0,COLUMN_CHECK);
-
-            assertFalse(proj.isChecked());
+            tableModel.setValueAt(true,0,COLUMN_CHECK);
+            assertTrue((Boolean) tableModel.getValueAt(0,COLUMN_CHECK));
 
         }
+
+        @Test
+        public void testSetTitle(){
+            tableModel.setValueAt("The cake is a lie",0,COLUMN_TITLE);
+            assertEquals("The cake is a lie", tableModel.getValueAt(0,COLUMN_TITLE));
+        }
+
+        @Test
+        public void testSetColor(){
+            tableModel.setValueAt(Color.yellow,0,COLUMN_COLOR);
+            assertEquals(Color.yellow, tableModel.getValueAt(0,COLUMN_COLOR));
+        }
+
+
+        @Test
+        public void testSetCreated(){
+            tableModel.setValueAt(new Date(2021-12-25),0,COLUMN_CREATED);
+            assertEquals(new Date(2021-12-25), tableModel.getValueAt(0,COLUMN_CREATED));
+        }
+
+        @Test
+        public void testSetTimeOverall(){
+            tableModel.setValueAt(new Integer(128),0,COLUMN_TIMEOVERALL);
+            assertEquals(new Integer(128), tableModel.getValueAt(0,COLUMN_TIMEOVERALL));
+        }
+
+        @Test
+        public void testSetTimeToday(){
+            tableModel.setValueAt(new Integer(56),0,COLUMN_TIMETODAY);
+            assertEquals(new Integer(56), tableModel.getValueAt(0,COLUMN_TIMETODAY));
+        }
+
+        @Test
+        public void testException(){
+
+            assertThrows(IllegalStateException.class, () -> tableModel.setValueAt(null,0,10));
+        }
+
+
+
+
+
+
 
 
 
     }
 
     @Test
-    public void testAddProject(){
+    public void testAddProject() {
+
+        
 
         int initial_count = tableModel.getRowCount();
         Project prj = new Project("New project");
 
-        // Field.set() // -> Descobrir como se consegue criar o Logger que está complicado
-
-        // tableModel.addProject(prj);
+        tableModel.addProject(prj);
 
         int final_count = tableModel.getRowCount();
         assertEquals(initial_count + 1, final_count);
@@ -201,7 +244,7 @@ public class ProjectTableModelTest {
 
         int initial_count = tableModel.getRowCount();
 
-        //tableModel.removeProject(0);
+        tableModel.removeProject(0);
 
         int final_count = tableModel.getRowCount();
 
