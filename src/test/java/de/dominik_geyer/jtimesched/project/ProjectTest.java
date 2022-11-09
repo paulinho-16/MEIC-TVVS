@@ -103,7 +103,7 @@ public class ProjectTest {
         }
 
         @Test
-        public void testStart_RunningProject_ShouldReturnException() throws ProjectException {
+        public void testStart_RunningProject_ShouldThrowException() throws ProjectException {
             // Create new Project
             Project proj = new Project();
             // Starting project
@@ -135,7 +135,7 @@ public class ProjectTest {
         }
 
         @Test
-        public void testPause_IdleProject_ShouldReturnException() {
+        public void testPause_IdleProject_ShouldThrowException() {
             // Create new Project
             Project proj = new Project();
             // Project should not be running after it is created

@@ -14,6 +14,7 @@ To configure this tool in our project, we had to modify the `pom.xml` file by ad
 After a first analysis of the coverage of our tests, we developed more unit tests to get closer to 100% coverage (excluding GUI features).
 So, we focused on the `project` and `misc` sub-packages, in addition to testing the main class, located in the `jtimesched` package.
 We will explain the logic of each test, developed with the desired coverage in mind, in addition to discussing their outcome.
+As for the naming of test methods, we follow a *MethodName_StateUnderTest_ExpectedBehaviour* approach.
 
 Finally, after reaching the desired depth, a final report on the project's coverage will be generated and discussed in the last section.
 
