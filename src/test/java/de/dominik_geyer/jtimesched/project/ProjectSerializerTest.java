@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ProjectSerializerTest {
     private final String filename = "src/test/resources/WriteXmlTest.xml";
@@ -120,15 +120,18 @@ public class ProjectSerializerTest {
 
 
     @Test
-    public void testReadXml() throws IOException, SAXException, ParserConfigurationException, TransformerConfigurationException {
+    public void testReadXml_Empty() throws IOException, SAXException, ParserConfigurationException, TransformerConfigurationException {
         List<Project> projects = new ArrayList<>();
         ps.writeXml(projects);
-        ps.readXml();
+        assertEquals(projects,ps.readXml());
+
     }
 
     @Test
-    public void testReadXml_NotEmpty() throws ProjectException, IOException, SAXException, TransformerConfigurationException, ParserConfigurationException {
+    public void testReadXml_NotEmpty_ShouldReadProvidedValues() throws ProjectException, IOException, SAXException, TransformerConfigurationException, ParserConfigurationException {
         List<Project> projects = new ArrayList<>();
+        List<Project> read_projects;
+
         Project prj1 = new Project("Running Project");
         Project prj2 = new Project("Checked Project");
         Project prj3 = new Project("Times Project");
@@ -142,7 +145,7 @@ public class ProjectSerializerTest {
         prj3.setSecondsToday(440);
         prj3.setSecondsOverall(3600);
         prj3.setTimeCreated(Date.from(Instant.parse("2018-10-16T00:00:00.000Z")));
-        prj4.setTitle(null);
+        prj4.setTitle("");
 
         // Write the Projects to the XML files
         projects.add(prj1);
@@ -151,16 +154,66 @@ public class ProjectSerializerTest {
         projects.add(prj4);
         ps.writeXml(projects);
 
-        ps.readXml();
+        read_projects = ps.readXml();
+
+        // Check Attributes
+        Project pj1 = read_projects.get(0);
+        Project pj2 = read_projects.get(1);
+        Project pj3 = read_projects.get(2);
+        Project pj4 = read_projects.get(3);
+
+        compareProjects(prj1,pj1);
+        compareProjects(prj2,pj2);
+        compareProjects(prj3,pj3);
+        compareProjects(prj4,pj4);
+    }
+
+    private void compareProjects(Project prj,Project returned){
+
+        /*assertAll("Test obj1 with obj2 equality",
+            () -> assertEquals(prj.getSecondsToday(), returned.getSecondsToday()),
+            () -> assertEquals(prj.getSecondsOverall(), returned.getSecondsOverall()),
+            () -> assertEquals(prj.isChecked(), returned.isChecked()),
+            () -> assertEquals(prj.getColor(), returned.getColor()),
+            () -> assertEquals(prj.getTimeCreated(), returned.getTimeCreated()),
+            () -> assertEquals(prj.getNotes(), returned.getNotes()),
+            () -> assertTrue(prj.getTitle() == null && returned.getTitle().equals("") || prj.getTitle().equals(returned.getTitle()))
+        );*/
+
+        //  The last assert is different due to the way a null value in the title is written to the XML
+
+        assertAll("Test obj1 with obj2 equality",
+            () -> assertEquals(prj.getSecondsToday(), returned.getSecondsToday()),
+            () -> assertEquals(prj.getSecondsOverall(), returned.getSecondsOverall()),
+            () -> assertEquals(prj.isChecked(), returned.isChecked()),
+            () -> assertEquals(prj.getColor(), returned.getColor()),
+            () -> assertEquals(prj.getTimeCreated(), returned.getTimeCreated()),
+            () -> assertEquals(prj.getNotes(), returned.getNotes()),
+            () -> assertEquals(prj.getTitle(), (returned.getTitle()))
+        );
+
+        // TODO: choose methods.
+
+
     }
 
     @Test
-    public void testReadXmlImpossibleFields() throws IOException, SAXException, ParserConfigurationException {
+    public void testReadXml_ImpossibleFields() throws IOException, SAXException, ParserConfigurationException {
         // This test uses a manually configured XML file that can be seen in the resource folders
+        Project prj;
+
         String filename2 = "src/test/resources/WriteXmlTest2.xml";
         ProjectSerializer ps2 = new ProjectSerializer(filename2);
 
-        ps2.readXml();
+        prj = ps2.readXml().get(0);
+
+        assertEquals(0,prj.getQuotaOverall());
+        assertEquals(0,prj.getQuotaToday());
+        assertTrue(prj.isRunning());
+        assertEquals("",prj.getNotes());
+
+
+
     }
 
 
