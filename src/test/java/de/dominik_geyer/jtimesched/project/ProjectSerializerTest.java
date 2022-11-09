@@ -117,4 +117,51 @@ public class ProjectSerializerTest {
         long created = Long.parseLong(e.getElementsByTagName("created").item(0).getFirstChild().getNodeValue());
         assertEquals(Date.from(Instant.parse("2018-10-16T00:00:00.000Z")), new Date(created));
     }
+
+
+    @Test
+    public void testReadXml() throws IOException, SAXException, ParserConfigurationException, TransformerConfigurationException {
+        List<Project> projects = new ArrayList<>();
+        ps.writeXml(projects);
+        ps.readXml();
+    }
+
+    @Test
+    public void testReadXml_NotEmpty() throws ProjectException, IOException, SAXException, TransformerConfigurationException, ParserConfigurationException {
+        List<Project> projects = new ArrayList<>();
+        Project prj1 = new Project("Running Project");
+        Project prj2 = new Project("Checked Project");
+        Project prj3 = new Project("Times Project");
+        Project prj4 = new Project("No Title");
+
+        // Change parameters of each project
+        prj1.start();
+        prj1.setNotes("A quick note");
+        prj2.setChecked(true);
+        prj2.setColor(new Color(3, 145, 255));
+        prj3.setSecondsToday(440);
+        prj3.setSecondsOverall(3600);
+        prj3.setTimeCreated(Date.from(Instant.parse("2018-10-16T00:00:00.000Z")));
+        prj4.setTitle(null);
+
+        // Write the Projects to the XML files
+        projects.add(prj1);
+        projects.add(prj2);
+        projects.add(prj3);
+        projects.add(prj4);
+        ps.writeXml(projects);
+
+        ps.readXml();
+    }
+
+    @Test
+    public void testReadXmlImpossibleFields() throws IOException, SAXException, ParserConfigurationException {
+        // This test uses a manually configured XML file that can be seen in the resource folders
+        String filename2 = "src/test/resources/WriteXmlTest2.xml";
+        ProjectSerializer ps2 = new ProjectSerializer(filename2);
+
+        ps2.readXml();
+    }
+
+
 }
