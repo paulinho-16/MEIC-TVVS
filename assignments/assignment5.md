@@ -13,7 +13,8 @@ To configure this tool in our project, we had to modify the `pom.xml` file by ad
 
 After a first analysis of the coverage of our tests, we developed more unit tests to get closer to 100% coverage (excluding GUI features).
 So, we focused on the `project` and `misc` sub-packages, in addition to testing the main class, located in the `jtimesched` package.
-We will explain the logic of each test, developed with the desired coverage in mind, in addition to discussing their outcome.
+
+Each test was developed with the desired coverage in mind, and we tried to make the most of **JUnit**'s features, which will be described in the second section.
 As for the naming of test methods, we follow a *MethodName_StateUnderTest_ExpectedBehaviour* approach.
 
 Finally, after reaching the desired depth, a final report on the project's coverage will be generated and discussed in the last section.
@@ -22,26 +23,23 @@ Finally, after reaching the desired depth, a final report on the project's cover
 
 // TODO: prints da coverage antes de fazer testes, e descrever um pouco o coverage report
 
-## 2) Unit Tests
+## 2) JUnit features explored
 
 // TODO: introdução a dizer quais as classes que decidimos testar e porquê
 
 // TODO: no formatDate remover testes inúteis -> após perguntar ao stor o que está pinned
 
-### Class X
+### Feature X
 
-// TODO: descrever unit testes para a class X
-// TODO: outcome do testes, justificar se algum falhar
+// TODO: descrever feature X
 
-### Class Y
+### Feature Y
 
-// TODO: descrever unit testes para a class Y
-// TODO: outcome do testes, justificar se algum falhar
+// TODO: descrever feature Y
 
-### Class Z
+### Feature Z
 
-// TODO: descrever unit testes para a class Z
-// TODO: outcome do testes, justificar se algum falhar
+// TODO: descrever feature Z
 
 ## 3) Final Line and Branch Coverage
 
