@@ -49,53 +49,70 @@ public class ProjectTableModelTest {
     }
 
     @Test
-    public void testGetColumnCount(){
+    public void testGetColumnCount_InputNumberOfColumns_ShouldReturnTheCurrentAmount(){
         assertEquals(8,tableModel.getColumnCount());
     }
 
     @Test
-    public void testGetRowCount(){
-        assertEquals(2,tableModel.getRowCount());
+    public void testGetRowCount_InpuNumberOfCreatedTestProjects_ShouldBeThree(){
+        assertEquals(3,tableModel.getRowCount());
     }
 
-    @ParameterizedTest(name = "Test #{index} with input ({arguments})")
-    @CsvSource(value = {"0,1", "0,2", "0,3","0,4", "0,5", "0,6", "0,7", "0,8","2,1","2,7"})
-    public void testGetValueAt(int row, int column){
-        tableModel.getValueAt(row,column);
 
-        // Last 2 tests are for branch if conditions on project3
-        // Assert the result of the getter as an object
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @Nested
+    public class GetValueAtTest {
+        Stream<Arguments> arguments() {
+            return Stream.of(
+                Arguments.of(0, 7, false),
+                Arguments.of(2, 7, true),
+                Arguments.of(0, 8, "wtf?")
+
+            );
+        }
+
+        @ParameterizedTest
+        @MethodSource("arguments")
+        public void testGetValueAt_InputCellAndValue_ShouldReturnCellValue(int row, int column, Object value) {
+            Object o = tableModel.getValueAt(row,column);
+            assertEquals(value,o);
+        }
 
     }
+
 
     @Test
-    public void testGetProjectAt(){
-        Project proj3 = new Project("Test Project 3");
+    @DisplayName("Test GetProjectAt method with a created project")
+    public void testGetProjectAt_CreateAndAddProject_ShouldHaveSameAttributes(){
+        Project prj = new Project("Test Project 4");
 
-        // tableModel.addProject(prj);
-        Project returned = tableModel.getProjectAt(2);
-
-
+        tableModel.addProject(prj);
+        Project returned = tableModel.getProjectAt(3);
 
         assertAll("Test obj1 with obj2 equality",
-            () -> assertEquals(proj3.getTitle(), returned.getTitle()),
-            () -> assertEquals(proj3.getNotes(), returned.getNotes()),
-            () -> assertEquals(proj3.getTimeCreated(), returned.getTimeCreated()));
+            () -> assertEquals(prj.getTitle(), returned.getTitle()),
+            () -> assertEquals(prj.getNotes(), returned.getNotes()),
+            () -> assertEquals(prj.getTimeCreated(), returned.getTimeCreated()),
+            () -> assertEquals(prj.getSecondsToday(), returned.getSecondsToday()),
+            () -> assertEquals(prj.getSecondsOverall(), returned.getSecondsOverall()),
+            () -> assertEquals(prj.getQuotaOverall(), returned.getQuotaOverall()),
+            () -> assertEquals(prj.getQuotaToday(), returned.getQuotaToday()),
+            () -> assertEquals(prj.getTimeStart(), returned.getTimeStart()),
+            () -> assertEquals(prj.getColor(), returned.getColor()));
 
 
-        // More fields can be created, but addProject is not working, which sucks
-
-    }
-
-    @Test
-    public void testGetColumnName(){
-        assertEquals("Title",tableModel.getColumnName(2));
-    }
-
-    @Test
-    public void testGetColumnClass(){
+        // TODO: Add more fields maybe?
 
     }
+
+
+    @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
+    @CsvSource(value = {"'',0","'',1","'Title',2","'',3","'Created',4","'Time Overall',5","'Time Today',6","'',7"})
+    public void testGetColumnName_InputColumnAndName_ShouldReturnProvidedName(String title, int column){
+        assertEquals(title,tableModel.getColumnName(column));
+    }
+
+
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
@@ -117,10 +134,10 @@ public class ProjectTableModelTest {
         @ParameterizedTest
         @MethodSource("arguments")
         public void testGetColumnClass_ColumnInput_ShouldReturnClass(int column, Class cl) {
-
             assertEquals(cl, tableModel.getColumnClass(column));
         }
     }
+
 
 
 
@@ -131,7 +148,7 @@ public class ProjectTableModelTest {
         COLUMN_COLOR,
         COLUMN_CREATED,
         COLUMN_TIMEOVERALL,
-        ProjectTableModel.COLUMN_TIMETODAY
+        COLUMN_TIMETODAY
     })
     public void testIsCellEditable_EditableCell_ShouldReturnTrue(int column) {
         assertTrue(tableModel.isCellEditable(0, column));
@@ -153,7 +170,7 @@ public class ProjectTableModelTest {
     }
 
     @ParameterizedTest(name = "Test #{index} with input ({arguments}) throws exception due to invalid row")
-    @CsvSource(value = {"-2,2", "3,3", "-1,2", "2,1"})
+    @CsvSource(value = {"-2,2", "3,3", "-1,2", "3,1"})
     public void testIsCellEditable_InvalidRow_ShouldThrowException(int row, int column) {
         assertThrows(IndexOutOfBoundsException.class, () -> tableModel.isCellEditable(row, column));
     }
@@ -165,78 +182,35 @@ public class ProjectTableModelTest {
     }
 
 
+
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
-    public class SetValueAtTest{
+    public class SetValueAtTest {
+        Stream<Arguments> arguments() {
+            return Stream.of(
+                Arguments.of(true, COLUMN_CHECK),
+                Arguments.of(false, COLUMN_CHECK),
+                Arguments.of("The cake is a lie", COLUMN_TITLE),
+                Arguments.of(Color.yellow, COLUMN_COLOR),
+                Arguments.of(new Date(2021-12-25), COLUMN_CREATED),
+                Arguments.of(new Integer(128), COLUMN_TIMEOVERALL),
+                Arguments.of(new Integer(56), COLUMN_TIMETODAY)
 
+            );
+        }
 
-        @Test
-        public void testSetCheck(){
-
-            tableModel.setValueAt(true,0,COLUMN_CHECK);
-            assertTrue((Boolean) tableModel.getValueAt(0,COLUMN_CHECK));
-
+        @ParameterizedTest
+        @MethodSource("arguments")
+        public void testSetValueAt_InputValueAndColumn_ShouldReturnChangedCell(Object value, int column) {
+            tableModel.setValueAt(value,0,column);
+            assertEquals(value, tableModel.getValueAt(0,column));
         }
 
         @Test
-        public void testSetTitle(){
-            tableModel.setValueAt("The cake is a lie",0,COLUMN_TITLE);
-            assertEquals("The cake is a lie", tableModel.getValueAt(0,COLUMN_TITLE));
-        }
-
-        @Test
-        public void testSetColor(){
-            tableModel.setValueAt(Color.yellow,0,COLUMN_COLOR);
-            assertEquals(Color.yellow, tableModel.getValueAt(0,COLUMN_COLOR));
-        }
-
-
-        @Test
-        public void testSetCreated(){
-            tableModel.setValueAt(new Date(2021-12-25),0,COLUMN_CREATED);
-            assertEquals(new Date(2021-12-25), tableModel.getValueAt(0,COLUMN_CREATED));
-        }
-
-        @Test
-        public void testSetTimeOverall(){
-            tableModel.setValueAt(new Integer(128),0,COLUMN_TIMEOVERALL);
-            assertEquals(new Integer(128), tableModel.getValueAt(0,COLUMN_TIMEOVERALL));
-        }
-
-        @Test
-        public void testSetTimeToday(){
-            tableModel.setValueAt(new Integer(56),0,COLUMN_TIMETODAY);
-            assertEquals(new Integer(56), tableModel.getValueAt(0,COLUMN_TIMETODAY));
-        }
-
-        @Test
-        public void testException(){
+        public void testSetValueAt_InputOutOfBounds_ShouldThrowException(){
 
             assertThrows(IllegalStateException.class, () -> tableModel.setValueAt(null,0,10));
         }
-
-
-
-
-
-
-
-
-
-    }
-
-    @Test
-    public void testAddProject() {
-
-        
-
-        int initial_count = tableModel.getRowCount();
-        Project prj = new Project("New project");
-
-        tableModel.addProject(prj);
-
-        int final_count = tableModel.getRowCount();
-        assertEquals(initial_count + 1, final_count);
-
     }
 
     @Test
@@ -248,18 +222,14 @@ public class ProjectTableModelTest {
 
         int final_count = tableModel.getRowCount();
 
-        assertEquals(initial_count -1, final_count);
+        assertEquals(initial_count - 1, final_count);
+
+        // TODO: Para além de contar os projetos, ver qual é que é o projeto
 
     }
 
 
 
-
-
-    @Test
-    public void getColumnAt(){
-        assertEquals(COLUMN_CHECK,tableModel.getProjectAt(1));
-    }
 
 
 
