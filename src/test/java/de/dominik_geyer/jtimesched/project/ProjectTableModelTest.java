@@ -89,7 +89,7 @@ public class ProjectTableModelTest {
         tableModel.addProject(prj);
         Project returned = tableModel.getProjectAt(3);
 
-        assertAll("Test obj1 with obj2 equality",
+        assertAll("Compare both Projects",
             () -> assertEquals(prj.getTitle(), returned.getTitle()),
             () -> assertEquals(prj.getNotes(), returned.getNotes()),
             () -> assertEquals(prj.getTimeCreated(), returned.getTimeCreated()),
