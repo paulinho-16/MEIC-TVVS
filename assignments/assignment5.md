@@ -21,6 +21,8 @@ Finally, after reaching the desired depth, a final report on the project's cover
 
 ## 1) Initial Line and Branch Coverage
 
+Aqui se calhar deviamos correr os testes de novo no commit inicial, por causa dos teste da GUI que excluímos
+
 // TODO: prints da coverage antes de fazer testes, e descrever um pouco o coverage report
 
 ## 2) JUnit features explored
@@ -33,9 +35,54 @@ Finally, after reaching the desired depth, a final report on the project's cover
 
 // TODO: descrever feature X
 
+One of the main goals of testing is to compare the *expected value* to the *actual value* of a code partition.
+To perform this comparison, the *JUnit* *Assertions* library provides the following methods:
+- `static void assertTrue(boolean condition)` - Asserts that the provided *condition* is true
+- `static void assertFalse(boolean condition)` - Asserts that the provided *condition* is false
+- `static void assertEquals(Object Expected, Object Actual)` - Asserts that *expected* and *actual* are equal. Both arguments must be of the same type
+- `static <T extends Throwable> assertThrows(assertThrows(Class<T> expectedType, Executable executable)` - Asserts that the execution of the supplied executable throws an exception of te expectedType and returns the exception
+- `static void assertAll(Executable... executables)` - Asserts that all supplied executables do not throw exceptions
+
+
+#### 1) **assertTrue** && **assertFalse**
+These methods were used when the evaluated result's variable type was **boolean**
+
+
+#### 2) **assertEquals**
+This method was used when the valur of two variables of non-boolean type were being compared. The `assertSame()` method could also be used to compare *primitives*, given that it uses the '==' operator instead of the *equals* method. For simplicity's sake and to avoid unnecessary mistakes, only assertEquals was used.
+
+https://stackoverflow.com/questions/1201927/is-javas-assertequals-method-reliable
+
+#### 3) **assertThrows**
+This method allowed testing code segments where a specific exception should be thrown, testing the code's behaviour in error scenarios.
+
+#### 4) **assertAll**
+This method allows running the aforementioned *assertions* inside a single statement. It always checks all of the assertions that are passed to it, no matter how many fail. This means that if at least one fails, a detailed result of all test is prompted. It is best used for asserting a test set of properties that belong together, such as the fields of a non primitive object with no predefined *equals* and *hashCodes* methods.
+
+https://stackoverflow.com/questions/40796756/assertall-vs-multiple-assertions-in-junit5
+
 ### Feature Y
 
 // TODO: descrever feature Y
+
+- `@Test`- This tag was used to indicate that the ensuing code segment must be interpreted as a *Java* test
+- `@BeforeEach` - This tag was used to always run a code segment before every test within the same scope
+- `@Nested` - This tag was used to form logical groups of test cases while also improving the organization of big test classes
+- `@ParameterizedTest`- This feature enables executing a single test method multiple times with different parameters
+    - `(name = "...")` - Parameterized test can have a name displayed on the *Debug Console* after execution. Also, the number of the parametrized test can be passed, as well as its arguments, providing distinction between each test instance to improve readability
+    - `@ValueSource` - Enables the specification of a single array of literal values and can only be used for providing a single argument per parametrized test invocation
+    - `@CsvSource` - Expresses arguments lists as comma-separated values
+    - `@MethodSource`- Used to match an existing method, such as a `static Stream<Arguments>`, to allow passing complex objects as arguments.
+- `@DisplayName`- Provides a name to the test, improving readability while debugging.
+
+
+
+https://stackoverflow.com/questions/36220889/whats-the-purpose-of-the-junit-5-nested-annotation
+
+https://www.baeldung.com/parameterized-tests-junit-5
+
+
+https://junit.org/junit5/docs/current/user-guide/#writing-tests-parameterized-tests-sources-ValueSource
 
 ### Feature Z
 
