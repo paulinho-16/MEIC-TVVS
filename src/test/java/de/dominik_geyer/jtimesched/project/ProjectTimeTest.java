@@ -18,8 +18,8 @@ import static de.dominik_geyer.jtimesched.project.ProjectTime.formatDate;
 import static de.dominik_geyer.jtimesched.project.ProjectTime.formatSeconds;
 import static de.dominik_geyer.jtimesched.project.ProjectTime.parseSeconds;
 import static de.dominik_geyer.jtimesched.project.ProjectTime.parseDate;
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProjectTimeTest {
     @Nested

@@ -5,13 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -45,11 +49,11 @@ public class ProjectTest {
         @Test
         public void testSetRunning_BooleanInput_ShouldChangeState() {
             Project proj = new Project();
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
             proj.setRunning(true);
-            Assertions.assertTrue(proj.isRunning());
+            assertTrue(proj.isRunning());
             proj.setRunning(false);
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
         }
     }
 
@@ -71,7 +75,7 @@ public class ProjectTest {
             Date afterRunning = new Date();
             int elapsedSeconds = proj.getElapsedSeconds();
             // Checking that the project start date has been set during the running test
-            Assertions.assertTrue(Math.abs(beforeStart.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
+            assertTrue(Math.abs(beforeStart.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
             // Checking that the value returned by the method and the actual elapsed seconds are similar
             int actualSeconds = (int) Math.abs(beforeStart.getTime() - afterRunning.getTime()) / 1000;
             assertEquals(actualSeconds, elapsedSeconds, "Elapsed seconds aren't close enough to each other!");
@@ -80,7 +84,7 @@ public class ProjectTest {
         @Test
         public void testGetElapsedSeconds_IdleProject_ShouldThrowException() {
             // Project should not be running before it is started
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
             assertThrows(ProjectException.class, proj::getElapsedSeconds);
         }
     }
@@ -92,14 +96,14 @@ public class ProjectTest {
             // Create new Project
             Project proj = new Project();
             // Project should not be running before it is started
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
             Date beforeStart = new Date();
             // Starting project
             proj.start();
             // Project should be running after it is started
-            Assertions.assertTrue(proj.isRunning());
+            assertTrue(proj.isRunning());
             // Checking that the project start date has been set during the running test
-            Assertions.assertTrue(Math.abs(beforeStart.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
+            assertTrue(Math.abs(beforeStart.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
         }
 
         @Test
@@ -120,18 +124,18 @@ public class ProjectTest {
             // Create new Project
             Project proj = new Project();
             // Project should not be running before it is started
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
             Date beforeStart = new Date();
             // Starting project
             proj.start();
             // Project should be running after it is started
-            Assertions.assertTrue(proj.isRunning());
+            assertTrue(proj.isRunning());
             // Checking that the project start date has been set during the running test
-            Assertions.assertTrue(Math.abs(beforeStart.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
+            assertTrue(Math.abs(beforeStart.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
             // Pausing project
             proj.pause();
             // Project should not be running after it is paused
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
         }
 
         @Test
@@ -139,7 +143,7 @@ public class ProjectTest {
             // Create new Project
             Project proj = new Project();
             // Project should not be running after it is created
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
             // Pausing idle project again
             assertThrows(ProjectException.class, proj::pause);
         }
@@ -151,22 +155,114 @@ public class ProjectTest {
 
         @BeforeEach
         void setup() {
-            proj = new Project("Test Project");
+            proj = spy(Project.class);
         }
 
         @Test
         public void testToggle_IdleProject_ShouldStartIt() {
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
             proj.toggle();
-            Assertions.assertTrue(proj.isRunning());
+            assertTrue(proj.isRunning());
         }
 
         @Test
         public void testToggle_RunningProject_ShouldPauseIt() throws ProjectException {
             proj.start();
-            Assertions.assertTrue(proj.isRunning());
+            assertTrue(proj.isRunning());
             proj.toggle();
-            Assertions.assertFalse(proj.isRunning());
+            assertFalse(proj.isRunning());
+        }
+
+        @Test
+        public void testToggle_UponException_ShouldCatchIt() throws ProjectException {
+            assertFalse(proj.isRunning());
+
+            doThrow(ProjectException.class).when(proj).start();
+
+            assertDoesNotThrow(proj::toggle);
+            assertFalse(proj.isRunning());
+        }
+    }
+
+    @Nested
+    public class GetSecondsTodayTest {
+        private Project proj;
+        private final CountDownLatch waiter = new CountDownLatch(1);
+
+        @BeforeEach
+        void setup() {
+            proj = spy(Project.class);
+            proj.setSecondsToday(10);
+        }
+
+        @Test
+        public void testGetSecondsToday_IdleProject_ShouldReturnSeconds() {
+            assertFalse(proj.isRunning());
+            assertEquals(10, proj.getSecondsToday());
+        }
+
+        @Test
+        public void testGetSecondsToday_RunningProject_ShouldReturnElapsedSeconds() throws ProjectException, InterruptedException {
+            assertFalse(proj.isRunning());
+            proj.start();
+            assertTrue(proj.isRunning());
+
+            waiter.await(2*1000*1000*1000, TimeUnit.NANOSECONDS); // 2s
+
+            assertEquals(12, proj.getSecondsToday());
+        }
+
+        @Test
+        public void testGetSecondsToday_ElapsedSecondsOnIdleProject_ShouldCatchException() throws ProjectException {
+            assertFalse(proj.isRunning());
+            proj.start();
+            assertTrue(proj.isRunning());
+
+            doThrow(ProjectException.class).when(proj).getElapsedSeconds();
+
+            assertDoesNotThrow(proj::getSecondsToday);
+            assertEquals(10, proj.getSecondsToday());
+        }
+    }
+
+    @Nested
+    public class GetSecondsOverallTest {
+        private Project proj;
+        private final CountDownLatch waiter = new CountDownLatch(1);
+
+        @BeforeEach
+        void setup() {
+            proj = spy(Project.class);
+            proj.setSecondsOverall(10);
+        }
+
+        @Test
+        public void testGetSecondsOverall_IdleProject_ShouldReturnSeconds() {
+            assertFalse(proj.isRunning());
+            assertEquals(10, proj.getSecondsOverall());
+        }
+
+        @Test
+        public void testGetSecondsOverall_RunningProject_ShouldReturnElapsedSeconds() throws ProjectException, InterruptedException {
+            assertFalse(proj.isRunning());
+            proj.start();
+            assertTrue(proj.isRunning());
+
+            waiter.await(2*1000*1000*1000, TimeUnit.NANOSECONDS); // 2s
+
+            assertEquals(12, proj.getSecondsOverall());
+        }
+
+        @Test
+        public void testGetSecondsOverall_ElapsedSecondsOnIdleProject_ShouldCatchException() throws ProjectException {
+            assertFalse(proj.isRunning());
+            proj.start();
+            assertTrue(proj.isRunning());
+
+            doThrow(ProjectException.class).when(proj).getElapsedSeconds();
+
+            assertDoesNotThrow(proj::getSecondsOverall);
+            assertEquals(10, proj.getSecondsOverall());
         }
     }
 
@@ -274,7 +370,7 @@ public class ProjectTest {
             assertEquals(0, proj.getQuotaToday());
 
             // Checking that the project start date has been set during the running test
-            Assertions.assertTrue(Math.abs(beforeReset.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
+            assertTrue(Math.abs(beforeReset.getTime() - proj.getTimeStart().getTime()) < 1000, "Times aren't close enough to each other!");
         }
     }
 

@@ -17,7 +17,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static de.dominik_geyer.jtimesched.project.ProjectTableModel.*;
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -111,8 +110,6 @@ public class ProjectTableModelTest {
     public void testGetColumnName_InputColumnAndName_ShouldReturnProvidedName(String title, int column){
         assertEquals(title,tableModel.getColumnName(column));
     }
-
-
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested

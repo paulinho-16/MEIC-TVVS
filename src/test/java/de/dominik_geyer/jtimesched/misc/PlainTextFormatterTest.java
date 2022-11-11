@@ -3,9 +3,9 @@ package de.dominik_geyer.jtimesched.misc;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PlainTextFormatterTest {
     PlainTextFormatter plainTextFormatter = new PlainTextFormatter();
@@ -18,7 +18,7 @@ public class PlainTextFormatterTest {
 
         String format = plainTextFormatter.format(record).trim();
 
-        Assertions.assertEquals(expected, format);
+        assertEquals(expected, format);
     }
 
     @Test
