@@ -14,6 +14,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import static de.dominik_geyer.jtimesched.project.ProjectTime.formatDate;
 import static de.dominik_geyer.jtimesched.project.ProjectTime.formatSeconds;
 import static de.dominik_geyer.jtimesched.project.ProjectTime.parseSeconds;
@@ -100,6 +102,7 @@ public class ProjectTimeTest {
             assertThrows(NullPointerException.class, () -> parseDate(null));
         }
 
+        @EnabledOnOs({OS.WINDOWS})
         @ParameterizedTest(name = "Test #{index} with input {arguments} returns formatted date")
         @MethodSource("arguments")
         public void testParseDate_CorrectDateFormat_ShouldReturnFormattedDate(String strDate, String dateFormat) throws ParseException {
