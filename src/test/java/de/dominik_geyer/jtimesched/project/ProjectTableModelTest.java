@@ -2,6 +2,7 @@ package de.dominik_geyer.jtimesched.project;
 
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -211,7 +212,7 @@ public class ProjectTableModelTest {
     }
 
     @Test
-    public void testRemoveProject(){
+    public void testRemoveProject() throws ParseException {
 
         int initial_count = tableModel.getRowCount();
 

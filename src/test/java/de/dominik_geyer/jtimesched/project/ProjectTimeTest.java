@@ -26,7 +26,7 @@ public class ProjectTimeTest {
     public class FormatSecondsTest {
         @ParameterizedTest(name = "Test #{index} with input of {0} seconds results in time string {1}")
         @CsvSource(value = {"0,0:00:00", "22143,6:09:03", "25209,7:00:09", "15676,4:21:16", "363599,100:59:59"})
-        public void testFormatSeconds_ValidInput_ShouldReturnTime(int seconds, String format) {
+        public void testFormatSeconds_ValidInput_ShouldReturnTime(int seconds, String format) throws ParseException {
             assertEquals(format, formatSeconds(seconds));
         }
 

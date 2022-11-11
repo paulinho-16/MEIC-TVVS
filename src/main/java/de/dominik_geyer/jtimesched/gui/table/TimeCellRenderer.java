@@ -23,6 +23,7 @@ import de.dominik_geyer.jtimesched.project.ProjectTableModel;
 import de.dominik_geyer.jtimesched.project.ProjectTime;
 import java.awt.Component;
 import java.awt.Font;
+import java.text.ParseException;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
@@ -44,16 +45,32 @@ public class TimeCellRenderer extends JLabel implements TableCellRenderer {
 
         switch (modelColumn) {
             case ProjectTableModel.COLUMN_TIMETODAY:
-                tcc = new TimeCellComponent(prj.getSecondsToday(), prj.getQuotaToday());
-                tcc.setToolTipText(prj.getQuotaToday() > 0
-                    ? String.format("Quota today: %s", ProjectTime.formatSeconds(prj.getQuotaToday())) :
-                    null);
+                try {
+                    tcc = new TimeCellComponent(prj.getSecondsToday(), prj.getQuotaToday());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    tcc.setToolTipText(prj.getQuotaToday() > 0
+                        ? String.format("Quota today: %s", ProjectTime.formatSeconds(prj.getQuotaToday())) :
+                        null);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case ProjectTableModel.COLUMN_TIMEOVERALL:
-                tcc = new TimeCellComponent(prj.getSecondsOverall(), prj.getQuotaOverall());
-                tcc.setToolTipText(prj.getQuotaOverall() > 0
-                    ? String.format("Quota overall: %s", ProjectTime.formatSeconds(prj.getQuotaOverall())) :
-                    null);
+                try {
+                    tcc = new TimeCellComponent(prj.getSecondsOverall(), prj.getQuotaOverall());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    tcc.setToolTipText(prj.getQuotaOverall() > 0
+                        ? String.format("Quota overall: %s", ProjectTime.formatSeconds(prj.getQuotaOverall())) :
+                        null);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + modelColumn);

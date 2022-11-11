@@ -21,6 +21,7 @@ package de.dominik_geyer.jtimesched.gui.table;
 import de.dominik_geyer.jtimesched.project.ProjectTime;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.text.ParseException;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -37,7 +38,7 @@ public class TimeCellComponent extends JLabel {
     private int time;
     private int quota;
 
-    public TimeCellComponent(int time, int quota) {
+    public TimeCellComponent(int time, int quota) throws ParseException {
         this.setOpaque(true);
 
         this.time = time;

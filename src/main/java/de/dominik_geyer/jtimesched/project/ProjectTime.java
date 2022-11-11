@@ -30,7 +30,10 @@ public class ProjectTime {
     private ProjectTime() {
     }
 
-    public static String formatSeconds(int s) {
+    public static String formatSeconds(int s) throws ParseException {
+        if (s < 0) {
+            throw new ParseException("Number of seconds cannot be negative", 0);
+        }
         return String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
     }
 

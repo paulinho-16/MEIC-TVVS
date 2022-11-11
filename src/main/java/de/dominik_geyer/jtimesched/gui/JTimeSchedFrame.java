@@ -105,7 +105,7 @@ public class JTimeSchedFrame extends JFrame {
 
     private static final int[] appIconSizes = {16, 24, 32, 40, 48, 64, 128, 256};
 
-    public JTimeSchedFrame() {
+    public JTimeSchedFrame() throws ParseException {
         super("jTimeSched");
 
         this.updateIconImage(false);
@@ -184,7 +184,11 @@ public class JTimeSchedFrame extends JFrame {
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                handleNewButton();
+                try {
+                    handleNewButton();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         panelBottom.add(btnAdd);
@@ -293,7 +297,11 @@ public class JTimeSchedFrame extends JFrame {
         Timer timer = new Timer(1 * 1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                updateGUI();
+                try {
+                    updateGUI();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -336,13 +344,13 @@ public class JTimeSchedFrame extends JFrame {
         return new ImageIcon(JTimeSchedFrame.getImageResource(filename));
     }
 
-    protected void updateGUI() {
+    protected void updateGUI() throws ParseException {
         this.updateSchedTable();
         this.updateStatsLabel();
         this.updateAppIcons();
     }
 
-    protected void updateAppIcons() {
+    protected void updateAppIcons() throws ParseException {
         boolean running = false;
         Project runningProject = null;
 
@@ -422,7 +430,7 @@ public class JTimeSchedFrame extends JFrame {
         }
     }
 
-    protected void updateStatsLabel() {
+    protected void updateStatsLabel() throws ParseException {
         int projectCount = this.arPrj.size();
 
         // bottom stats label
@@ -457,7 +465,7 @@ public class JTimeSchedFrame extends JFrame {
         }
     }
 
-    public void handleStartPause(Project prj) {
+    public void handleStartPause(Project prj) throws ParseException {
         JTimeSchedApp.getLogger().info(String.format("%s project '%s' (time overall: %s, time today: %s)",
             (prj.isRunning()) ? "Pausing" : "Starting",
             prj.getTitle(),
@@ -491,7 +499,7 @@ public class JTimeSchedFrame extends JFrame {
     }
 
 
-    public void handleDelete(ProjectTableModel tstm, Project prj, int modelRow) {
+    public void handleDelete(ProjectTableModel tstm, Project prj, int modelRow) throws ParseException {
         //  int response = JOptionPane.showConfirmDialog(
         //  this,
         //  "Remove project \"" + prj.getTitle() + "\" from list?",
@@ -512,7 +520,7 @@ public class JTimeSchedFrame extends JFrame {
     }
 
 
-    public void handleNewButton() {
+    public void handleNewButton() throws ParseException {
         Project prj = new Project("New project");
 
         ProjectTableModel tstm = (ProjectTableModel) this.tblSched.getModel();
@@ -545,7 +553,7 @@ public class JTimeSchedFrame extends JFrame {
     }
 
 
-    protected void checkResetToday() {
+    protected void checkResetToday() throws ParseException {
         for (Project p : this.arPrj) {
             Date currentTime = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("y-MMM-d");
@@ -614,7 +622,11 @@ public class JTimeSchedFrame extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (JTimeSchedFrame.this.currentProject != null) {
-                        handleStartPause(JTimeSchedFrame.this.currentProject);
+                        try {
+                            handleStartPause(JTimeSchedFrame.this.currentProject);
+                        } catch (ParseException parseException) {
+                            parseException.printStackTrace();
+                        }
                     }
                 }
             };
@@ -826,26 +838,43 @@ public class JTimeSchedFrame extends JFrame {
                 switch (column) {
                     case ProjectTableModel.COLUMN_ACTION_DELETE:
                         if (e.getClickCount() == 2) {
-                            handleDelete(tstm, prj, row);
+                            try {
+                                handleDelete(tstm, prj, row);
+                            } catch (ParseException parseException) {
+                                parseException.printStackTrace();
+                            }
                         }
                         break;
                     case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
-                        handleStartPause(prj);
+                        try {
+                            handleStartPause(prj);
+                        } catch (ParseException parseException) {
+                            parseException.printStackTrace();
+                        }
                         break;
                     default:
                         break;
                 }
             } else if (button == MouseEvent.BUTTON2) {    // middle button
-                handleStartPause(prj);
+                try {
+                    handleStartPause(prj);
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
             } else if (button == MouseEvent.BUTTON3) {    // right button
                 switch (column) {
                     case ProjectTableModel.COLUMN_TIMEOVERALL:
                     case ProjectTableModel.COLUMN_TIMETODAY:
-                        String input = JOptionPane.showInputDialog(JTimeSchedFrame.this,
-                            "Enter new quota for time "
-                                + (column == ProjectTableModel.COLUMN_TIMEOVERALL ? "overall" : "today") + ":",
-                            ProjectTime.formatSeconds(
-                                (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getQuotaOverall() : prj.getQuotaToday()));
+                        String input = null;
+                        try {
+                            input = JOptionPane.showInputDialog(JTimeSchedFrame.this,
+                                "Enter new quota for time "
+                                    + (column == ProjectTableModel.COLUMN_TIMEOVERALL ? "overall" : "today") + ":",
+                                ProjectTime.formatSeconds(
+                                    (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getQuotaOverall() : prj.getQuotaToday()));
+                        } catch (ParseException parseException) {
+                            parseException.printStackTrace();
+                        }
 
                         if (input != null) {
                             int newSeconds = 0;
@@ -945,11 +974,19 @@ public class JTimeSchedFrame extends JFrame {
 
                             // make use of table model's removeProject method
                             while (ptm.getRowCount() > 0) {
-                                ptm.removeProject(0);
+                                try {
+                                    ptm.removeProject(0);
+                                } catch (ParseException parseException) {
+                                    parseException.printStackTrace();
+                                }
                             }
                             JTimeSchedFrame.this.currentProject = null;
 
-                            JTimeSchedFrame.this.updateStatsLabel();
+                            try {
+                                JTimeSchedFrame.this.updateStatsLabel();
+                            } catch (ParseException parseException) {
+                                parseException.printStackTrace();
+                            }
                             JTimeSchedFrame.this.updateTrayCurrentProject();
                         }
                     });
@@ -988,7 +1025,11 @@ public class JTimeSchedFrame extends JFrame {
             int keyCode = e.getKeyCode();
 
             if (keyCode == KeyEvent.VK_INSERT) {
-                handleNewButton();
+                try {
+                    handleNewButton();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
                 e.consume();
                 return;
             }
@@ -1005,11 +1046,19 @@ public class JTimeSchedFrame extends JFrame {
 
             switch (keyCode) {
                 case KeyEvent.VK_SPACE:
-                    handleStartPause(p);
+                    try {
+                        handleStartPause(p);
+                    } catch (ParseException parseException) {
+                        parseException.printStackTrace();
+                    }
                     e.consume();
                     break;
                 case KeyEvent.VK_DELETE:
-                    handleDelete(ptm, p, row);
+                    try {
+                        handleDelete(ptm, p, row);
+                    } catch (ParseException parseException) {
+                        parseException.printStackTrace();
+                    }
                     e.consume();
                     break;
                 default:

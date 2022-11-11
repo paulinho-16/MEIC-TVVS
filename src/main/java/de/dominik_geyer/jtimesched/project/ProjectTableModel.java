@@ -20,6 +20,7 @@ package de.dominik_geyer.jtimesched.project;
 
 import de.dominik_geyer.jtimesched.JTimeSchedApp;
 import java.awt.Color;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;
@@ -181,11 +182,15 @@ public class ProjectTableModel extends AbstractTableModel {
             case ProjectTableModel.COLUMN_TIMETODAY:
                 int oldSeconds = (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getSecondsOverall() : prj.getSecondsToday();
                 int newSeconds = ((Integer) value).intValue();
-                JTimeSchedApp.getLogger().info(String.format("Manually set time %s for project '%s' from %s to %s",
-                    (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? "overall" : "today",
-                    prj.getTitle(),
-                    ProjectTime.formatSeconds(oldSeconds),
-                    ProjectTime.formatSeconds(newSeconds)));
+                try {
+                    JTimeSchedApp.getLogger().info(String.format("Manually set time %s for project '%s' from %s to %s",
+                        (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? "overall" : "today",
+                        prj.getTitle(),
+                        ProjectTime.formatSeconds(oldSeconds),
+                        ProjectTime.formatSeconds(newSeconds)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
                 if (column == ProjectTableModel.COLUMN_TIMEOVERALL) {
                     prj.setSecondsOverall(newSeconds);
@@ -207,7 +212,7 @@ public class ProjectTableModel extends AbstractTableModel {
         JTimeSchedApp.getLogger().info("Created new project");
     }
 
-    public void removeProject(int row) {
+    public void removeProject(int row) throws ParseException {
         Project p = this.getProjectAt(row);
         this.arPrj.remove(p);
         this.fireTableRowsDeleted(row, row);

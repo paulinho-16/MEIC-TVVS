@@ -60,7 +60,12 @@ public class TimeCellEditor extends DefaultCellEditor {
     public Component getTableCellEditorComponent(JTable table,
                                                  Object value, boolean isSelected, int row, int column) {
         this.oldSeconds = ((Integer) value).intValue();
-        String strTime = ProjectTime.formatSeconds(this.oldSeconds);
+        String strTime = null;
+        try {
+            strTime = ProjectTime.formatSeconds(this.oldSeconds);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         this.tfEdit.setText(strTime);
 
         return this.tfEdit;

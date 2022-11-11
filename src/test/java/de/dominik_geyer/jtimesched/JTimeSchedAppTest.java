@@ -6,6 +6,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.Objects;
 import java.util.logging.Level;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class JTimeSchedAppTest {
     }
 
     @Test
-    public void testMain_UponStart_ShouldCreateConf() throws IOException {
+    public void testMain_UponStart_ShouldCreateConf() throws IOException, ParseException {
         // Delete conf directory
         File conf_dir = new File(JTimeSchedApp.CONF_PATH);
         deleteDirectory(conf_dir);
