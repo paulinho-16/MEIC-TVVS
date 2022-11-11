@@ -98,7 +98,7 @@ public class ProjectTableModelTest {
 
     @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
     @CsvSource(value = {"'',0","'',1","'Title',2","'',3","'Created',4","'Time Overall',5","'Time Today',6","'',7"})
-    public void testGetColumnName_InputColumnAndName_ShouldReturnProvidedName(String title, int column){
+    public void testGetColumnName_InputColumnAndName_ShouldReturnProvidedName(String title, int column) {
         assertEquals(title,tableModel.getColumnName(column));
     }
 
