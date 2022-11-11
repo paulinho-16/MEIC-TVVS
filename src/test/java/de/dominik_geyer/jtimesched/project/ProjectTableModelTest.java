@@ -20,7 +20,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static de.dominik_geyer.jtimesched.project.ProjectTableModel.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class ProjectTableModelTest {
     private final ArrayList<Project> projects = new ArrayList<>();
     private ProjectTableModel tableModel;
@@ -39,7 +38,6 @@ public class ProjectTableModelTest {
         projects.add(proj3);
         tableModel = new ProjectTableModel(projects);
 
-
         Field reader = JTimeSchedApp.class.getDeclaredField("LOGGER");
         reader.setAccessible(true);
         JTimeSchedApp mainClass = new JTimeSchedApp();
@@ -49,15 +47,14 @@ public class ProjectTableModelTest {
     }
 
     @Test
-    public void testGetColumnCount_InputNumberOfColumns_ShouldReturnTheCurrentAmount(){
-        assertEquals(8,tableModel.getColumnCount());
+    public void testGetColumnCount_InputNumberOfColumns_ShouldReturnTheCurrentAmount() {
+        assertEquals(8, tableModel.getColumnCount());
     }
 
     @Test
-    public void testGetRowCount_InpuNumberOfCreatedTestProjects_ShouldBeThree(){
-        assertEquals(3,tableModel.getRowCount());
+    public void testGetRowCount_InputNumberOfProjects_ShouldBeThree() {
+        assertEquals(3, tableModel.getRowCount());
     }
-
 
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
@@ -67,23 +64,20 @@ public class ProjectTableModelTest {
                 Arguments.of(0, 7, false),
                 Arguments.of(2, 7, true),
                 Arguments.of(0, 8, "wtf?")
-
             );
         }
 
         @ParameterizedTest
         @MethodSource("arguments")
         public void testGetValueAt_InputCellAndValue_ShouldReturnCellValue(int row, int column, Object value) {
-            Object o = tableModel.getValueAt(row,column);
-            assertEquals(value,o);
+            Object o = tableModel.getValueAt(row, column);
+            assertEquals(value, o);
         }
-
     }
-
 
     @Test
     @DisplayName("Test GetProjectAt method with a created project")
-    public void testGetProjectAt_CreateAndAddProject_ShouldHaveSameAttributes(){
+    public void testGetProjectAt_CreateAndAddProject_ShouldHaveSameAttributes() {
         Project prj = new Project("Test Project 4");
 
         tableModel.addProject(prj);
@@ -98,13 +92,9 @@ public class ProjectTableModelTest {
             () -> assertEquals(prj.getQuotaOverall(), returned.getQuotaOverall()),
             () -> assertEquals(prj.getQuotaToday(), returned.getQuotaToday()),
             () -> assertEquals(prj.getTimeStart(), returned.getTimeStart()),
-            () -> assertEquals(prj.getColor(), returned.getColor()));
-
-
-        // TODO: Add more fields maybe?
-
+            () -> assertEquals(prj.getColor(), returned.getColor())
+        );
     }
-
 
     @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
     @CsvSource(value = {"'',0","'',1","'Title',2","'',3","'Created',4","'Time Overall',5","'Time Today',6","'',7"})
@@ -125,7 +115,6 @@ public class ProjectTableModelTest {
                 Arguments.of(COLUMN_ACTION_DELETE, Boolean.class),
                 Arguments.of(COLUMN_ACTION_STARTPAUSE, Boolean.class),
                 Arguments.of(10, String.class)
-
             );
         }
 
@@ -135,9 +124,6 @@ public class ProjectTableModelTest {
             assertEquals(cl, tableModel.getColumnClass(column));
         }
     }
-
-
-
 
     @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
     @ValueSource (ints = {
@@ -179,8 +165,6 @@ public class ProjectTableModelTest {
         assertThrows(IllegalStateException.class, () -> tableModel.isCellEditable(row, column));
     }
 
-
-
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
     public class SetValueAtTest {
@@ -193,7 +177,6 @@ public class ProjectTableModelTest {
                 Arguments.of(new Date(2021-12-25), COLUMN_CREATED),
                 Arguments.of(new Integer(128), COLUMN_TIMEOVERALL),
                 Arguments.of(new Integer(56), COLUMN_TIMETODAY)
-
             );
         }
 
@@ -205,30 +188,18 @@ public class ProjectTableModelTest {
         }
 
         @Test
-        public void testSetValueAt_InputOutOfBounds_ShouldThrowException(){
-
-            assertThrows(IllegalStateException.class, () -> tableModel.setValueAt(null,0,10));
+        public void testSetValueAt_InputOutOfBounds_ShouldThrowException() {
+            assertThrows(IllegalStateException.class, () -> tableModel.setValueAt(null, 0, 10));
         }
     }
 
     @Test
-    public void testRemoveProject() throws ParseException {
-
+    public void testRemoveProject_DeletingProject_ShouldRemoveIt() throws ParseException {
         int initial_count = tableModel.getRowCount();
 
         tableModel.removeProject(0);
-
         int final_count = tableModel.getRowCount();
 
         assertEquals(initial_count - 1, final_count);
-
-        // TODO: Para além de contar os projetos, ver qual é que é o projeto
-
     }
-
-
-
-
-
-
 }
