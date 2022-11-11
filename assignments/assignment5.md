@@ -25,7 +25,7 @@ Aqui se calhar deviamos correr os testes de novo no commit inicial, por causa do
 
 // TODO: prints da coverage antes de fazer testes, e descrever um pouco o coverage report ()
 
-Since we performed black-box testing in a previous assignment, the initial code coverage is not zero.
+Since we performed black-box testing in previous assignments, the initial code coverage is not zero.
 Therefore, we ran the tests and generated a **JaCoCo** report, displaying the following coverage:
 
 ![Initial Coverage](./images/wbt_initial_coverage.png)
@@ -33,10 +33,10 @@ Therefore, we ran the tests and generated a **JaCoCo** report, displaying the fo
 The report analyzes *line coverage* and *branch coverage*, displaying the number of lines, branches, classes and methods missed, as well as the percentage of coverage.
 This analysis is done in each file and folder, allowing navigation between different folders by clicking them.
 Also, if a file is selected instead, it is possible to visualize all the covered lines and branches, which results in a necessary functionality to help increase the coverage iteratively.
-Since the previous image is located in the root of the project, the *Total* column displays the project's total coverage.
+The previous image shows the project's total coverage in the *Total* column, as it is located in the root directory.
 
-After a better analysis, it was concluded that the *de.dominik_geyer.jtimesched.gui* and *de.dominik_geyer.jtimesched.gui.table* directories were not worth testing, since they were associated with the interface.
-Therefore, the *pom.xml* was changed to ignore those elements, resulting in the following report:
+After a better analysis, it was concluded that the *de.dominik_geyer.jtimesched.gui* and *de.dominik_geyer.jtimesched.gui.table* directories were not worth testing, since they were associated with the GUI.
+Therefore, the `pom.xml` was changed to ignore those elements, resulting in the following report:
 
 ![Initial Coverage 2](./images/wbt_initial_coverage_2.png)
 
@@ -44,26 +44,30 @@ Therefore, the assignment's initial coverage contains:
 - ??% Line Coverage
 - ??% Branch Coverage
 
-
-
-## 2) JUnit features explored
+## 2) JUnit features
 
 // TODO: introdução a dizer quais as classes que decidimos testar e porquê
 
+As stated before, we decided to just test the non-GUI related classes, that is, the ones in the packages:
+
+- `misc`: functions that are required from lots of places in the code, in this case, related to date formatting
+- `project`: main code with the program logic
+
+Besides this, we also tested the main class, located in the `src` package.
+
+In this section, we describe the most interesting features of **JUnit** applied in our tests.
+
 // TODO: no formatDate remover testes inúteis -> após perguntar ao stor o que está pinned
 
-### Feature X
+### Assertions
 
-// TODO: descrever feature X
-
-One of the leading testing goals is to compare the *expected value* to the *actual value* of a code partition.
+One of the leading testing goals is to compare the *expected value* to the *actual value* of a code execution.
 To perform this comparison, the *JUnit* *Assertions* library provides the following methods:
 - `static void assertTrue(boolean condition)` - Asserts that the provided *condition* is true
 - `static void assertFalse(boolean condition)` - Asserts that the provided *condition* is false
 - `static void assertEquals(Object Expected, Object Actual)` - Asserts that *expected* and *actual* are equal. Both arguments must be of the same type
 - `static <T extends Throwable> assertThrows(assertThrows(Class<T> expectedType, Executable executable)` - Asserts that the execution of the supplied executable throws an exception of te expectedType and returns the exception
 - `static void assertAll(Executable... executables)` - Asserts that all supplied executables do not throw exceptions
-
 
 #### 1) **assertTrue** && **assertFalse**
 We used these methods when the evaluated result's variable type was **boolean**
@@ -179,10 +183,6 @@ Provides a name to the test, improving readability while debugging.
 
 https://stackoverflow.com/questions/36220889/whats-the-purpose-of-the-junit-5-nested-annotation
 
-https://www.baeldung.com/parameterized-tests-junit-5
-
-
-https://junit.org/junit5/docs/current/user-guide/#writing-tests-parameterized-tests-sources-ValueSource
 
 
 
@@ -206,3 +206,5 @@ After performing extensive testing, we ended up with the following code coverage
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-5.pdf)
 - [Structural (Code) Coverage - QA Systems](https://www.qa-systems.com/blog/what-is-meant-by-structural-code-coverage/)
 - [Coverage Counters - JaCoCo](https://www.eclemma.org/jacoco/trunk/doc/counters.html)
+- [Parametrized Tests - Baeldung](https://www.baeldung.com/parameterized-tests-junit-5)
+- [Junit User Guide - JUnit](https://junit.org/junit5/docs/current/user-guide)
