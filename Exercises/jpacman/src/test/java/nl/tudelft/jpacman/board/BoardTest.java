@@ -5,6 +5,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -52,5 +54,18 @@ class BoardTest {
     })
     void testSquareAt(int x, int y) {
         assertThat(board.squareAt(x, y)).isEqualTo(grid[x][y]);
+    }
+
+    @Test
+    void testWithinBorders() {
+        int x_within = MAX_WIDTH - 1;
+        int y_within = MAX_HEIGHT - 1;
+        int x_below = -1;
+        int y_below = -1;
+        assertTrue(board.withinBorders(x_within, y_within)); // t1
+        assertFalse(board.withinBorders(x_within, MAX_HEIGHT)); // t2
+        assertFalse(board.withinBorders(x_within, y_below)); // t3
+        assertFalse(board.withinBorders(MAX_WIDTH, y_within)); // t5
+        assertFalse(board.withinBorders(x_below, y_within)); // t9
     }
 }
