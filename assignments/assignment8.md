@@ -2,15 +2,15 @@
 
 - Dataflow Coverage -> Considers how data gets accessed and modified in the system and how it could get corrupted.
 
-Define:
-- c-use
-- p-use
-
 // TODO -> descrever dataflow testing, c-use, p-use, all-defs, all-c-uses, all-p-uses, all-uses
 
-## Dataflow Testing
+## 1) `public static int parseSeconds(String strTime) throws ParseException`
 
-### 1) `public static int parseSeconds(String strTime) throws ParseException`
+### Description
+
+// TODO: descrever a função e dizer porquê que a escolhemos
+
+#### *Dataflow Testing*
 
 ```java 
 1. public static int parseSeconds(String strTime) throws ParseException {
@@ -29,6 +29,69 @@ Define:
 14. }
 ```
 
-### 2) `public void adjustSecondsToday(int secondsToday)`
+// TODO: meter CFG
 
-### 3) `public void handleStartPause(Project prj) throws ParseException`
+// TODO: meter def-use graph
+
+// TODO: dizer variáveis relevantes e meter tabela com def-use pairs para cada variável
+
+// TODO: all-defs, all-c-uses, all-p-uses, all-uses
+
+#### Unit Tests
+
+// TODO: falar sobre os unit tests implementados e descrever outcome
+
+## 2) `public void adjustSecondsToday(int secondsToday)`
+
+### Description
+
+// TODO: descrever a função e dizer porquê que a escolhemos
+
+#### *Dataflow Testing*
+
+// TODO: meter código da função
+
+// TODO: meter CFG
+
+// TODO: meter def-use graph
+
+// TODO: dizer variáveis relevantes e meter tabela com def-use pairs para cada variável
+
+// TODO: all-defs, all-c-uses, all-p-uses, all-uses
+
+#### Unit Tests
+
+// TODO: falar sobre os unit tests implementados e descrever outcome
+
+## 3) `public void handleStartPause(Project prj) throws ParseException`
+
+### Description
+
+// TODO: descrever a função e dizer porquê que a escolhemos
+
+#### *Dataflow Testing*
+
+// TODO: meter código da função
+
+// TODO: meter CFG
+
+// TODO: meter def-use graph
+
+// TODO: dizer variáveis relevantes e meter tabela com def-use pairs para cada variável
+
+// TODO: all-defs, all-c-uses, all-p-uses, all-uses
+
+#### Unit Tests
+
+// TODO: falar sobre os unit tests implementados e descrever outcome
+
+-----
+
+## Group 10
+
+- Hugo Guimarães, up201806490
+- Paulo Ribeiro, up201806505
+
+## Sources
+
+- [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-7.pdf)
