@@ -12,8 +12,6 @@ Define:
 
 ### public static int parseSeconds(String strTime) throws ParseException 
 
-
-
 ### public void adjustSecondsToday(int secondsToday)
 
 ### public void handleStartPause(Project prj) throws ParseException 
