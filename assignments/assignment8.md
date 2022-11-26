@@ -176,3 +176,4 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 ## Sources
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-7.pdf)
+- [Dataflow Testing - Javatpoint](https://www.javatpoint.com/data-flow-testing-in-white-box-testing)
