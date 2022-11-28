@@ -33,7 +33,12 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 
 ### Description
 
-// TODO: descrever a função e dizer porquê que a escolhemos
+This method was selected since it contains several useful testing components, such as:
+- An argument `strTime` to use within the function (def and c-use)
+- An if statement to test branching (p-use)
+- Local variable definitions and usage (def and c-use)
+- Method invocation of a defined variable (c-use)
+
 
 #### *Dataflow Testing*
 
@@ -56,9 +61,13 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 
 // TODO: frase introdutória de CFG
 
+
+The following image displays *parseSeconds* Control Flow Graph.
+
 ![parseSeconds CFG](./images/cfg_parseSeconds.png)
 
-// TODO: frase introdutória de def-use graph
+
+The following image displays *parseSeconds* Dataflow Graph.
 
 ![parseSeconds def-use graph](./images/dug_parseSeconds.png)
 
@@ -74,7 +83,13 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 
 ### Description
 
-// TODO: descrever a função e dizer porquê que a escolhemos
+This method was selected since it contains several useful testing components, such as:
+- An argument `secondsToday` to use within the function (def and c-use)
+- An if statement to test branching (p-use)
+- Local variable definitions and usage (def and c-use)
+- Method invocation of a defined variable (c-use)
+- Usage of the `this` keyword to access variables within the class' scope (c-use)
+
 
 #### *Dataflow Testing*
 
@@ -91,11 +106,11 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 10. }
 ```
 
-// TODO: frase introdutória de CFG
+The following image displays *adjustSecondsToday* Control Flow Graph.
 
 ![adjustSecondsToday CFG](./images/cfg_adjustSecondsToday.png)
 
-// TODO: frase introdutória de def-use graph
+The following image displays *adjustSecondsToday* Dataflow Graph.
 
 ![adjustSecondsToday def-use graph](./images/dug_adjustSecondsToday.png)
 
@@ -111,7 +126,15 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 
 ### Description
 
-// TODO: descrever a função e dizer porquê que a escolhemos
+This method was selected since it contains several useful testing components, such as:
+- An argument `prj` to use within the function (def and c-use)
+- An if statement to test branching (p-use)
+- A for loop with variable definition and usage, CFG branching, and stop condition (def, c-use, p-use)
+- Try Catch statements with CFG branching(def, c-use)
+- Local variable definitions and usage (def and c-use)
+- Method invocation of a defined variable (c-use)
+- Usage of the `this` keyword to define and access variables within the class' scope (def, c-use)
+
 
 #### *Dataflow Testing*
 
@@ -150,11 +173,12 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 28. }
 ```
 
-// TODO: frase introdutória de CFG
+The following image displays *handleStartPause* Control Flow Graph.
 
 ![handleStartPause CFG](./images/cfg_handleStartPause.png)
 
-// TODO: frase introdutória de def-use graph
+
+The following image displays *handleStartPause* Dataflow Graph.
 
 ![handleStartPause def-use graph](./images/dug_handleStartPause.png)
 
