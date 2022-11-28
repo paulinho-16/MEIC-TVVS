@@ -135,7 +135,43 @@ To satisfy the **all-uses** criteria, we must test, for example, the paths in th
 
 #### Unit Tests
 
-// TODO: falar sobre os unit tests implementados e descrever outcome
+The tests implemented for this function can be found in the `ProjectTimeTest.java` file, inside the `test` directory.
+We decided to apply the coverage criteria **all-uses**, as it covers the most cases.
+Looking at this table, we see that all the required **pair ids** result in paths that are already covered by the tests developed in the previous assignments.
+More specifically:
+- `strTime` **pair id** 1 is covered by just a single method call, which is present in all these tests
+- `p` **pair id** 1 is also covered by just a single method call, which is present in all these tests
+- `m` **pair ids** 1,2,3 and 5 are covered when the string `strTime` conforms to the time format (valid input - tested in the method `testParseSeconds_CorrectDateFormat_ShouldReturnSeconds`), and **pair id** 4 is covered when it does not (invalid input - tested in the method `testParseSeconds_IncorrectDateFormat_ShouldThrowException`)
+- `hours`, `minutes` and `seconds` **pair ids** 1 are also covered when no exception is raised (valid input - tested in the method `testParseSeconds_CorrectDateFormat_ShouldReturnSeconds`)
+
+Some valid inputs were tested (such as `4:21:16` or `06:09:03`), as well as some invalid (such as `4.21.16` or `24:00:60`).
+
+```java
+@Nested
+    public class ParseSecondsTest {
+        @Test
+        @DisplayName("Test with null input throws exception")
+        public void testParseSeconds_NullInput_ShouldThrowException() {
+            assertThrows(NullPointerException.class, () -> parseSeconds(null));
+        }
+
+        @ParameterizedTest(name = "Test #{index} with input {0} results in {1} seconds")
+        @CsvSource(value = {"0:0:0,0", "12:15:0,44100", "7:0:9,25209", "0:17:05,1025", "20:02:0,72120", "4:21:16,15676", "100:59:59,363599", "18:59:14,68354", "9:21:59,33719", "06:09:03,22143", "13:21:12,48072"})
+        public void testParseSeconds_CorrectDateFormat_ShouldReturnSeconds(String format, int seconds) throws ParseException {
+            assertEquals(seconds, parseSeconds(format));
+        }
+
+        @ParameterizedTest(name = "Test #{index} with input {arguments} throws exception")
+        @ValueSource(strings = {"", "4.21.16", "1:11:11:11", "1:11", "1", "00:60:00", "24:00:60", "-2:13:09", "8:-42:09", "07:5:-15", "aa:19:23", "14:bb:34", "04:25:cc", "14:021:34", "04:25:123"})
+        public void testParseSeconds_IncorrectDateFormat_ShouldThrowException(String format) {
+            assertThrows(ParseException.class, () -> parseSeconds(format));
+        }
+    }
+```
+
+All the tests above pass successfully, although we think that some cases where the input does not have two `:` separators, like "5:14", should be accepted.
+
+![All tests of the method `parseSeconds` pass successfully](./images/dft_tests1.png)
 
 ## 2) `public void adjustSecondsToday(int secondsToday)`
 
@@ -224,7 +260,49 @@ To satisfy the **all-uses** criteria, we must test, for example, the paths in th
 
 #### Unit Tests
 
-// TODO: falar sobre os unit tests implementados e descrever outcome
+The tests implemented for this function can be found in the `ProjectTest.java` file, inside the `test` directory.
+We decided to apply the coverage criteria **all-uses**, as it covers the most cases.
+Looking at this table, we see that all the required **pair ids** result in paths that are already covered by the tests developed in the previous assignments, namely:
+- `secondsToday` **pair id** 3, 5, and 6 are covered when the `secondsToday` variable is negative (tested in method `testAdjustSecondsToday_NegativeInput_ShouldBecomeZero`)
+- `secondsToday` **pair ids** 1, 2, and 4 are covered when the `secondsToday` variable is positive (tested in method `testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime`) or when it's 0 (tested in `testAdjustSecondsToday_NegativeInput_ShouldBecomeZero`)
+- `this.secondsToday` **pair id** 2 is covered when the `secondsToday` variable is positive (tested in method `testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime`) or when it's 0 (tested in `testAdjustSecondsToday_NegativeInput_ShouldBecomeZero`)
+- `secondsDelta` **pair id** 1 is covered in every test case
+
+```java
+@Nested
+    public class AdjustSecondsTodayTest {
+        private Project proj;
+        private final int overallTime = 50;
+        private final int previousValue = 4;
+        
+        @BeforeEach
+        void setup() {
+            proj = new Project();
+            proj.setSecondsToday(previousValue);
+            proj.setSecondsOverall(overallTime);
+        }
+        
+        @ParameterizedTest(name = "Test #{index} with Positive input {arguments}")
+        @ValueSource(ints = {1,2,3,4,5,6})
+        public void testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime(int value) {
+            proj.adjustSecondsToday(value);
+            assertEquals(value, proj.getSecondsToday());
+            assertEquals(overallTime + value - previousValue, proj.getSecondsOverall());
+        }
+
+        @ParameterizedTest(name = "Test #{index} with Non-Positive input {arguments}")
+        @ValueSource(ints = {-2,0})
+        public void testAdjustSecondsToday_NegativeInput_ShouldBecomeZero(int value) {
+            proj.adjustSecondsToday(value);
+            assertEquals(0, proj.getSecondsToday());
+            assertEquals(overallTime - previousValue, proj.getSecondsOverall());
+        }
+    }
+```
+
+All the tests above passed successfully, as expected.
+
+![All tests of the method `adjustSecondsToday` passed successfully](./images/dft_tests2.png)
 
 ## 3) `public void handleStartPause(Project prj) throws ParseException`
 
