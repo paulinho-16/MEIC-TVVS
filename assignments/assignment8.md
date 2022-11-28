@@ -433,7 +433,147 @@ To satisfy the **all-uses** criteria, we must test, for example, the paths in th
 
 #### Unit Tests
 
-// TODO: falar sobre os unit tests implementados e descrever outcome
+The tests implemented for this function can be found in the `JTimeSchedFrameTest.java` file, inside the `test` directory.
+We decided to apply the coverage criteria **all-uses**, as it covers the most cases.
+We hadn't tested this method yet, as it belongs to the `gui` package, so we had to develop new tests.
+Looking at the **all-uses** table, we deduced the methods to implement in order to test all paths.
+More specifically:
+- `prj` **pair ids** 1, 10, and 11 are covered by just a single method call, which is present in all these tests
+- `prj` **pair ids** 2, 9 and 12 are covered when the `prj` project is running (tested in method `testHandleStartPause_PrjRunning_ShouldPauseIt`)
+- `prj` **pair ids** 5 and 13 are covered when the `prj` project is idle (tested in method `testHandleStartPause_PrjIdle_ShouldStartIt`)
+- `p` **pair ids** 1 and 2 are covered when the `prj` project is idle and the `p` project is running (tested in method `testHandleStartPause_PrjIdlePRunning_ShouldPauseP`)
+- `p` **pair id** 3 is covered when the `prj` project is idle and the `p` project is idle as well (tested in method `testHandleStartPause_PrjIdlePIdle_ShouldStartPrj`)
+- `this.arPrj` **pair id** 1 is covered when the `prj` project is idle (tested in method `testHandleStartPause_PrjIdle_ShouldStartIt`)
+- `ex` **pair id** 1 is covered when an exception occurs in the processes of starting/pausing a project (tested in method `testHandleStartPause_UponException_ShouldCatchIt`)
+
+In these tests, we verify that the state of each project is correctly updated and that the GUI internal methods are invoked the right number of times.
+
+```java
+@Nested
+    public class HandleStartPauseTest {
+        private JTimeSchedFrame jTimeSchedFrame;
+
+        @BeforeEach
+        void setup() throws NoSuchFieldException, IllegalAccessException {
+            Field reader = JTimeSchedApp.class.getDeclaredField("LOGGER");
+            reader.setAccessible(true);
+            JTimeSchedApp mainClass = new JTimeSchedApp();
+            Logger l = Logger.getLogger("JTimeSched");
+            l.setLevel(Level.ALL);
+            reader.set(mainClass, l);
+
+            jTimeSchedFrame = spy(JTimeSchedFrame.class);
+        }
+
+        @Test
+        public void testHandleStartPause_PrjRunning_ShouldPauseIt() throws ProjectException, ParseException, NoSuchFieldException, IllegalAccessException {
+            // Create project
+            Project prj = new Project("Running Project");
+            prj.start();
+            assertTrue(prj.isRunning());
+
+            // Call method
+            jTimeSchedFrame.handleStartPause(prj);
+
+            // Verify that prj is now idle
+            assertFalse(prj.isRunning());
+            Field currentProject = JTimeSchedFrame.class.getDeclaredField("currentProject");
+            currentProject.setAccessible(true);
+            assertEquals(currentProject.get(jTimeSchedFrame), prj);
+
+            // Verify that methods are indeed being called
+            verify(jTimeSchedFrame, times(1)).updateGUI();
+            verify(jTimeSchedFrame, times(1)).updateTrayCurrentProject();
+        }
+
+        @Test
+        public void testHandleStartPause_PrjIdle_ShouldStartIt() throws ParseException, NoSuchFieldException, IllegalAccessException {
+            // Create project
+            Project prj = new Project("Idle Project");
+            assertFalse(prj.isRunning());
+
+            // Call method
+            jTimeSchedFrame.handleStartPause(prj);
+
+            // Verify that prj is now running
+            assertTrue(prj.isRunning());
+            Field currentProject = JTimeSchedFrame.class.getDeclaredField("currentProject");
+            currentProject.setAccessible(true);
+            assertEquals(currentProject.get(jTimeSchedFrame), prj);
+
+            // Verify that methods are indeed being called
+            verify(jTimeSchedFrame, times(1)).updateGUI();
+            verify(jTimeSchedFrame, times(1)).updateTrayCurrentProject();
+        }
+
+        @Test
+        public void testHandleStartPause_PrjIdlePRunning_ShouldPauseP() throws ProjectException, ParseException, NoSuchFieldException, IllegalAccessException {
+            // Create projects
+            Project prj = new Project("Idle Project");
+            Project p = new Project("Running Project");
+            p.start();
+            assertFalse(prj.isRunning());
+            assertTrue(p.isRunning());
+
+            // Initialize project list with a running project
+            Field arPrj = JTimeSchedFrame.class.getDeclaredField("arPrj");
+            arPrj.setAccessible(true);
+            arPrj.set(jTimeSchedFrame, new ArrayList<>(Collections.singletonList(p)));
+
+            // Call method
+            jTimeSchedFrame.handleStartPause(prj);
+
+            // Verify that p has now stopped and prj is now running
+            assertFalse(p.isRunning());
+            assertTrue(prj.isRunning());
+            Field currentProject = JTimeSchedFrame.class.getDeclaredField("currentProject");
+            currentProject.setAccessible(true);
+            assertEquals(currentProject.get(jTimeSchedFrame), prj);
+        }
+
+        @Test
+        public void testHandleStartPause_PrjIdlePIdle_ShouldStartPrj() throws ParseException, NoSuchFieldException, IllegalAccessException {
+            // Create projects
+            Project prj = new Project("Idle Project");
+            Project p = new Project("Idle Project");
+            assertFalse(prj.isRunning());
+            assertFalse(p.isRunning());
+
+            // Initialize project list with a running project
+            Field arPrj = JTimeSchedFrame.class.getDeclaredField("arPrj");
+            arPrj.setAccessible(true);
+            arPrj.set(jTimeSchedFrame, new ArrayList<>(Collections.singletonList(p)));
+
+            // Call method
+            jTimeSchedFrame.handleStartPause(prj);
+
+            // Verify that p has now stopped and prj is now running
+            assertFalse(p.isRunning());
+            assertTrue(prj.isRunning());
+            Field currentProject = JTimeSchedFrame.class.getDeclaredField("currentProject");
+            currentProject.setAccessible(true);
+            assertEquals(currentProject.get(jTimeSchedFrame), prj);
+        }
+
+        @Test
+        public void testHandleStartPause_UponException_ShouldCatchIt() throws ProjectException, ParseException {
+            // Create project
+            Project prj = mock(Project.class);
+            ProjectException ex = mock(ProjectException.class);
+            doThrow(ex).when(prj).start();
+
+            // Call method
+            jTimeSchedFrame.handleStartPause(prj);
+
+            // Verify that the exception stacktrace was printed
+            verify(ex).printStackTrace();
+        }
+    }
+```
+
+All the tests above passed successfully, as expected.
+
+![All tests of the method `handleStartPause` passed successfully](./images/dft_tests3.png)
 
 -----
 
