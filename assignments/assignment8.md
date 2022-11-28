@@ -39,8 +39,9 @@ This method was selected since it contains several useful testing components, su
 - Local variable definitions and usage (def and c-use)
 - Method invocation of a defined variable (c-use)
 
-
 #### *Dataflow Testing*
+
+Numbering the lines of the `parseSeconds` method, we get:
 
 ```java
 1.  public static int parseSeconds(String strTime) throws ParseException {
@@ -59,21 +60,78 @@ This method was selected since it contains several useful testing components, su
 14. }
 ```
 
-// TODO: frase introdutória de CFG
-
-
-The following image displays *parseSeconds* Control Flow Graph.
+The *Control-flow Graph* of this method is as follows:
 
 ![parseSeconds CFG](./images/cfg_parseSeconds.png)
 
-
-The following image displays *parseSeconds* Dataflow Graph.
+In this case, the variables of interest are `strTime`, `p`, `m`, `hours`, `minutes` and `seconds`.
+After identifying and classifying the occurrences of all variables in the software under test (computing **defs**, **c-uses** and **p-uses** in each block), we are faced with the following *def-use graph*:
 
 ![parseSeconds def-use graph](./images/dug_parseSeconds.png)
 
-// TODO: dizer variáveis relevantes e meter tabela com def-use pairs para cada variável
+The **def-use pairs** identified for the variable `strTime` are:
 
-// TODO: all-defs, all-c-uses, all-p-uses, all-uses
+| pair id | def | use |   path  |
+|:-------:|:---:|:---:|:-------:|
+|    1    |  1  |  3  | <1,2,3> |
+
+The **def-use pairs** identified for the variable `p` are:
+
+| pair id | def | use |  path |
+|:-------:|:---:|:---:|:-----:|
+|    1    |  2  |  3  | <2,3> |
+
+The **def-use pairs** identified for the variable `m` are:
+
+| pair id | def |  use  |         path        |
+|:-------:|:---:|:-----:|:-------------------:|
+|    1    |  3  |   9   |    <3,4,5,7,8,9>    |
+|    2    |  3  |   10  |   <3,4,5,7,8,9,10>  |
+|    3    |  3  |   11  | <3,4,5,7,8,9,10,11> |
+|    4    |  3  | (5,T) |      <3,4,5,6>      |
+|    5    |  3  | (5,F) |      <3,4,5,7>      |
+
+The **def-use pairs** identified for the variable `hours` are:
+
+| pair id | def | use |       path      |
+|:-------:|:---:|:---:|:---------------:|
+|    1    |  9  |  13 | <9,10,11,12,13> |
+
+The **def-use pairs** identified for the variable `minutes` are:
+
+| pair id | def | use |      path     |
+|:-------:|:---:|:---:|:-------------:|
+|    1    |  10 |  13 | <10,11,12,13> |
+
+The **def-use pairs** identified for the variable `seconds` are:
+
+| pair id | def | use |    path    |
+|:-------:|:---:|:---:|:----------:|
+|    1    |  11 |  13 | <11,12,13> |
+
+To satisfy the **all-defs** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `strTime` | `p` | `m` | `hours` | `minutes` | `seconds` |
+|:------------:|:---------:|:---:|:---:|:-------:|:---------:|:---------:|
+| **pair ids** |     1     |  1  |  1  |    1    |     1     |     1     |
+
+To satisfy the **all-c-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `strTime` | `p` |  `m`  | `hours` | `minutes` | `seconds` |
+|:------------:|:---------:|:---:|:-----:|:-------:|:---------:|:---------:|
+| **pair ids** |     1     |  1  | 1,2,3 |    1    |     1     |     1     |
+
+To satisfy the **all-p-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `strTime` | `p` | `m` | `hours` | `minutes` | `seconds` |
+|:------------:|:---------:|:---:|:---:|:-------:|:---------:|:---------:|
+| **pair ids** |     -     |  -  | 4,5 |    -    |     -     |     -     |
+
+To satisfy the **all-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `strTime` | `p` |    `m`    | `hours` | `minutes` | `seconds` |
+|:------------:|:---------:|:---:|:---------:|:-------:|:---------:|:---------:|
+| **pair ids** |     1     |  1  | 1,2,3,4,5 |    1    |     1     |     1     |
 
 #### Unit Tests
 
@@ -90,8 +148,9 @@ This method was selected since it contains several useful testing components, su
 - Method invocation of a defined variable (c-use)
 - Usage of the `this` keyword to access variables within the class' scope (c-use)
 
-
 #### *Dataflow Testing*
+
+Numbering the lines of the `adjustSecondsToday` method, we get:
 
 ```java
 1.  public void adjustSecondsToday(int secondsToday) {
@@ -106,17 +165,62 @@ This method was selected since it contains several useful testing components, su
 10. }
 ```
 
-The following image displays *adjustSecondsToday* Control Flow Graph.
+The *Control-flow Graph* of this method is as follows:
 
 ![adjustSecondsToday CFG](./images/cfg_adjustSecondsToday.png)
 
-The following image displays *adjustSecondsToday* Dataflow Graph.
+In this case, the variables of interest are `secondsToday`, `this.secondsToday`, and `secondsDelta`.
+After identifying and classifying the occurrences of all variables in the software under test (computing **defs**, **c-uses** and **p-uses** in each block), we are faced with the following *def-use graph*:
 
 ![adjustSecondsToday def-use graph](./images/dug_adjustSecondsToday.png)
 
-// TODO: dizer variáveis relevantes e meter tabela com def-use pairs para cada variável
+The **def-use pairs** identified for the variable `secondsToday` are:
 
-// TODO: all-defs, all-c-uses, all-p-uses, all-uses
+| pair id | def |  use  |        path       |
+|:-------:|:---:|:-----:|:-----------------:|
+|    1    |  1  |   6   |    <1,2,4,5,6>    |
+|    2    |  1  |   9   | <1,2,4,5,6,7,8,9> |
+|    3    |  1  | (2,T) |      <1,2,3>      |
+|    4    |  1  | (2,F) |      <1,2,4>      |
+|    5    |  3  |   6   |     <3,4,5,6>     |
+|    6    |  3  |   9   |  <3,4,5,6,7,8,9>  |
+
+The **def-use pairs** identified for the variable `this.secondsToday` are:
+
+| pair id |  def  | use |      path     |
+|:-------:|:-----:|:---:|:-------------:|
+|    1    | entry |  6  | <1,2,3,4,5,6> |
+|    2    | entry |  6  |  <1,2,4,5,6>  |
+
+The **def-use pairs** identified for the variable `secondsDelta` are:
+
+| pair id | def | use |   path  |
+|:-------:|:---:|:---:|:-------:|
+|    1    |  6  |  8  | <6,7,8> |
+
+To satisfy the **all-defs** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `secondsToday` | `this.secondsToday` | `secondsDelta` |
+|:------------:|:--------------:|:-------------------:|:--------------:|
+| **pair ids** |        1       |          2          |        1       |
+
+To satisfy the **all-c-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `secondsToday` | `this.secondsToday` | `secondsDelta` |
+|:------------:|:--------------:|:-------------------:|:--------------:|
+| **pair ids** |     1,2,5,6    |          2          |        1       |
+
+To satisfy the **all-p-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `secondsToday` | `this.secondsToday` | `secondsDelta` |
+|:------------:|:--------------:|:-------------------:|:--------------:|
+| **pair ids** |       3,4      |          -          |        -       |
+
+To satisfy the **all-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `secondsToday` | `this.secondsToday` | `secondsDelta` |
+|:------------:|:--------------:|:-------------------:|:--------------:|
+| **pair ids** |   1,2,3,4,5,6  |          2          |        1       |
 
 #### Unit Tests
 
@@ -135,8 +239,9 @@ This method was selected since it contains several useful testing components, su
 - Method invocation of a defined variable (c-use)
 - Usage of the `this` keyword to define and access variables within the class' scope (def, c-use)
 
-
 #### *Dataflow Testing*
+
+Numbering the lines of the `handleStartPause` method, we get:
 
 ```java
 1.  public void handleStartPause(Project prj) throws ParseException {
@@ -173,18 +278,80 @@ This method was selected since it contains several useful testing components, su
 28. }
 ```
 
-The following image displays *handleStartPause* Control Flow Graph.
+The *Control-flow Graph* of this method is as follows:
 
 ![handleStartPause CFG](./images/cfg_handleStartPause.png)
 
-
-The following image displays *handleStartPause* Dataflow Graph.
+In this case, the variables of interest are `prj`, `p`, `this.arPrj`, `this.currentProject`, and `ex`.
+After identifying and classifying the occurrences of all variables in the software under test (computing **defs**, **c-uses** and **p-uses** in each block), we are faced with the following *def-use graph*:
 
 ![handleStartPause def-use graph](./images/dug_handleStartPause.png)
 
-// TODO: dizer variáveis relevantes e meter tabela com def-use pairs para cada variável
+The **def-use pairs** identified for the variable `prj` are:
 
-// TODO: all-defs, all-c-uses, all-p-uses, all-uses
+| pair id | def |  use  |                        path                       |
+|:-------:|:---:|:-----:|:-------------------------------------------------:|
+|    1    |  1  |   2   |                       <1,2>                       |
+|    2    |  1  |   6   |                   <1,2,3,4,5,6>                   |
+|    3    |  1  |   16  |      <1,2,3,4,5,7,8,9,10,11,12,13,9,14,15,16>     |
+|    4    |  1  |   16  |       <1,2,3,4,5,7,8,9,10,12,13,9,14,15,16>       |
+|    5    |  1  |   16  |             <1,2,3,4,5,7,8,9,14,15,16>            |
+|    6    |  1  |   19  | <1,2,3,4,5,7,8,9,10,11,12,13,9,14,15,16,17,18,19> |
+|    7    |  1  |   19  |   <1,2,3,4,5,7,8,9,10,12,13,9,14,15,16,17,18,19>  |
+|    8    |  1  |   19  |        <1,2,3,4,5,7,8,9,14,15,16,17,18,19>        |
+|    9    |  1  |   19  |                <1,2,3,4,5,6,18,19>                |
+|    10   |  1  | (2,T) |                       <1,2>                       |
+|    11   |  1  | (2,F) |                       <1,2>                       |
+|    12   |  1  | (5,T) |                   <1,2,3,4,5,6>                   |
+|    13   |  1  | (5,F) |                   <1,2,3,4,5,7>                   |
+
+The **def-use pairs** identified for the variable `p` are:
+
+| pair id | def |   use  |    path   |
+|:-------:|:---:|:------:|:---------:|
+|    1    |  9  |   11   | <9,10,11> |
+|    2    |  9  | (10,T) | <9,10,11> |
+|    3    |  9  | (10,F) | <9,10,12> |
+
+The **def-use pairs** identified for the variable `this.arrPrj` are:
+
+| pair id |  def  | use |        path       |
+|:-------:|:-----:|:---:|:-----------------:|
+|    1    | entry |  9  | <1,2,3,4,5,7,8,9> |
+
+The **def-use pairs** identified for the variable `this.currentProject` are:
+
+// TODO: perguntar o que acontece neste caso, em que só tem defs e nenhum use
+
+The **def-use pairs** identified for the variable `ex` are:
+
+| pair id | def | use |   path  |
+|:-------:|:---:|:---:|:-------:|
+|    1    |  22 |  23 | <22,23> |
+
+To satisfy the **all-defs** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** | `prj` | `p` | `this.arPrj` | `this.currentProject` | `ex` |
+|:------------:|:-----:|:---:|:------------:|:---------------------:|:----:|
+| **pair ids** |   2   |  1  |       1      |                       |   1  |
+
+To satisfy the **all-c-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** |  `prj`  | `p` | `this.arPrj` | `this.currentProject` | `ex` |
+|:------------:|:-------:|:---:|:------------:|:---------------------:|:----:|
+| **pair ids** | 1,2,5,9 |  1  |       1      |                       |   1  |
+
+To satisfy the **all-p-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** |    `prj`    | `p` | `this.arPrj` | `this.currentProject` | `ex` |
+|:------------:|:-----------:|:---:|:------------:|:---------------------:|:----:|
+| **pair ids** | 10,11,12,13 | 2,3 |       -      |                       |   -  |
+
+To satisfy the **all-uses** criteria, we must test, for example, the paths in the following pairs:
+
+| **variable** |        `prj`        |  `p`  | `this.arPrj` | `this.currentProject` | `ex` |
+|:------------:|:-------------------:|:-----:|:------------:|:---------------------:|:----:|
+| **pair ids** | 1,2,5,9,10,11,12,13 | 1,2,3 |       1      |                       |   1  |
 
 #### Unit Tests
 
