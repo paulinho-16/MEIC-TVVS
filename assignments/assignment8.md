@@ -365,18 +365,29 @@ After identifying and classifying the occurrences of all variables in the softwa
 
 ![handleStartPause def-use graph](./images/dug_handleStartPause.png)
 
+Note that in the `for` loop, we assume there is no **p-use** of `p`, given that this loop is equivalent to the following form:
+
+```java
+for (int i = 0; i < this.arPrj; i++) {
+    Project p = this.arPrj[i];
+    // statements using p
+}
+```
+
+Although, there is a **def** of the variable `p`, and a **p-use** of the `this.arPrj` variable in that predicate.
+
 The **def-use pairs** identified for the variable `prj` are:
 
 | pair id | def |  use  |                        path                       |
 |:-------:|:---:|:-----:|:-------------------------------------------------:|
 |    1    |  1  |   2   |                       <1,2>                       |
 |    2    |  1  |   6   |                   <1,2,3,4,5,6>                   |
-|    3    |  1  |   16  |      <1,2,3,4,5,7,8,9,10,11,12,13,9,14,15,16>     |
-|    4    |  1  |   16  |       <1,2,3,4,5,7,8,9,10,12,13,9,14,15,16>       |
-|    5    |  1  |   16  |             <1,2,3,4,5,7,8,9,14,15,16>            |
-|    6    |  1  |   19  | <1,2,3,4,5,7,8,9,10,11,12,13,9,14,15,16,17,18,19> |
-|    7    |  1  |   19  |   <1,2,3,4,5,7,8,9,10,12,13,9,14,15,16,17,18,19>  |
-|    8    |  1  |   19  |        <1,2,3,4,5,7,8,9,14,15,16,17,18,19>        |
+|    3    |  1  |   16  |      <1,2,3,4,5,7,8,9,10,11,12,9,13,14,15,16>     |
+|    4    |  1  |   16  |       <1,2,3,4,5,7,8,9,10,12,9,13,14,15,16>       |
+|    5    |  1  |   16  |          <1,2,3,4,5,7,8,9,13,14,15,16>            |
+|    6    |  1  |   19  | <1,2,3,4,5,7,8,9,10,11,12,9,13,14,15,16,17,18,19> |
+|    7    |  1  |   19  |   <1,2,3,4,5,7,8,9,10,12,9,13,14,15,16,17,18,19>  |
+|    8    |  1  |   19  |     <1,2,3,4,5,7,8,9,13,14,15,16,17,18,19>        |
 |    9    |  1  |   19  |                <1,2,3,4,5,6,18,19>                |
 |    10   |  1  | (2,T) |                       <1,2>                       |
 |    11   |  1  | (2,F) |                       <1,2>                       |
@@ -393,13 +404,14 @@ The **def-use pairs** identified for the variable `p` are:
 
 The **def-use pairs** identified for the variable `this.arrPrj` are:
 
-| pair id |  def  | use |        path       |
-|:-------:|:-----:|:---:|:-----------------:|
-|    1    | entry |  9  | <1,2,3,4,5,7,8,9> |
+| pair id |  def  |   use   |           path          |
+|:-------:|:-----:|:-------:|:-----------------------:|
+|    1    | entry |  (9,T)  |   <1,2,3,4,5,7,8,9,10>  |
+|    2    | entry |  (9,F)  | <1,2,3,4,5,7,8,9,13,14> |
 
 The **def-use pairs** identified for the variable `this.currentProject` are:
 
-// TODO: perguntar o que acontece neste caso, em que só tem defs e nenhum use
+The variable `this.currentProject` has no **def-use pairs** as it has no uses along the method, only definitions.
 
 The **def-use pairs** identified for the variable `ex` are:
 
@@ -409,27 +421,27 @@ The **def-use pairs** identified for the variable `ex` are:
 
 To satisfy the **all-defs** criteria, we must test, for example, the paths in the following pairs:
 
-| **variable** | `prj` | `p` | `this.arPrj` | `this.currentProject` | `ex` |
-|:------------:|:-----:|:---:|:------------:|:---------------------:|:----:|
-| **pair ids** |   2   |  1  |       1      |                       |   1  |
+| **variable** | `prj` | `p` | `this.arPrj` | `ex` |
+|:------------:|:-----:|:---:|:------------:|:----:|
+| **pair ids** |   2   |  1  |       1      |   1  |
 
 To satisfy the **all-c-uses** criteria, we must test, for example, the paths in the following pairs:
 
-| **variable** |  `prj`  | `p` | `this.arPrj` | `this.currentProject` | `ex` |
-|:------------:|:-------:|:---:|:------------:|:---------------------:|:----:|
-| **pair ids** | 1,2,5,9 |  1  |       1      |                       |   1  |
+| **variable** |  `prj`  | `p` | `this.arPrj` | `ex` |
+|:------------:|:-------:|:---:|:------------:|:----:|
+| **pair ids** | 1,2,5,9 |  1  |       -      |   1  |
 
 To satisfy the **all-p-uses** criteria, we must test, for example, the paths in the following pairs:
 
-| **variable** |    `prj`    | `p` | `this.arPrj` | `this.currentProject` | `ex` |
-|:------------:|:-----------:|:---:|:------------:|:---------------------:|:----:|
-| **pair ids** | 10,11,12,13 | 2,3 |       -      |                       |   -  |
+| **variable** |    `prj`    | `p` | `this.arPrj` | `ex` |
+|:------------:|:-----------:|:---:|:------------:|:----:|
+| **pair ids** | 10,11,12,13 | 2,3 |     1,2      |   -  |
 
 To satisfy the **all-uses** criteria, we must test, for example, the paths in the following pairs:
 
-| **variable** |        `prj`        |  `p`  | `this.arPrj` | `this.currentProject` | `ex` |
-|:------------:|:-------------------:|:-----:|:------------:|:---------------------:|:----:|
-| **pair ids** | 1,2,5,9,10,11,12,13 | 1,2,3 |       1      |                       |   1  |
+| **variable** |        `prj`        |  `p`  | `this.arPrj` | `ex` |
+|:------------:|:-------------------:|:-----:|:------------:|:----:|
+| **pair ids** | 1,2,5,9,10,11,12,13 | 1,2,3 |     1,2      |   1  |
 
 #### Unit Tests
 
@@ -443,7 +455,7 @@ More specifically:
 - `prj` **pair ids** 5 and 13 are covered when the `prj` project is idle (tested in method `testHandleStartPause_PrjIdle_ShouldStartIt`)
 - `p` **pair ids** 1 and 2 are covered when the `prj` project is idle and the `p` project is running (tested in method `testHandleStartPause_PrjIdlePRunning_ShouldPauseP`)
 - `p` **pair id** 3 is covered when the `prj` project is idle and the `p` project is idle as well (tested in method `testHandleStartPause_PrjIdlePIdle_ShouldStartPrj`)
-- `this.arPrj` **pair id** 1 is covered when the `prj` project is idle (tested in method `testHandleStartPause_PrjIdle_ShouldStartIt`)
+- `this.arPrj` **pair ids** 1 and 2 are covered when the `for` loop is executed, this is, `this.arPrj` is not empty, which happens in all the tests
 - `ex` **pair id** 1 is covered when an exception occurs in the processes of starting/pausing a project (tested in method `testHandleStartPause_UponException_ShouldCatchIt`)
 
 In these tests, we verify that the state of each project is correctly updated and that the GUI internal methods are invoked the right number of times.
