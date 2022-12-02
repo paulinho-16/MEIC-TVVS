@@ -42,7 +42,7 @@ Therefore, its purpose would be to receive a time in a given string format and r
 That said, it is essential to test functions that receive user input, which we can never trust.
 They can result in values in formats that are not expected by the application, leading to its downfall.
 
-After checking the format expected by the function (for this, we had to resort to the source code due to the lack of documentation), we thought of countless possible of inputs that could be categorized.
+After checking the format expected by the function (for this, we had to resort to the source code due to the lack of documentation), we thought of countless possible inputs that could be categorized.
 This possibility and the importance of robustness concerning user inputs were why we chose this function.
 
 Besides, this method contains several useful testing components, such as:
