@@ -33,11 +33,23 @@ As for the naming of test methods, we follow a *MethodName_StateUnderTest_Expect
 
 ### Description
 
-This method was selected since it contains several useful testing components, such as:
-- An argument `strTime` to use within the function (def and c-use)
-- An if statement to test branching (p-use)
-- Local variable definitions and usage (def and c-use)
-- Method invocation of a defined variable (c-use)
+This function of the `ProjectTime` class is called when the user edits the value of the "Time Overall" column, or the "Time Today" column of a given task/project, which correspond to the total time spent on that item, and the time spent on the current day, respectively.
+This action can be performed directly on the table by double-clicking with the left mouse button on the respective field, or via an input window that opens after a right mouse click on the field.
+
+Looking at its signature, we immediately deduced that it receives as input a string, coming from the user, and returns an int, which we believe is the total number of seconds taken by the task, due to the name of the function.
+Therefore, its purpose would be to receive a time in a given string format and return the corresponding total number of seconds, to be able to update the table values accordingly.
+
+That said, it is very important to test functions that receive user input, which we can never trust.
+They can result in values in formats that are not the ones expected by the application, leading to its downfall.
+
+After checking the format expected by the function (for this we had to resort to the source code, due to the lack of documentation), we thought of countless possibilities of inputs that could be categorized.
+This possibility, together with the importance of robustness concerning user inputs, were the reasons why we chose this function.
+
+Besides, this method contains several useful testing components, such as:
+- An argument `strTime` to use within the function (**def** and **c-use**)
+- An if statement to test branching (**p-use**)
+- Local variable definitions and usage (**def** and **c-use**)
+- Method invocation of a defined variable (**c-use**)
 
 #### *Dataflow Testing*
 
@@ -177,12 +189,17 @@ All the tests above pass successfully, although we think that some cases where t
 
 ### Description
 
-This method was selected since it contains several useful testing components, such as:
-- An argument `secondsToday` to use within the function (def and c-use)
-- An if statement to test branching (p-use)
-- Local variable definitions and usage (def and c-use)
-- Method invocation of a defined variable (c-use)
-- Usage of the `this` keyword to access variables within the class' scope (c-use)
+This function of the `Project` class is called whenever the user edits the `Time Today` table field, arising the need to adjust the value from the `Time Overall` variable accordingly.
+This method evaluates the variations from the input values in comparison to the previously stored ones and makes the necessary adjustments to update the time variables.
+It is fundamental to guarantee the consistency of the application, given that an edit by the user must be correctly processed, avoiding unexpected effects.
+Changing project times should update overall and today's times properly, hence the importance of testing this function.
+
+Besides, this method contains several useful testing components, such as:
+- An argument `secondsToday` to use within the function (**def** and **c-use**)
+- An if statement to test branching (**p-use**)
+- Local variable definitions and usage (**def** and **c-use**)
+- Method invocation of a defined variable (**c-use**)
+- Usage of the `this` keyword to access variables within the class' scope (**c-use**)
 
 #### *Dataflow Testing*
 
@@ -308,14 +325,18 @@ All the tests above passed successfully, as expected.
 
 ### Description
 
-This method was selected since it contains several useful testing components, such as:
-- An argument `prj` to use within the function (def and c-use)
-- An if statement to test branching (p-use)
-- A for loop with variable definition and usage, CFG branching, and stop condition (def, c-use, p-use)
-- Try Catch statements with CFG branching(def, c-use)
-- Local variable definitions and usage (def and c-use)
-- Method invocation of a defined variable (c-use)
-- Usage of the `this` keyword to define and access variables within the class' scope (def, c-use)
+This function of the `JTimeSchedFrame` class is called whenever a project is started or paused, as it updates the GUI accordingly.
+We chose this function as we didn't test any method from the GUI packages, so this is a chance to increase the test coverage.
+It's also important to guarantee that the GUI is correctly updated, hence the importance of testing this function.
+
+Besides, this method contains several useful testing components, such as:
+- An argument `prj` to use within the function (**def** and **c-use**)
+- An if statement to test branching (**p-use**)
+- A for loop with variable definition and usage, CFG branching, and stop condition (**def**, **c-use**, **p-use**)
+- Try Catch statements with CFG branching(**def**, **c-use**)
+- Local variable definitions and usage (**def** and **c-use**)
+- Method invocation of a defined variable (**c-use**)
+- Usage of the `this` keyword to define and access variables within the class' scope (**def**, **c-use**)
 
 #### *Dataflow Testing*
 
