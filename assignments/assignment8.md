@@ -1,11 +1,11 @@
 # Assignment 8 - Dataflow Testing (White-box Testing)
 
 *Dataflow testing* is used to analyze the flow of data in the program.
-It is the process of collecting information about how the variables flow the data in the program, focusing on each particular point in the process.
-It consists of a group of testing strategies to examine the control flow of programs in order to explore the sequence of variables according to the series of events.
+It is the process of collecting information about how the variables flow the data in the program, focusing on each particular point.
+It consists of a group of testing strategies to examine the control flow of programs to explore the sequence of variables according to the series of events.
 It mainly focuses on the points at which values are assigned to the variables and the points at which these values are used.
 By concentrating on both points, data flow can be tested.
-*Dataflow testing* uses the control flow graph to detect illogical things that can interrupt the flow of data.
+*Dataflow testing* uses the control flow graph to detect illogical things that can interrupt data flow.
 
 There are five concepts to highlight in this type of testing:
 - **def**: definition of a variable - it's the occurrence of a variable when a value is bound to it
@@ -20,20 +20,20 @@ In this type of testing, there are different types of coverage criteria. In this
 - **all-p-uses**: achieved when, for every program variable, at least one **def-clear path** from every definition of that variable to every **p-use** of it must be covered
 - **all-uses**: achieved when, for every program variable, at least one **def-clear path** from every definition of that variable to every **c-use** and every **p-use** (including all outgoing edges of the predicate statement) of it must be covered - requires that all **def-use pairs** are covered
 
-To try out this technique, we selected three different functions of the *jTimeSched* project.
-For each one, we present the reason we decided to test it and its purpose.
+To try this technique, we selected three different functions of the *jTimeSched* project.
+We present the reason we decided to test each one and its purpose.
 Then, we show the **CFG** (control-flow graph) of the function, from which we also build the **def-use graph** (dataflow graph), which captures the flow of definitions (also known as defs) across basic blocks in a program.
 After that, we apply *Dataflow Testing* to each variable of that function, displaying a tabular summary with the **def-use pairs** for each.
 The last step is to define all paths for each coverage criteria: **all-defs**, **all-c-uses**, **all-p-uses**, and **all-uses**.
 Finally, we describe the unit tests we created based on this method and their outcomes.
 
-As for the naming of test methods, we follow a *MethodName_StateUnderTest_ExpectedBehaviour* approach.
+As for naming test methods, we follow a  *MethodName_StateUnderTest_ExpectedBehaviour* approach.
 
 ## 1) `public static int parseSeconds(String strTime) throws ParseException`
 
 ### Description
 
-This method was selected since it contains several useful testing components, such as:
+This method was selected since it contains several helpful testing components, such as:
 - An argument `strTime` to use within the function (def and c-use)
 - An if statement to test branching (p-use)
 - Local variable definitions and usage (def and c-use)
@@ -135,13 +135,13 @@ To satisfy the **all-uses** criteria, we must test, for example, the paths in th
 
 #### Unit Tests
 
-The tests implemented for this function can be found in the `ProjectTimeTest.java` file, inside the `test` directory.
-We decided to apply the coverage criteria **all-uses**, as it covers the most cases.
+The tests implemented for this function can be found in the `ProjectTimeTest.java` file inside the `test` directory.
+We decided to apply the coverage criteria **all-uses**, as it covers most cases.
 Looking at this table, we see that all the required **pair ids** result in paths that are already covered by the tests developed in the previous assignments.
 More specifically:
 - `strTime` **pair id** 1 is covered by just a single method call, which is present in all these tests
 - `p` **pair id** 1 is also covered by just a single method call, which is present in all these tests
-- `m` **pair ids** 1,2,3 and 5 are covered when the string `strTime` conforms to the time format (valid input - tested in the method `testParseSeconds_CorrectDateFormat_ShouldReturnSeconds`), and **pair id** 4 is covered when it does not (invalid input - tested in the method `testParseSeconds_IncorrectDateFormat_ShouldThrowException`)
+- `m` **pair ids** 1,2,3 and 5 are covered when the string `strTime` conforms to the time format (valid input - tested in the method `testParseSeconds_CorrectDateFormat_ShouldReturnSeconds`) and **pair id** 4 is covered when it does not (invalid input - tested in the method `testParseSeconds_IncorrectDateFormat_ShouldThrowException`)
 - `hours`, `minutes` and `seconds` **pair ids** 1 are also covered when no exception is raised (valid input - tested in the method `testParseSeconds_CorrectDateFormat_ShouldReturnSeconds`)
 
 Some valid inputs were tested (such as `4:21:16` or `06:09:03`), as well as some invalid (such as `4.21.16` or `24:00:60`).
@@ -169,7 +169,7 @@ Some valid inputs were tested (such as `4:21:16` or `06:09:03`), as well as some
     }
 ```
 
-All the tests above pass successfully, although we think that some cases where the input does not have two `:` separators, like "5:14", should be accepted.
+All the tests above pass successfully, although we think some cases where the input does not have two `:` separators, like "5:14", should be accepted.
 
 ![All tests of the method `parseSeconds` pass successfully](./images/dft_tests1.png)
 
@@ -177,7 +177,7 @@ All the tests above pass successfully, although we think that some cases where t
 
 ### Description
 
-This method was selected since it contains several useful testing components, such as:
+This method was selected since it contains several helpful testing components, such as:
 - An argument `secondsToday` to use within the function (def and c-use)
 - An if statement to test branching (p-use)
 - Local variable definitions and usage (def and c-use)
@@ -260,8 +260,8 @@ To satisfy the **all-uses** criteria, we must test, for example, the paths in th
 
 #### Unit Tests
 
-The tests implemented for this function can be found in the `ProjectTest.java` file, inside the `test` directory.
-We decided to apply the coverage criteria **all-uses**, as it covers the most cases.
+The tests implemented for this function can be found in the `ProjectTest.java` file inside the `test` directory.
+We decided to apply the coverage criteria **all-uses**, as it covers most cases.
 Looking at this table, we see that all the required **pair ids** result in paths that are already covered by the tests developed in the previous assignments, namely:
 - `secondsToday` **pair id** 3, 5, and 6 are covered when the `secondsToday` variable is negative (tested in method `testAdjustSecondsToday_NegativeInput_ShouldBecomeZero`)
 - `secondsToday` **pair ids** 1, 2, and 4 are covered when the `secondsToday` variable is positive (tested in method `testAdjustSecondsToday_PositiveInput_ShouldReturnOverallTime`) or when it's 0 (tested in `testAdjustSecondsToday_NegativeInput_ShouldBecomeZero`)
@@ -374,7 +374,7 @@ for (int i = 0; i < this.arPrj; i++) {
 }
 ```
 
-Although, there is a **def** of the variable `p`, and a **p-use** of the `this.arPrj` variable in that predicate.
+Although, there is a **def** of the variable `p` and a **p-use** of the `this.arPrj` variable in that predicate.
 
 The **def-use pairs** identified for the variable `prj` are:
 
@@ -445,20 +445,20 @@ To satisfy the **all-uses** criteria, we must test, for example, the paths in th
 
 #### Unit Tests
 
-The tests implemented for this function can be found in the `JTimeSchedFrameTest.java` file, inside the `test` directory.
-We decided to apply the coverage criteria **all-uses**, as it covers the most cases.
+The tests implemented for this function can be found in the `JTimeSchedFrameTest.java` file inside the `test` directory.
+We decided to apply the coverage criteria **all-uses**, as it covers most cases.
 We hadn't tested this method yet, as it belongs to the `gui` package, so we had to develop new tests.
 Looking at the **all-uses** table, we deduced the methods to implement in order to test all paths.
 More specifically:
 - `prj` **pair ids** 1, 10, and 11 are covered by just a single method call, which is present in all these tests
 - `prj` **pair ids** 2, 9 and 12 are covered when the `prj` project is running (tested in method `testHandleStartPause_PrjRunning_ShouldPauseIt`)
 - `prj` **pair ids** 5 and 13 are covered when the `prj` project is idle (tested in method `testHandleStartPause_PrjIdle_ShouldStartIt`)
-- `p` **pair ids** 1 and 2 are covered when the `prj` project is idle and the `p` project is running (tested in method `testHandleStartPause_PrjIdlePRunning_ShouldPauseP`)
-- `p` **pair id** 3 is covered when the `prj` project is idle and the `p` project is idle as well (tested in method `testHandleStartPause_PrjIdlePIdle_ShouldStartPrj`)
+- `p` **pair ids** 1 and 2 are covered when the `prj` project is idle, and the `p` project is running (tested in method `testHandleStartPause_PrjIdlePRunning_ShouldPauseP`)
+- `p` **pair id** 3 is covered when the `prj` project is idle, and the `p` project is idle as well (tested in method `testHandleStartPause_PrjIdlePIdle_ShouldStartPrj`)
 - `this.arPrj` **pair ids** 1 and 2 are covered when the `for` loop is executed, this is, `this.arPrj` is not empty, which happens in all the tests
 - `ex` **pair id** 1 is covered when an exception occurs in the processes of starting/pausing a project (tested in method `testHandleStartPause_UponException_ShouldCatchIt`)
 
-In these tests, we verify that the state of each project is correctly updated and that the GUI internal methods are invoked the right number of times.
+In these tests, we verify that the state of each project is correctly updated and that the GUI internal methods are invoked the correct number of times.
 
 ```java
 @Nested
