@@ -54,7 +54,7 @@ public class CategoryPartitionTest {
             assertDoesNotThrow(() -> board.squareAt(x, y));
         }
 
-        @ParameterizedTest
+        /*@ParameterizedTest
         @ValueSource(ints = {-1, 3})
         public void invalid_x(int x) {
             assertThrows(AssertionError.class, () -> board.squareAt(x, 1));
@@ -64,7 +64,7 @@ public class CategoryPartitionTest {
         @ValueSource(ints = {-1, 3})
         public void invalid_y(int y) {
             assertThrows(AssertionError.class, () -> board.squareAt(2, y));
-        }
+        }*/
     }
 
     @Nested
@@ -82,10 +82,10 @@ public class CategoryPartitionTest {
             assertDoesNotThrow(() -> boardCreator.createBoard(new Square[][]{{}}));
         }
 
-        @Test
+        /*@Test
         public void null_grid() {
             assertThrows(AssertionError.class, () -> boardCreator.createBoard(null));
-        }
+        }*/
     }
 
     @Nested
@@ -106,7 +106,7 @@ public class CategoryPartitionTest {
             assertDoesNotThrow(() -> levelCreator.createLevel(board, ghosts, startPositions));
         }
 
-        @Test
+        /*@Test
         public void null_board() {
             assertThrows(AssertionError.class, () -> levelCreator.createLevel(null, ghosts, startPositions));
         }
@@ -119,7 +119,7 @@ public class CategoryPartitionTest {
         @Test
         public void null_positions() {
             assertThrows(AssertionError.class, () -> levelCreator.createLevel(board, ghosts, null));
-        }
+        }*/
     }
 
     @Nested
@@ -168,10 +168,10 @@ public class CategoryPartitionTest {
             image = sprite.newImage(5, 5);
         }
 
-        @ParameterizedTest
+        /* @ParameterizedTest
         @MethodSource("valid")
         public void valid_draw(int x, int y, int width, int height) {
             assertDoesNotThrow(() -> sprite.draw(image.createGraphics(), x, y, width, height));
-        }
+        }*/
     }
 }

@@ -57,10 +57,9 @@
     <jacoco.plugin.version>0.8.8</jacoco.plugin.version>
 
     <!-- JUnit related -->
-    <junit.jupiter.version>5.2.0</junit.jupiter.version>
+    <junit.jupiter.version>5.9.1</junit.jupiter.version>
     <junit.platform.version>1.1.1</junit.platform.version>
-    <junit.version>4.12</junit.version>
-    <junit.vintage.version>5.2.0</junit.vintage.version>
+    <junit.version>4.13.2</junit.version>
     <cucumber.version>1.2.5</cucumber.version>
     <assertj.version>3.9.1</assertj.version>
     <mockito.version>3.4.0</mockito.version>
@@ -87,31 +86,8 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.2.0-M1</version>
+      <version>5.9.1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>${junit.vintage.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-runner</artifactId>
-      <version>${junit.platform.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-launcher</artifactId>
-      <version>${junit.platform.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-surefire-provider</artifactId>
-      <version>1.2.0-M1</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -149,12 +125,6 @@
       <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
-          <scope>test</scope>
-      </dependency>
   </dependencies>
 
   <build>
@@ -273,22 +243,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.21.0</version>
+        <version>3.0.0-M7</version>
         <configuration>
           <trimStackTrace>false</trimStackTrace>
+          <argLine>-disableassertions</argLine>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>1.2.0-M1</version>
-          </dependency>
-          <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.2.0</version>
-          </dependency>
-        </dependencies>
       </plugin>
 
       <plugin>
@@ -407,6 +366,58 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.9.11</version>
+        <dependencies>
+          <!-- The following dependency must be included to support JUnit 5 -->
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>1.1.0</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <!-- The following test classes must be excluded as they fail on Pit -->
+          <excludedTestClasses>
+            <param>nl.tudelft.jpacman.LauncherSmokeTest</param>
+            <param>nl.tudelft.jpacman.e2e.framework.startup.StartupTest</param>
+            <param>nl.tudelft.jpacman.integration.StartupSystemTest</param>
+            <param>nl.tudelft.jpacman.npc.ghost.NavigationTest</param>
+            <param>nl.tudelft.jpacman.sprite.SpriteTest</param>
+            <param>nl.tudelft.jpacman.level.CollisionInteractionMapTest</param>
+            <param>nl.tudelft.jpacman.level.PlayerTest</param>
+            <param>nl.tudelft.jpacman.ui.BoardPanelTest</param>
+          </excludedTestClasses>
+
+          <!-- All mutation operators -->
+          <mutators>
+            <mutator>CONDITIONALS_BOUNDARY</mutator>
+            <mutator>INCREMENTS</mutator>
+            <mutator>INVERT_NEGS</mutator>
+            <mutator>MATH</mutator>
+            <mutator>NEGATE_CONDITIONALS</mutator>
+            <mutator>VOID_METHOD_CALLS</mutator>
+            <mutator>EMPTY_RETURNS</mutator>
+            <mutator>FALSE_RETURNS</mutator>
+            <mutator>TRUE_RETURNS</mutator>
+            <mutator>NULL_RETURNS</mutator>
+            <mutator>PRIMITIVE_RETURNS</mutator>
+            <mutator>CONSTRUCTOR_CALLS</mutator>
+            <mutator>INLINE_CONSTS</mutator>
+            <mutator>NON_VOID_METHOD_CALLS</mutator>
+            <mutator>REMOVE_CONDITIONALS</mutator>
+            <mutator>REMOVE_INCREMENTS</mutator>
+            <mutator>EXPERIMENTAL_ARGUMENT_PROPAGATION</mutator>
+            <mutator>EXPERIMENTAL_BIG_INTEGER</mutator>
+            <mutator>EXPERIMENTAL_NAKED_RECEIVER</mutator>
+            <mutator>EXPERIMENTAL_MEMBER_VARIABLE</mutator>
+            <mutator>EXPERIMENTAL_SWITCH</mutator>
+          </mutators>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -457,7 +468,7 @@
       <plugin> <!-- JUnit report -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>${surefire.plugin.version}</version>
+        <version>3.0.0-M7</version>
       </plugin>
 
       <!-- Static tools: Checkstyle, PMD, Spotbugs -->

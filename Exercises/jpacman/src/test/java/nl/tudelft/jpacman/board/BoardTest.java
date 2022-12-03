@@ -67,5 +67,21 @@ class BoardTest {
         assertFalse(board.withinBorders(x_within, y_below)); // t3
         assertFalse(board.withinBorders(MAX_WIDTH, y_within)); // t5
         assertFalse(board.withinBorders(x_below, y_within)); // t9
+
+        assertTrue(board.withinBorders(0, y_within));
+        assertTrue(board.withinBorders(x_within, 0));
+    }
+
+    @Test
+    void testInvariant() {
+        assertTrue(board.invariant());
+
+        Square[][] grid_null = {
+            { mock(Square.class), null, mock(Square.class) },
+            { mock(Square.class), mock(Square.class), mock(Square.class) },
+        };
+        Board board_null = new Board(grid_null);
+
+        assertFalse(board_null.invariant());
     }
 }
