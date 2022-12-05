@@ -56,6 +56,8 @@ public class ProjectSerializerTest {
         // Change parameters of each project
         prj1.start();
         prj1.setNotes("A quick note");
+        prj1.setQuotaToday(60);
+        prj1.setQuotaOverall(120);
         prj2.setChecked(true);
         prj2.setColor(new Color(3, 145, 255));
         prj3.setSecondsToday(440);
@@ -86,6 +88,12 @@ public class ProjectSerializerTest {
 
         String notes = e.getElementsByTagName("notes").item(0).getFirstChild().getNodeValue();
         assertEquals("A quick note", notes);
+
+        int quotaToday = Integer.parseInt(((Element) e.getElementsByTagName("quota").item(0)).getAttribute("today"));
+        int quotaOverall = Integer.parseInt(((Element) e.getElementsByTagName("quota").item(0)).getAttribute("overall"));
+
+        assertEquals(60, quotaToday);
+        assertEquals(120, quotaOverall);
 
         // Project 2 (checked)
         e = (Element) nl.item(1);
@@ -124,7 +132,10 @@ public class ProjectSerializerTest {
             () -> assertEquals(proj.isChecked(), returned.isChecked()),
             () -> assertEquals(proj.getColor(), returned.getColor()),
             () -> assertEquals(proj.getTimeCreated(), returned.getTimeCreated()),
+            () -> assertEquals(proj.getTimeStart(), returned.getTimeStart()),
             () -> assertEquals(proj.getNotes(), returned.getNotes()),
+            () -> assertEquals(proj.getQuotaToday(), returned.getQuotaToday()),
+            () -> assertEquals(proj.getQuotaOverall(), returned.getQuotaOverall()),
             () -> assertTrue(proj.getTitle() == null && returned.getTitle().equals("") || proj.getTitle().equals(returned.getTitle()))
         );
     }
@@ -149,11 +160,14 @@ public class ProjectSerializerTest {
         // Change parameters of each project
         proj1.start();
         proj1.setNotes("A quick note");
+        proj1.setQuotaToday(60);
+        proj1.setQuotaOverall(120);
         proj2.setChecked(true);
         proj2.setColor(new Color(3, 145, 255));
         proj3.setSecondsToday(440);
         proj3.setSecondsOverall(3600);
         proj3.setTimeCreated(Date.from(Instant.parse("2018-10-16T00:00:00.000Z")));
+        proj3.setTimeStart(Date.from(Instant.parse("2018-10-18T00:00:00.000Z")));
         proj4.setTitle("");
 
         // Write the Projects to the XML file

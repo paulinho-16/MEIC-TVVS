@@ -119,15 +119,20 @@ public class ProjectTest {
 
     @Nested
     class PauseTest {
+        private final CountDownLatch waiter = new CountDownLatch(1);
+
         @Test
-        public void testPause_RunningProject_ShouldPause() throws ProjectException {
+        public void testPause_RunningProject_ShouldPause() throws ProjectException, InterruptedException {
             // Create new Project
             Project proj = new Project();
+            proj.setSecondsOverall(10);
             // Project should not be running before it is started
             assertFalse(proj.isRunning());
             Date beforeStart = new Date();
             // Starting project
             proj.start();
+            waiter.await(2*1000*1000*1000, TimeUnit.NANOSECONDS); // 2s
+            Date afterRunning = new Date();
             // Project should be running after it is started
             assertTrue(proj.isRunning());
             // Checking that the project start date has been set during the running test
@@ -136,6 +141,10 @@ public class ProjectTest {
             proj.pause();
             // Project should not be running after it is paused
             assertFalse(proj.isRunning());
+            // Project time variables should be correctly updated
+            int actualSeconds = (int) Math.abs(beforeStart.getTime() - afterRunning.getTime()) / 1000;
+            assertEquals(actualSeconds, proj.getSecondsToday(), "SecondsToday was not correctly updated");
+            assertEquals(10 + actualSeconds, proj.getSecondsOverall(), "SecondsOverall was not correctly updated");
         }
 
         @Test

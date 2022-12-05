@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -16,9 +17,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import static de.dominik_geyer.jtimesched.project.ProjectTableModel.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class ProjectTableModelTest {
     private final ArrayList<Project> projects = new ArrayList<>();
@@ -170,26 +175,55 @@ public class ProjectTableModelTest {
     public class SetValueAtTest {
         Stream<Arguments> arguments() {
             return Stream.of(
-                Arguments.of(true, COLUMN_CHECK),
-                Arguments.of(false, COLUMN_CHECK),
-                Arguments.of("The cake is a lie", COLUMN_TITLE),
-                Arguments.of(Color.yellow, COLUMN_COLOR),
-                Arguments.of(new Date(2021-12-25), COLUMN_CREATED),
-                Arguments.of(new Integer(128), COLUMN_TIMEOVERALL),
-                Arguments.of(new Integer(56), COLUMN_TIMETODAY)
+                Arguments.of(true, COLUMN_CHECK, 1, "Set check for project 'Test Project 1'"),
+                Arguments.of(false, COLUMN_CHECK, 1, "Unset check for project 'Test Project 1'"),
+                Arguments.of("The cake is a lie", COLUMN_TITLE, 1, "Renamed project 'Test Project 1' to 'The cake is a lie'"),
+                Arguments.of(Color.yellow, COLUMN_COLOR, 0, ""),
+                Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from 2022-12-05 to 1970-01-01"),
+                Arguments.of(new Integer(128), COLUMN_TIMEOVERALL, 1, "Manually set time overall for project 'The cake is a lie' from 0:00:00 to 0:02:08"),
+                Arguments.of(new Integer(56), COLUMN_TIMETODAY, 1, "Manually set time today for project 'The cake is a lie' from 0:00:00 to 0:00:56")
             );
         }
 
         @ParameterizedTest
         @MethodSource("arguments")
-        public void testSetValueAt_InputValueAndColumn_ShouldReturnChangedCell(Object value, int column) {
-            tableModel.setValueAt(value,0,column);
-            assertEquals(value, tableModel.getValueAt(0,column));
+        public void testSetValueAt_InputValueAndColumn_ShouldReturnChangedCell(Object value, int column, int numLogs, String logMessage) {
+            ArrayList<LogRecord> logRecords = new ArrayList<>();
+
+            JTimeSchedApp.getLogger().setFilter(logRecord -> {
+                if (logRecord.getLevel().intValue() == Level.INFO.intValue()) {
+                    logRecords.add(logRecord);
+                }
+                return false;
+            });
+
+            tableModel.setValueAt(value, 0, column);
+
+            assertEquals(value, tableModel.getValueAt(0, column));
+            assertEquals(numLogs, logRecords.size());
+            if (logRecords.size() > 0) {
+                assertEquals(logMessage, logRecords.get(0).getMessage());
+            }
         }
 
         @Test
         public void testSetValueAt_InputOutOfBounds_ShouldThrowException() {
             assertThrows(IllegalStateException.class, () -> tableModel.setValueAt(null, 0, 10));
+        }
+
+        @Test
+        public void testSetValueAt_NegativeTimeToday_ShouldCatchException() {
+            ParseException ex = mock(ParseException.class);
+
+            try (MockedStatic<ProjectTime> utilities = Mockito.mockStatic(ProjectTime.class)) {
+                utilities.when(() -> ProjectTime.formatSeconds(-1)).thenThrow(ex);
+
+                // Call method
+                assertDoesNotThrow(() -> tableModel.setValueAt(-1, 0, COLUMN_TIMETODAY));
+
+                // Verify that the exception stacktrace was printed
+                verify(ex).printStackTrace();
+            }
         }
     }
 
