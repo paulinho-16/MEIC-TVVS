@@ -22,9 +22,27 @@
 
     <dependencies>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.2.0-M1</version>
+            <version>5.9.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -141,22 +159,44 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.21.0</version>
+                <version>3.0.0-M7</version>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>1.2.0-M1</version>
-                    </dependency>
-                    <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.2.0</version>
+                        <version>5.9.1</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <!-- Pitest tool (Mutation Testing) -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.10.0</version>
+                <dependencies>
+                    <!-- The following dependency must be included to support JUnit 5 -->
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.1.0</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <excludedClasses>
+                        <!-- The following test classes must be excluded as they fail on Pit -->
+                        <param>de.dominik_geyer.jtimesched.gui.*</param>
+                        <param>de.dominik_geyer.jtimesched.gui.table.*</param>
+                        <param>de.dominik_geyer.jtimesched.JTimeSchedApp*</param>
+                    </excludedClasses>
+                    <excludedTestClasses>
+                        <param>de.dominik_geyer.jtimesched.JTimeSchedAppTest</param>
+                        <param>de.dominik_geyer.jtimesched.gui.JTimeSchedFrameTest</param>
+                    </excludedTestClasses>
+                </configuration>
             </plugin>
         </plugins>
     </build>

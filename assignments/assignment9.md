@@ -8,9 +8,15 @@
 // TODO: exclude classes/mutants in classes related to the GUI
 // TODO: descrever mutation score dos unit tests feitos nos assignments anteriores ("Analyze which mutants survive to your unit test cases and which parts of the source code has the most not-killed mutants")
 
+![Initial Mutation Score](./images/mt_initial_score.png)
+
+
+
 ## 2) Equivalent Mutants
 
 // TODO: If any exists, list them here
+
+
 
 ## 3) Unit Tests
 
