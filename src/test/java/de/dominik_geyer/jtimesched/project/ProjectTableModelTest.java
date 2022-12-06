@@ -189,7 +189,7 @@ public class ProjectTableModelTest {
                 Arguments.of(false, COLUMN_CHECK, 1, "Unset check for project 'Test Project 1'"),
                 Arguments.of("The cake is a lie", COLUMN_TITLE, 1, "Renamed project 'Test Project 1' to 'The cake is a lie'"),
                 Arguments.of(Color.yellow, COLUMN_COLOR, 0, ""),
-                Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from "+  dtf.format(now) + " to 1970-01-01"),
+                Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from " + dtf.format(now) + " to 1970-01-01"),
                 Arguments.of(new Integer(128), COLUMN_TIMEOVERALL, 1, "Manually set time overall for project 'The cake is a lie' from 0:00:00 to 0:02:08"),
                 Arguments.of(new Integer(56), COLUMN_TIMETODAY, 1, "Manually set time today for project 'The cake is a lie' from 0:00:00 to 0:00:56")
             );
