@@ -3,6 +3,8 @@ package de.dominik_geyer.jtimesched.project;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -84,6 +86,7 @@ public class ProjectTableModelTest {
     @DisplayName("Test GetProjectAt method with a created project")
     public void testGetProjectAt_CreateAndAddProject_ShouldHaveSameAttributes() {
         Project prj = new Project("Test Project 4");
+        int rows = tableModel.getRowCount();
 
         tableModel.addProject(prj);
         Project returned = tableModel.getProjectAt(3);
@@ -99,6 +102,9 @@ public class ProjectTableModelTest {
             () -> assertEquals(prj.getTimeStart(), returned.getTimeStart()),
             () -> assertEquals(prj.getColor(), returned.getColor())
         );
+
+        assertEquals(tableModel.getRowCount(), rows + 1);
+
     }
 
     @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
@@ -179,7 +185,7 @@ public class ProjectTableModelTest {
                 Arguments.of(false, COLUMN_CHECK, 1, "Unset check for project 'Test Project 1'"),
                 Arguments.of("The cake is a lie", COLUMN_TITLE, 1, "Renamed project 'Test Project 1' to 'The cake is a lie'"),
                 Arguments.of(Color.yellow, COLUMN_COLOR, 0, ""),
-                Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from 2022-12-05 to 1970-01-01"),
+                Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from DATE_TODAY to 1970-01-01"),
                 Arguments.of(new Integer(128), COLUMN_TIMEOVERALL, 1, "Manually set time overall for project 'The cake is a lie' from 0:00:00 to 0:02:08"),
                 Arguments.of(new Integer(56), COLUMN_TIMETODAY, 1, "Manually set time today for project 'The cake is a lie' from 0:00:00 to 0:00:56")
             );
@@ -189,6 +195,13 @@ public class ProjectTableModelTest {
         @MethodSource("arguments")
         public void testSetValueAt_InputValueAndColumn_ShouldReturnChangedCell(Object value, int column, int numLogs, String logMessage) {
             ArrayList<LogRecord> logRecords = new ArrayList<>();
+
+            // Replace placeholder with today's date
+            if (logMessage.contains("DATE_TODAY")) {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDateTime now = LocalDateTime.now();
+                logMessage = logMessage.replace("DATE_TODAY",dtf.format(now));
+            }
 
             JTimeSchedApp.getLogger().setFilter(logRecord -> {
                 if (logRecord.getLevel().intValue() == Level.INFO.intValue()) {
@@ -232,8 +245,7 @@ public class ProjectTableModelTest {
         int initial_count = tableModel.getRowCount();
 
         tableModel.removeProject(0);
-        int final_count = tableModel.getRowCount();
 
-        assertEquals(initial_count - 1, final_count);
+        assertEquals(initial_count - 1, tableModel.getRowCount());
     }
 }
