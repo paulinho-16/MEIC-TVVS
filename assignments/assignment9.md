@@ -1,7 +1,27 @@
 # Assignment 9 - Mutation Testing (White-box Testing)
 
-// TODO: introdução, definir Mutation Testing, Pitest, Equivalent Mutants, etc
-// TODO: falar da configuração do Pitest
+*Mutation Testing* is a type of software testing in which certain statements of the source code are changed/mutated to check if the test cases are able to find source code errors.
+Its goal is to ensure the quality of test cases in terms of robustness so that they should fail the mutated source code.
+The changes made in the mutant program should be kept extremely small so that it does not affect the program's overall objective.
+A **mutation** is nothing but a single syntactic change that is made to the program statement.
+If the tests fail, the **mutation** is killed; if your tests pass, the **mutation** survives.
+The quality of the tests can be gauged from the percentage of **mutations** killed.
+
+Mutants that cannot be killed are called **equivalent mutants**.
+An **equivalent mutant** is a mutant that always behaves the same way as the original program.
+If the mutant behaves like the normal code, it will always give the same output as the original program for any given input.
+Clearly, this makes this mutant (which is basically the same program as the one under test) impossible to be killed by the tests.
+
+To assess the robustness of our tests, we used the **Pitest** tool, a mutation testing system.
+The first step we took was to configure **Pitest** in our project.
+For this, we had to update the *JUnit jupiter* plugins version to 5.9.1 and the *maven-surefire-plugin* version to 3.0.0-M7, in addition to removing the *junit-platform-surefire-provider* plugin.
+Then, we needed to add the **Pitest** plugin, including a dependency that would support **JUnit 5**.
+Lastly, we had to exclude some test classes, namely the main and GUI classes, since it was not our goal to test them.
+
+Upon setting up this tool, we executed an initial **mutation analysis** by running the command `mvn test-compile org.pitest:pitest-maven:mutationCoverage`.
+After analyzing the results, we first identified the **equivalent mutants** and only then created more unit tests to kill the remaining mutants.
+Both of these steps are described in the following sections.
+Finally, this report ends with the execution of the final **mutation analysis** after we have developed these tests.
 
 ## 1) Initial Mutation Score
 
@@ -95,3 +115,5 @@ The remaining score that prevented us from reaching 100% is associated with the 
 ## Sources
 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-8.pdf)
+- [Mutation Testing - Guru99](https://www.guru99.com/mutation-testing.html)
+- [Pitest - Pitest](http://pitest.org/)
