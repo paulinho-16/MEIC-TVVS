@@ -25,8 +25,7 @@ We can also conclude that the mutants that still need to be addressed are all in
 
 The goal of this assignment is to increase the scores of the report, covering all mutation cases, if possible.
 
-
-// TODO: tirar print à coverage das classes
+![Initial Mutation Score](./images/mt_initial_score2.png)
 
 ## 2) Equivalent Mutants
 
