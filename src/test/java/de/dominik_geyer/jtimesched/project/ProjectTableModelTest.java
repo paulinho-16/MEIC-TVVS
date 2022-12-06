@@ -180,12 +180,16 @@ public class ProjectTableModelTest {
     @Nested
     public class SetValueAtTest {
         Stream<Arguments> arguments() {
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+
             return Stream.of(
                 Arguments.of(true, COLUMN_CHECK, 1, "Set check for project 'Test Project 1'"),
                 Arguments.of(false, COLUMN_CHECK, 1, "Unset check for project 'Test Project 1'"),
                 Arguments.of("The cake is a lie", COLUMN_TITLE, 1, "Renamed project 'Test Project 1' to 'The cake is a lie'"),
                 Arguments.of(Color.yellow, COLUMN_COLOR, 0, ""),
-                Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from DATE_TODAY to 1970-01-01"),
+                Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from "+  dtf.format(now) + " to 1970-01-01"),
                 Arguments.of(new Integer(128), COLUMN_TIMEOVERALL, 1, "Manually set time overall for project 'The cake is a lie' from 0:00:00 to 0:02:08"),
                 Arguments.of(new Integer(56), COLUMN_TIMETODAY, 1, "Manually set time today for project 'The cake is a lie' from 0:00:00 to 0:00:56")
             );
@@ -195,13 +199,6 @@ public class ProjectTableModelTest {
         @MethodSource("arguments")
         public void testSetValueAt_InputValueAndColumn_ShouldReturnChangedCell(Object value, int column, int numLogs, String logMessage) {
             ArrayList<LogRecord> logRecords = new ArrayList<>();
-
-            // Replace placeholder with today's date
-            if (logMessage.contains("DATE_TODAY")) {
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDateTime now = LocalDateTime.now();
-                logMessage = logMessage.replace("DATE_TODAY",dtf.format(now));
-            }
 
             JTimeSchedApp.getLogger().setFilter(logRecord -> {
                 if (logRecord.getLevel().intValue() == Level.INFO.intValue()) {
