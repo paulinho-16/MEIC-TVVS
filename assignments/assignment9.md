@@ -5,13 +5,12 @@
 
 ## 1) Initial Mutation Score
 
-// TODO: ("Analyze which mutants survive to your unit test cases and which parts of the source code has the most not-killed mutants")
+// TODO: ("Analyze which mutants survive to your unit test cases and which parts of the source code has the most not-killed mutants") -> Isto não devia ser na secção dos equivalent mutants?
 
 
 
-To start mutation testing, we first need to view our initial Pit Test Coverage report.
-Thus, we decided to exclude the tests associated with the GUI, which was done through the *pom.xml* file, resulting in the following coverage.
-
+We first need to view our initial Pit Test Coverage report to start mutation testing.
+Thus, we decided to exclude the tests associated with the GUI, done through the `pom.xml` file, resulting in the following coverage:
 ![Initial Mutation Score](./images/mt_initial_score.png)
 
 Since we performed extensive testing in previous assignments, either with black-box and white-box testing techniques, the initial *Pit Test Coverage Report* contains:
@@ -20,12 +19,14 @@ Since we performed extensive testing in previous assignments, either with black-
 - Mutation Coverage - 80%
 - Test Strength - 80%
 
-By looking at the previous figure, we can see that several mutants were already "killed" by the tests performed in previous assignments.
-We can also conclude that the mutants that still need to be addressed are all inside the `jtimesched.project` directory.
+Looking at the previous figure, we can see that several mutants were already "killed" by the tests performed in previous assignments.
 
-The goal of this assignment is to increase the scores of the report, covering all mutation cases, if possible.
+The mutants that still need to be addressed are all inside the `jtimesched.project` directory, whose class breakdown can be better visualized in the following figure:
 
 ![Initial Mutation Score](./images/mt_initial_score2.png)
+
+The goal of this assignment is to increase the scores of the report, covering all mutation cases.
+
 
 ## 2) Equivalent Mutants
 
