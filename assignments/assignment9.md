@@ -5,10 +5,26 @@
 
 ## 1) Initial Mutation Score
 
-// TODO: exclude classes/mutants in classes related to the GUI
-// TODO: descrever mutation score dos unit tests feitos nos assignments anteriores ("Analyze which mutants survive to your unit test cases and which parts of the source code has the most not-killed mutants")
+// TODO: ("Analyze which mutants survive to your unit test cases and which parts of the source code has the most not-killed mutants")
+
+
+
+To start mutation testing, we first need to view our initial Pit Test Coverage report.
+Thus, we decided to exclude the tests associated with the GUI, which was done through the *pom.xml* file, resulting in the following coverage.
 
 ![Initial Mutation Score](./images/mt_initial_score.png)
+
+Since we performed extensive testing in previous assignments, either with black-box and white-box testing techniques, the initial *Pit Test Coverage Report* contains:
+
+- Line Coverage - 99%
+- Mutation Coverage - 80%
+- Test Strength - 80%
+
+By looking at the previous figure, we can see that several mutants were already "killed" by the tests performed in previous assignments.
+We can also conclude that the mutants that still need to be addressed are all inside the `jtimesched.project` directory.
+
+The goal of this assignment is to increase the scores of the report, covering all mutation cases, if possible.
+
 
 // TODO: tirar print à coverage das classes
 
@@ -54,6 +70,21 @@ ProjectTableModel.java -> matamos o mutante ao adicionar teste que verifica se o
 ## 4) Final Mutation Score
 
 // TODO: descrever score final de Mutation
+
+After performing mutation testing, we ended up with the following code coverage:
+
+// TODO: Add the final score image
+![Final Mutation Score](./images/mt_final_score.png)
+
+Therefore, we were able to improve:
+- *Line Coverage* from 99% to &&%
+- *Mutation Coverage* from 80% to &&%
+- *Test Strength* from 80% to &&%
+
+Thus, we reached test coverage values above &&%, making the *JTimeSched* program more robust and error-free.
+
+The remaining score that prevented us from reaching 100% is associated with the Equivalent Mutants that can't be killed, which were thoroughly explained in section 2 of the assignment.
+
 
 -----
 
