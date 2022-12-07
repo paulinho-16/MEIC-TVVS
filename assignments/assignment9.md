@@ -47,28 +47,72 @@ The mutants that still need to be addressed are all inside the `jtimesched.proje
 
 The goal of this assignment is to increase the scores of the report, covering all mutation cases.
 
-
 ## 2) Equivalent Mutants
 
-// TODO: If any exists, list them here
+### In file `Project.java`
 
-Linha 163 -> Project.java
-Linha 177 -> Project.java
-Linha 185 -> Project.java
-Linha 193 -> Project.java
-Linha 201 -> Project.java
+#### Lines 163 & 177
 
-Linha 63 -> ProjectSerializer.java (bug já foi fixed, portanto ter aquela call ou não é igual)
-Linha 67 -> ProjectSerializer.java (valor default de ENCODING já é "encoding", que é igual a "UTF-8")
-Linha 69 -> ProjectSerializer.java (valor default de INDENT já é "indent", que é igual a "yes")
-Linha 71 -> ProjectSerializer.java (startDocument é um unnecessary event - link stackoverflow?)
-Linha 74 -> ProjectSerializer.java (não faz diferença no parsing, etc: "XML declaration contains details that prepare an XML processor to parse the XML document. It is optional, but when used, it must appear in the first line of the XML document." - https://www.tutorialspoint.com/xml/xml_declaration.htm)
-Linha 87, 92, 99 -> ProjectSerializer.java (clear apenas liberta memória, não afeta comportamento do programa - https://docs.oracle.com/javase/7/docs/api/org/xml/sax/helpers/AttributesImpl.html#clear())
-Linha 111 -> ProjectSerializer.java (endDocument é um unnecessary event - link stackoverflow?)
-Linha 113 -> ProjectSerializer.java (flush apenas libera a stream, não afeta o comportamento do programa - https://www.tutorialspoint.com/java/io/outputstreamwriter_flush.htm)
-Linha 114 -> ProjectSerializer.java (close apenas fecha a stream, não afeta o comportamento do programa - https://www.tutorialspoint.com/java/io/outputstreamwriter_close.htm - Therefore, if we forget to close the stream, the underlying channel will remain open and then we would end up with a resource leak - No, the topmost level Stream or reader will ensure that all underlying streams / readers are closed.)
-Linha 193 -> ProjectSerializer.java (é apenas print na consola, pelo que não afeta o comportamento do programa)
-Linha 204 -> ProjectSerializer.java (quando attributes é null, por default é considerado como um AttributesImpl vazio - If there are no attributes, it shall be an empty Attributes object - https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html#startElement(java.lang.String,%20java.lang.String,%20java.lang.String,%20org.xml.sax.Attributes))
+The first mutants we found consisted of removing calls to the `printStackTrace` method from exceptions thrown in the code.
+These exceptions would only happen if there was an attempt to get the elapsed seconds of a project that is not running.
+The mutants survived, as removing the calls had no effect on the program's behavior.
+The main cause of this is essentially due to the fact that this scenario never happens, as it is prevented by an `if` statement performed before calling the method that could throw them.
+This verification ensures that no exception is thrown, so the statement at hand is never executed.
+
+![First Equivalent Mutants](./images/mt_equivalent_mutant1.png)
+
+### In file `ProjectSerializer.java`
+
+#### Line 63
+
+This next mutant also consists of removing a method call, namely a method responsible for defining the number of spaces used in the indentation of the XML file to be written.
+The fact that the mutant survives, despite correctly testing by reading the resulting XML, suggests that this call is not fundamental to the program at all.
+We also noticed that the code contained an author comment with a link to a given bug in a bug database ([Bug Link/ID](http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6296446)).
+After studying the subject, we concluded that, despite the default indentation value being already 4, the author was forced to make this function call due to the aforementioned bug, which is currently fixed.
+Therefore, this call is dispensable, resulting in an **equivalent mutant**.
+
+![Second Equivalent Mutant](./images/mt_equivalent_mutant2.png)
+
+#### Line 67
+
+This next mutant consisted of removing a call to a function that defines properties of the XML file to be written, more precisely the type of encoding.
+Since the defined value is the default value for reading the XML files, the presence of this function call also turns out to be unnecessary, thus resulting in an **equivalent mutant**.
+(ENCODING default value = "encoding" = "UTF-8", sources = [Purpose](https://docs.oracle.com/javase/7/docs/api/javax/xml/transform/OutputKeys.html), [Default Values](https://docs.oracle.com/javase/7/docs/api/constant-values.html))
+
+![Third Equivalent Mutant](./images/mt_equivalent_mutant3.png)
+
+#### Lines 71 & 111
+
+The following mutants also consist of removing function calls.
+More specifically, the invoked functions serve to notify the start and end of a document, respectively.
+However, both are optional, having no impact on the program's behavior, hence these cases are considered **equivalent mutants**.
+(source = [Purpose](https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html), [Optionality](https://stackoverflow.com/a/4267492))
+
+![Fourth Equivalent Mutants](./images/mt_equivalent_mutant4.png)
+
+#### Lines 87, 92 & 99
+
+The next three mutants result from removing a call responsible for clearing the list of attributes for reuse, freeing up little memory.
+Since this call does not affect the behavior of the program, serving only for memory management purposes, this case is an **equivalent mutant**.
+(source = [Purpose](https://docs.oracle.com/javase/7/docs/api/org/xml/sax/helpers/AttributesImpl.html#clear()))
+
+![Fifth Equivalent Mutants](./images/mt_equivalent_mutant5.png)
+
+#### Lines 113 & 114
+
+Similarly to the last mutants, these result from removing calls to functions related to memory management.
+The first is responsible for flushing the stream, and the second for closing it.
+Thus, as they do not interfere with the behavior of the program, they constitute **equivalent mutants**.
+(sources = [Flush](https://www.tutorialspoint.com/java/io/outputstreamwriter_flush.htm), [Close](https://www.tutorialspoint.com/java/io/outputstreamwriter_close.htm))
+
+![Sixth Equivalent Mutants](./images/mt_equivalent_mutant6.png)
+
+#### Line 193
+
+The reason for this mutant is the same as the previous ones: removal of a call to a function, in this case to *Java*'s print function.
+Logically, this function has no interference with the output of the program, so its presence is insignificant, thus resulting in an **equivalent mutant**.
+
+![Seventh Equivalent Mutant](./images/mt_equivalent_mutant7.png)
 
 // TODO: ProjectTableModel.java -> estas serão Equivalent? A 205 foi corrigida... (linhas 210, 218)
 
@@ -76,11 +120,28 @@ Linha 204 -> ProjectSerializer.java (quando attributes é null, por default é c
 
 // TODO: Brief description of test cases developed to increase project’s mutation score.
 
-Project.java -> matamos aqueles 2 mutantes dos times
+Project.java -> matamos aqueles 3 mutantes dos times:
 
+Linha 185 -> Project.java
+Linha 193 -> Project.java
+Linha 201 -> Project.java
+
+### In file `ProjectSerializer.java`
+
+#### Line 69
+
+This next mutant consisted of removing a call to a function that defines properties of the XML file to be written, more precisely the presence of indentation.
+To kill it, we verified the indentation of the XML file by checking the presence of four consecutive spaces.
+In the absence of the function call, the XML is written without any indentation, leading to test failure.
+
+// TODO: imagem antes/depois do mutation score
+// TODO: excerto do código do teste que aplica isto
+
+ProjectSerializer.java -> matamos o mutante ao verificar a versão no teste do writeXML (linha 74)
 ProjectSerializer.java -> matamos o mutante das quotas no writeXML (linha 95)
 ProjectSerializer.java -> matamos o mutante do time started (linha 146)
 ProjectSerializer.java -> matamos o mutante do quota overall e quota today (linha 165, 167)
+este mutante foi morto ao longo do processo... não mencionar?: Linha 204 -> ProjectSerializer.java (quando attributes é null, por default é considerado como um AttributesImpl vazio - If there are no attributes, it shall be an empty Attributes object - https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html#startElement(java.lang.String,%20java.lang.String,%20java.lang.String,%20org.xml.sax.Attributes))
 
 ProjectTableModel.java -> matamos o mutante ao adicionar testes ao logger (linha 160, 183, 187, 205 -> este acho que é killed porque notifica os listeners, que envolvem logs)
 ProjectTableModel.java -> matamos o mutante ao adicionar teste que verifica se o printstackstrace foi printed (linha 191, 192)
@@ -105,7 +166,6 @@ Thus, we reached test coverage values above &&%, making the *JTimeSched* program
 
 The remaining score that prevented us from reaching 100% is associated with the Equivalent Mutants that can't be killed, which were thoroughly explained in section 2 of the assignment.
 
-
 -----
 
 ## Group 10
@@ -118,3 +178,8 @@ The remaining score that prevented us from reaching 100% is associated with the 
 - [Class Slides - Prof. José Campos](https://paginas.fe.up.pt/~jcmc/tvvs/2022-2023/lectures/lecture-8.pdf)
 - [Mutation Testing - Guru99](https://www.guru99.com/mutation-testing.html)
 - [Pitest - Pitest](http://pitest.org/)
+- [Testing Logging - Effective Agile](https://effectiveagile.com/testing-and-handling-logging-in-java/)
+- [Constant Values - Oracle](https://docs.oracle.com/javase/7/docs/api/constant-values.html)
+- [OutputKeys - Oracle](https://docs.oracle.com/javase/7/docs/api/javax/xml/transform/OutputKeys.html)
+- [AttributesImpl - Oracle](https://docs.oracle.com/javase/7/docs/api/org/xml/sax/helpers/AttributesImpl.html)
+- [ContentHandler - Oracle](https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html)

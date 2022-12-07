@@ -1,5 +1,6 @@
 package de.dominik_geyer.jtimesched.project;
 
+import de.dominik_geyer.jtimesched.JTimeSchedApp;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProjectSerializerTest {
     private final String filename = "src/test/resources/WriteXmlTest.xml";
@@ -73,6 +75,11 @@ public class ProjectSerializerTest {
         // Read the Written XML
         Document document = readXml();
         Element root = document.getDocumentElement();
+
+        // Verify XML properties
+        assertEquals("UTF-8", document.getXmlEncoding());
+        assertTrue(document.getDocumentElement().getTextContent().contains("    "));
+        assertEquals(JTimeSchedApp.getAppVersion(), document.getDocumentElement().getAttribute("version"));
         NodeList nl = root.getElementsByTagName("project");
 
         // There is actually three projects in the XML file
