@@ -117,14 +117,29 @@ Logically, this function has no interference with the output of the program, so 
 // TODO: ProjectTableModel.java -> estas serão Equivalent? A 205 foi corrigida... (linhas 210, 218)
 
 ## 3) Unit Tests
+After evaluating the Pit Test Coverage Report, we were able to identify several mutants that survived and could be killed.
+This section aims to describe all the tests implemented to kill these mutants, improving the test coverage.
 
-// TODO: Brief description of test cases developed to increase project’s mutation score.
+### In file `Project.java`
 
-Project.java -> matamos aqueles 3 mutantes dos times:
+#### Lines 138 and 139
+These mutants occur when removing the code segments that change de values of the `this.secondsOverall` and `this. this.secondsToday` variables of the `pause` method
 
-Linha 185 -> Project.java
-Linha 193 -> Project.java
-Linha 201 -> Project.java
+![First Unit Test](./images/mt_unit_test.png)
+
+This occurs since the test testPause_RunningProject_ShouldPause implemented in previous assignments was only asserting that the project was not running.
+Therefore, to kill this mutant, the following code lines were added to the test:
+
+![First Unit Test](./images/mt_unit_test_.png)
+
+Thus killing these 2 mutants
+
+#### Lines 185, 193, and 201
+
+This next mutant consisted of removing the following if statement verifications:
+// TODO: Add images of the pit test while it is still wrong.
+// TODO: O que raio aconteceu neste mutante?!??!
+// TODO: Este mutante foi fixed no teste do setValue at, mas não sei o que se está a passar
 
 ### In file `ProjectSerializer.java`
 
@@ -137,14 +152,131 @@ In the absence of the function call, the XML is written without any indentation,
 // TODO: imagem antes/depois do mutation score
 // TODO: excerto do código do teste que aplica isto
 
-ProjectSerializer.java -> matamos o mutante ao verificar a versão no teste do writeXML (linha 74)
-ProjectSerializer.java -> matamos o mutante das quotas no writeXML (linha 95)
-ProjectSerializer.java -> matamos o mutante do time started (linha 146)
-ProjectSerializer.java -> matamos o mutante do quota overall e quota today (linha 165, 167)
-este mutante foi morto ao longo do processo... não mencionar?: Linha 204 -> ProjectSerializer.java (quando attributes é null, por default é considerado como um AttributesImpl vazio - If there are no attributes, it shall be an empty Attributes object - https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html#startElement(java.lang.String,%20java.lang.String,%20java.lang.String,%20org.xml.sax.Attributes))
+#### Line 74
+matamos o mutante ao verificar a versão no teste do writeXML (linha 74)
 
-ProjectTableModel.java -> matamos o mutante ao adicionar testes ao logger (linha 160, 183, 187, 205 -> este acho que é killed porque notifica os listeners, que envolvem logs)
-ProjectTableModel.java -> matamos o mutante ao adicionar teste que verifica se o printstackstrace foi printed (linha 191, 192)
+This mutant consisted of removing a call to a version definition on the XML file.
+To kill it, we simply verified the version property when creating an XML file:
+
+```java
+assertEquals(JTimeSchedApp.getAppVersion(), document.getDocumentElement().getAttribute("version"));
+```
+
+#### Line 95
+This mutant consisted of removing a call to the creation of the XML element for the `quotaOverall` and `quotaToday` attributes in the `writeXML` method.
+In previous assignments, we tested this method through the `testWriteXml_ProjectList_ShouldWriteAllProjects` test, which creates projects with new parameters, calls the `writeXML` method, and then verifies the XML file created.
+
+By looking and the pit report, we realized that we had forgotten to test 2 attributes from the project, `QuotaOverall`, and `QuotaToday`, allowing these mutants to survive.
+Thus, in order to kill them, we added the necessary parameters to the project `prj1`,
+
+```java
+prj1.setQuotaToday(60);
+prj1.setQuotaOverall(120);
+```
+
+Afterwards, we made sure to compare the initial parameters to those read from the created XML file,
+
+```java
+int quotaToday = Integer.parseInt(((Element) e.getElementsByTagName("quota").item(0)).getAttribute("today"));
+int quotaOverall = Integer.parseInt(((Element) e.getElementsByTagName("quota").item(0)).getAttribute("overall"));
+
+assertEquals(60, quotaToday);
+assertEquals(120, quotaOverall);
+```
+
+Thus killing this mutant.
+
+#### Line 146, 165, and 167 
+
+These mutants consisted of removing the call for 3 set methods after reading a project through the `deadXML` method.
+In previous assignments, we had tested this method through the `testReadXml_ProjectList_ShouldReadAllProjects` test, which creates projects with new parameters, writes them to an XML (through the `writeXML` method) and then calls the `readXML` method to verify that the values were properly read.
+
+By looking and the pit report, we realized that we had forgotten to test 3 attributes from the project, `TimeStart`, `QuotaOverall`, and `QuotaToday`, allowing these mutants to survive.
+Thus, in order to kill them, we added the necessary parameters to different projects,
+
+![1. Unit tests mutants 146, 165, and 167](./images/mt_unit_test_1.png)
+
+Afterwards, we made sure to compare the initial parameters to those read from the XML file,
+
+![2. Unit tests mutants 146, 165, and 167 ](./images/mt_unit_test_2.png)
+
+Thus killing these 3 mutants.
+
+
+
+// TODO este mutante foi morto ao longo do processo... não mencionar?: Linha 204 -> ProjectSerializer.java (quando attributes é null, por default é considerado como um AttributesImpl vazio - If there are no attributes, it shall be an empty Attributes object - https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html#startElement(java.lang.String,%20java.lang.String,%20java.lang.String,%20org.xml.sax.Attributes))
+
+### In file `ProjectTableModel.java`
+
+#### Lines 160, 183, 187, and 205
+These mutants consisted of removing calls to notify users through the `Logger` in the `setValueAt` method.
+To kill this mutant, we added `numLogs` and `logMessage` argument to each test as the last 2 arguments,
+
+```java
+Stream<Arguments> arguments() {
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    LocalDateTime now = LocalDateTime.now();
+    
+    return Stream.of(
+        Arguments.of(true, COLUMN_CHECK, 1, "Set check for project 'Test Project 1'"),
+        Arguments.of(false, COLUMN_CHECK, 1, "Unset check for project 'Test Project 1'"),
+        Arguments.of("The cake is a lie", COLUMN_TITLE, 1, "Renamed project 'Test Project 1' to 'The cake is a lie'"),
+        Arguments.of(Color.yellow, COLUMN_COLOR, 0, ""),
+        Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from " + dtf.format(now) + " to 1970-01-01"),
+        Arguments.of(new Integer(128), COLUMN_TIMEOVERALL, 1, "Manually set time overall for project 'The cake is a lie' from 0:00:00 to 0:02:08"),
+        Arguments.of(new Integer(56), COLUMN_TIMETODAY, 1, "Manually set time today for project 'The cake is a lie' from 0:00:00 to 0:00:56")
+    );
+}
+```
+which were tested in the following way:
+
+```java
+@ParameterizedTest
+@MethodSource("arguments")
+public void testSetValueAt_InputValueAndColumn_ShouldReturnChangedCell(Object value, int column, int numLogs, String logMessage) {
+    ArrayList<LogRecord> logRecords = new ArrayList<>();
+
+    JTimeSchedApp.getLogger().setFilter(logRecord -> {
+        if (logRecord.getLevel().intValue() == Level.INFO.intValue()) {
+            logRecords.add(logRecord);
+        }
+        return false;
+    });
+
+    tableModel.setValueAt(value, 0, column);
+
+    assertEquals(value, tableModel.getValueAt(0, column));
+    assertEquals(numLogs, logRecords.size());
+    if (logRecords.size() > 0) {
+        assertEquals(logMessage, logRecords.get(0).getMessage());
+    }
+}
+```
+Thus killing these 4 mutants.
+
+
+#### Lines 191 and 192
+These mutants consisted of removing calls to the  `e.printStackTrace` method when as exception was raised.
+To kill this mutant, we implemented a test using mockito that mocked the exception and verified if the call was being made.
+
+```java
+@Test
+public void testSetValueAt_NegativeTimeToday_ShouldCatchException() {
+    ParseException ex = mock(ParseException.class);
+
+    try (MockedStatic<ProjectTime> utilities = Mockito.mockStatic(ProjectTime.class)) {
+        utilities.when(() -> ProjectTime.formatSeconds(-1)).thenThrow(ex);
+
+        // Call method
+        assertDoesNotThrow(() -> tableModel.setValueAt(-1, 0, COLUMN_TIMETODAY));
+
+        // Verify that the exception stacktrace was printed
+        verify(ex).printStackTrace();
+    }
+}
+```
+
 
 // TODO: ProjectTime.java -> o construtor private não deve ser para testar, certo?
 
