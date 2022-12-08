@@ -25,27 +25,19 @@ Finally, this report ends with the execution of the final **mutation analysis** 
 
 ## 1) Initial Mutation Score
 
-// TODO: ("Analyze which mutants survive to your unit test cases and which parts of the source code has the most not-killed mutants") -> Isto não devia ser na secção dos equivalent mutants?
+The first step consisted of performing an initial analysis of the mutation coverage derived from the tests developed in previous assignments.
+This first score surprised us positively due to its relatively high values, as shown in the following image:
 
-
-
-We first need to view our initial Pit Test Coverage report to start mutation testing.
-Thus, we decided to exclude the tests associated with the GUI, done through the `pom.xml` file, resulting in the following coverage:
 ![Initial Mutation Score](./images/mt_initial_score.png)
 
-Since we performed extensive testing in previous assignments, either with black-box and white-box testing techniques, the initial *Pit Test Coverage Report* contains:
+However, these values are justified because we have extensively tested the program throughout the project, using either black-box or white-box testing techniques.
+Looking at the previous figure, we can see that several mutants were already killed by the tests performed in previous assignments.
+The mutants that still need to be addressed are inside the `project` package, whose class breakdown can be better visualized in the following figure:
 
-- Line Coverage - 99%
-- Mutation Coverage - 80%
-- Test Strength - 80%
+![Initial Mutation Score of the `project` package](./images/mt_initial_score2.png)
 
-Looking at the previous figure, we can see that several mutants were already "killed" by the tests performed in previous assignments.
-
-The mutants that still need to be addressed are all inside the `jtimesched.project` directory, whose class breakdown can be better visualized in the following figure:
-
-![Initial Mutation Score](./images/mt_initial_score2.png)
-
-The goal of this assignment is to increase the scores of the report, covering all mutation cases.
+As we can see, the mutants that survived can be found in the classes `Project.java`, `ProjectSerializer.java` and `ProjectTableModel.java`.
+This assignment aims to increase the mutation score of our tests, seeking to eliminate as many mutations as possible.
 
 ## 2) Equivalent Mutants
 
