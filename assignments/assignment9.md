@@ -108,46 +108,46 @@ Logically, this function has no interference with the program's output, so its p
 
 ## 3) Unit Tests
 
-After identifying all equivalent mutants, we must develop new tests, or improve the existing ones, so that we can kill the remaining mutants, increasing the mutation score.
-This section aims to describe these mutants and the tests implemented to kill them.
+After identifying all equivalent mutants, we must develop new tests, or improve the existing ones, to kill the remaining mutants, increasing the mutation score.
+This section describes these mutants and the tests implemented to kill them.
 
 ### In file `Project.java`
 
 #### Lines 138 and 139
 
-These mutants occur when the `+=` operator is changed for `-=`, replacing integer addition with subtraction, when updating the values of the `this.secondsOverall` and `this.secondsToday` variables, inside the `pause` method.
-Since the tests don't wait any time before pausing the project, the elapsed seconds were zero, so the result of these two operators was the same, therefore the mutants survived.
+These mutants occur when the `+=` operator is changed for `-=`, replacing integer addition with subtraction, when updating the values of the `this.secondsOverall` and `this.secondsToday` variables inside the `pause` method.
+Since the tests don't wait any time before pausing the project, the elapsed seconds were zero, so the result of these two operators was the same; therefore the mutants survived.
 
 ![First Mutants](./images/mt_unit_test1-1.png)
 
-This occurs since the test `testPause_RunningProject_ShouldPause` implemented in previous assignments was only asserting that the project state became "paused", ignoring the changes made to the time variables.
+This occurs since the test `testPause_RunningProject_ShouldPause` implemented in previous assignments only asserts that the project state became "paused", ignoring the changes made to the time variables.
 Therefore, to kill this mutant, the following code lines were added to the test:
 
 ![First Unit Test Changes](./images/mt_unit_test1-2.png)
 
-By performing a delay of two seconds before pausing the project, we guarantee there were two elapsed seconds, leading to different results of the mentioned operators, which led to killing the mutants.
+By performing a delay of two seconds before pausing the project, we guarantee two elapsed seconds, leading to different results for the mentioned operators, which led to killing the mutants.
 
 ### In file `ProjectSerializer.java`
 
 #### Line 69
 
-This next mutant consisted of removing a call to a function that defines properties of the XML file to be written, more precisely the presence of indentation.
+This next mutant consisted of removing a call to a function that defines properties of the XML file to be written, more precisely, the presence of indentation.
 
 ![Second Mutant](./images/mt_unit_test2-1.png)
 
 To kill it, we verified the indentation of the XML file by checking the presence of four consecutive spaces.
-In the absence of the function call, the XML is written without any indentation, leading to test failure.
+In the absence of the function call, the XML is written without indentation, leading to test failure.
 
 ![Second Unit Test Changes](./images/mt_unit_test2-2.png)
 
 #### Line 74
 
-This mutant consisted of removing a call to a version definition on the XML file.
-Since this attribute was not tested in previous tests, and it did not affect the parsing of the XML file, the mutant survives.
+This mutant removed a call to a version definition on the XML file.
+Since this attribute was not tested in previous tests and did not affect the parsing of the XML file, the mutant survives.
 
 ![Third Mutant](./images/mt_unit_test3-1.png)
 
-To kill it, we simply verified the version property when creating an XML file:
+To kill it, we verified the version property when creating an XML file:
 
 ![Third Unit Test Changes](./images/mt_unit_test3-2.png)
 
@@ -159,7 +159,7 @@ However, we realized that we had forgotten to test two attributes from the proje
 
 ![Fourth Mutant](./images/mt_unit_test4-1.png)
 
-Thus, in order to kill it, we added asserts for the missing parameters.
+Thus, to kill it, we added asserts for the missing parameters.
 
 ![Fourth Unit Test Changes](./images/mt_unit_test4-2.png)
 
@@ -171,8 +171,8 @@ However, similarly to the last mutant, we realized that we had forgotten to test
 
 ![Fifth Mutants](./images/mt_unit_test5-1.png)
 
-Thus, in order to kill them, we added the necessary parameters to different projects.
-Afterwards, we made sure to compare the initial parameters to those read from the XML file, thus killing these three mutants.
+Thus, to kill them, we added the necessary parameters to different projects.
+Afterwards, we compared the initial parameters to those read from the XML file, thus killing these three mutants.
 
 ![Fifth Unit Test Changes](./images/mt_unit_test5-2.png)
 
@@ -181,7 +181,7 @@ Afterwards, we made sure to compare the initial parameters to those read from th
 #### Lines 160, 183, 187 and 205
 
 These mutants consisted of the negation of conditionals, and a removed call, in the `setValueAt` method.
-As these conditionals and this call only affect the messages printed in the logs, they do not affect the behavior of the program, so the mutants at hand survive.
+As these conditionals and this call only affect the messages printed in the logs, they do not affect the program's behaviour, so the mutants at hand survive.
 
 ![Sixth Mutants](./images/mt_unit_test6-1.png)
 
@@ -194,7 +194,7 @@ For this, we check the number of logs and the printed message.
 
 This mutant consisted of removing a call to the `printStackTrace` method that is executed when an exception is raised.
 This exception is thrown when trying to format a negative value of times.
-The presence of the mentioned method ends up not influencing the behavior of the program, as it only prints a description of the thrown exception, therefore the mutant survives.
+The presence of the mentioned method ends up not influencing the behaviour of the program, as it only prints a description of the thrown exception; therefore the mutant survives.
 
 ![Seventh Mutants](./images/mt_unit_test7-1.png)
 
@@ -205,13 +205,13 @@ To kill this mutant, we implemented a test using *Mockito* that mocked the excep
 
 ### Lines 210 and 218
 
-These mutants consisted of removing the call to add and remove a project from the interface, respectively.
+These mutants consisted of removing the call to add and remove a project from the interface.
 Additionally, in the first case, there are two other surviving mutants, which consist of replacing the two subtractions with additions.
-The mutants survive because we are not verifying the calls to these methods, nor whether they are called with the correct arguments.
+The mutants survive because we need to verify the calls to these methods and whether they are called with the correct arguments.
 
 ![Eighth Mutants](./images/mt_unit_test8-1.png)
 
-To kill these mutants, we used a *spy* object and verified that these methods were being called with the correct parameters.
+We used a *spy* object to kill these mutants and verified that these methods were being called with the correct parameters.
 
 ![Eighth Unit Test Changes](./images/mt_unit_test8-2.png)
 
