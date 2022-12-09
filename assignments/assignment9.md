@@ -106,189 +106,132 @@ Logically, this function has no interference with the output of the program, so 
 
 ![Seventh Equivalent Mutant](./images/mt_equivalent_mutant7.png)
 
-// TODO: ProjectTableModel.java -> estas serão Equivalent? A 205 foi corrigida... (linhas 210, 218)
-
 ## 3) Unit Tests
-After evaluating the Pit Test Coverage Report, we were able to identify several mutants that survived and could be killed.
-This section aims to describe all the tests implemented to kill these mutants, improving the test coverage.
+
+After identifying all equivalent mutants, we must develop new tests, or improve the existing ones, so that we can kill the remaining mutants, increasing the mutation score.
+This section aims to describe these mutants and the tests implemented to kill them.
 
 ### In file `Project.java`
 
 #### Lines 138 and 139
-These mutants occur when removing the code segments that change de values of the `this.secondsOverall` and `this. this.secondsToday` variables of the `pause` method
 
-![First Unit Test](./images/mt_unit_test.png)
+These mutants occur when the `+=` operator is changed for `-=`, replacing integer addition with subtraction, when updating the values of the `this.secondsOverall` and `this.secondsToday` variables, inside the `pause` method.
+Since the tests don't wait any time before pausing the project, the elapsed seconds were zero, so the result of these two operators was the same, therefore the mutants survived.
 
-This occurs since the test testPause_RunningProject_ShouldPause implemented in previous assignments was only asserting that the project was not running.
+![First Mutants](./images/mt_unit_test1-1.png)
+
+This occurs since the test `testPause_RunningProject_ShouldPause` implemented in previous assignments was only asserting that the project state became "paused", ignoring the changes made to the time variables.
 Therefore, to kill this mutant, the following code lines were added to the test:
 
-![First Unit Test](./images/mt_unit_test_.png)
+![First Unit Test Changes](./images/mt_unit_test1-2.png)
 
-Thus killing these 2 mutants
-
-#### Lines 185, 193, and 201
-
-This next mutant consisted of removing the following if statement verifications:
-// TODO: Add images of the pit test while it is still wrong.
-// TODO: O que raio aconteceu neste mutante?!??!
-// TODO: Este mutante foi fixed no teste do setValue at, mas não sei o que se está a passar
+By performing a delay of two seconds before pausing the project, we guarantee there were two elapsed seconds, leading to different results of the mentioned operators, which led to killing the mutants.
 
 ### In file `ProjectSerializer.java`
 
 #### Line 69
 
 This next mutant consisted of removing a call to a function that defines properties of the XML file to be written, more precisely the presence of indentation.
+
+![Second Mutant](./images/mt_unit_test2-1.png)
+
 To kill it, we verified the indentation of the XML file by checking the presence of four consecutive spaces.
 In the absence of the function call, the XML is written without any indentation, leading to test failure.
 
-// TODO: imagem antes/depois do mutation score
-// TODO: excerto do código do teste que aplica isto
+![Second Unit Test Changes](./images/mt_unit_test2-2.png)
 
 #### Line 74
-matamos o mutante ao verificar a versão no teste do writeXML (linha 74)
 
 This mutant consisted of removing a call to a version definition on the XML file.
+Since this attribute was not tested in previous tests, and it did not affect the parsing of the XML file, the mutant survives.
+
+![Third Mutant](./images/mt_unit_test3-1.png)
+
 To kill it, we simply verified the version property when creating an XML file:
 
-```java
-assertEquals(JTimeSchedApp.getAppVersion(), document.getDocumentElement().getAttribute("version"));
-```
+![Third Unit Test Changes](./images/mt_unit_test3-2.png)
 
 #### Line 95
+
 This mutant consisted of removing a call to the creation of the XML element for the `quotaOverall` and `quotaToday` attributes in the `writeXML` method.
 In previous assignments, we tested this method through the `testWriteXml_ProjectList_ShouldWriteAllProjects` test, which creates projects with new parameters, calls the `writeXML` method, and then verifies the XML file created.
+However, we realized that we had forgotten to test two attributes from the project, the `QuotaOverall` and `QuotaToday` variables, allowing these mutants to survive.
 
-By looking and the pit report, we realized that we had forgotten to test 2 attributes from the project, `QuotaOverall`, and `QuotaToday`, allowing these mutants to survive.
-Thus, in order to kill them, we added the necessary parameters to the project `prj1`,
+![Fourth Mutant](./images/mt_unit_test4-1.png)
 
-```java
-prj1.setQuotaToday(60);
-prj1.setQuotaOverall(120);
-```
+Thus, in order to kill it, we added asserts for the missing parameters.
 
-Afterwards, we made sure to compare the initial parameters to those read from the created XML file,
+![Fourth Unit Test Changes](./images/mt_unit_test4-2.png)
 
-```java
-int quotaToday = Integer.parseInt(((Element) e.getElementsByTagName("quota").item(0)).getAttribute("today"));
-int quotaOverall = Integer.parseInt(((Element) e.getElementsByTagName("quota").item(0)).getAttribute("overall"));
+#### Line 146, 165, and 167
 
-assertEquals(60, quotaToday);
-assertEquals(120, quotaOverall);
-```
-
-Thus killing this mutant.
-
-#### Line 146, 165, and 167 
-
-These mutants consisted of removing the call for 3 set methods after reading a project through the `deadXML` method.
+These mutants consisted of removing the call for three *set* methods after reading a project through the `readXML` method.
 In previous assignments, we had tested this method through the `testReadXml_ProjectList_ShouldReadAllProjects` test, which creates projects with new parameters, writes them to an XML (through the `writeXML` method) and then calls the `readXML` method to verify that the values were properly read.
+However, similarly to the last mutant, we realized that we had forgotten to test three attributes from the project, the `TimeStart`, `QuotaOverall` and `QuotaToday` variables, allowing these mutants to survive.
 
-By looking and the pit report, we realized that we had forgotten to test 3 attributes from the project, `TimeStart`, `QuotaOverall`, and `QuotaToday`, allowing these mutants to survive.
-Thus, in order to kill them, we added the necessary parameters to different projects,
+![Fifth Mutants](./images/mt_unit_test5-1.png)
 
-![1. Unit tests mutants 146, 165, and 167](./images/mt_unit_test_1.png)
+Thus, in order to kill them, we added the necessary parameters to different projects.
+Afterwards, we made sure to compare the initial parameters to those read from the XML file, thus killing these three mutants.
 
-Afterwards, we made sure to compare the initial parameters to those read from the XML file,
-
-![2. Unit tests mutants 146, 165, and 167 ](./images/mt_unit_test_2.png)
-
-Thus killing these 3 mutants.
-
-
-
-// TODO este mutante foi morto ao longo do processo... não mencionar?: Linha 204 -> ProjectSerializer.java (quando attributes é null, por default é considerado como um AttributesImpl vazio - If there are no attributes, it shall be an empty Attributes object - https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html#startElement(java.lang.String,%20java.lang.String,%20java.lang.String,%20org.xml.sax.Attributes))
+![Fifth Unit Test Changes](./images/mt_unit_test5-2.png)
 
 ### In file `ProjectTableModel.java`
 
-#### Lines 160, 183, 187, and 205
-These mutants consisted of removing calls to notify users through the `Logger` in the `setValueAt` method.
-To kill this mutant, we added `numLogs` and `logMessage` argument to each test as the last 2 arguments,
+#### Lines 160, 183, 187 and 205
 
-```java
-Stream<Arguments> arguments() {
+These mutants consisted of the negation of conditionals, and a removed call, in the `setValueAt` method.
+As these conditionals and this call only affect the messages printed in the logs, they do not affect the behavior of the program, so the mutants at hand survive.
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    LocalDateTime now = LocalDateTime.now();
-    
-    return Stream.of(
-        Arguments.of(true, COLUMN_CHECK, 1, "Set check for project 'Test Project 1'"),
-        Arguments.of(false, COLUMN_CHECK, 1, "Unset check for project 'Test Project 1'"),
-        Arguments.of("The cake is a lie", COLUMN_TITLE, 1, "Renamed project 'Test Project 1' to 'The cake is a lie'"),
-        Arguments.of(Color.yellow, COLUMN_COLOR, 0, ""),
-        Arguments.of(new Date(2021-12-25), COLUMN_CREATED, 1, "Manually set create date for project 'The cake is a lie' from " + dtf.format(now) + " to 1970-01-01"),
-        Arguments.of(new Integer(128), COLUMN_TIMEOVERALL, 1, "Manually set time overall for project 'The cake is a lie' from 0:00:00 to 0:02:08"),
-        Arguments.of(new Integer(56), COLUMN_TIMETODAY, 1, "Manually set time today for project 'The cake is a lie' from 0:00:00 to 0:00:56")
-    );
-}
-```
-which were tested in the following way:
+![Sixth Mutants](./images/mt_unit_test6-1.png)
 
-```java
-@ParameterizedTest
-@MethodSource("arguments")
-public void testSetValueAt_InputValueAndColumn_ShouldReturnChangedCell(Object value, int column, int numLogs, String logMessage) {
-    ArrayList<LogRecord> logRecords = new ArrayList<>();
+Although not fundamental to the program, we decided to test the logging messages, killing these mutants.
+For this, we check the number of logs and the printed message.
 
-    JTimeSchedApp.getLogger().setFilter(logRecord -> {
-        if (logRecord.getLevel().intValue() == Level.INFO.intValue()) {
-            logRecords.add(logRecord);
-        }
-        return false;
-    });
+![Sixth Unit Test Changes](./images/mt_unit_test6-2.png)
 
-    tableModel.setValueAt(value, 0, column);
+#### Line 192
 
-    assertEquals(value, tableModel.getValueAt(0, column));
-    assertEquals(numLogs, logRecords.size());
-    if (logRecords.size() > 0) {
-        assertEquals(logMessage, logRecords.get(0).getMessage());
-    }
-}
-```
-Thus killing these 4 mutants.
+This mutant consisted of removing a call to the `printStackTrace` method that is executed when an exception is raised.
+This exception is thrown when trying to format a negative value of times.
+The presence of the mentioned method ends up not influencing the behavior of the program, as it only prints a description of the thrown exception, therefore the mutant survives.
 
+![Seventh Mutants](./images/mt_unit_test7-1.png)
 
-#### Lines 191 and 192
-These mutants consisted of removing calls to the  `e.printStackTrace` method when as exception was raised.
-To kill this mutant, we implemented a test using mockito that mocked the exception and verified if the call was being made.
+Despite being of little relevance to the program, we decided to kill this mutant.
+To kill this mutant, we implemented a test using *Mockito* that mocked the exception and verified if the call to the given method was being made.
 
-```java
-@Test
-public void testSetValueAt_NegativeTimeToday_ShouldCatchException() {
-    ParseException ex = mock(ParseException.class);
+![Seventh Unit Test Changes](./images/mt_unit_test7-2.png)
 
-    try (MockedStatic<ProjectTime> utilities = Mockito.mockStatic(ProjectTime.class)) {
-        utilities.when(() -> ProjectTime.formatSeconds(-1)).thenThrow(ex);
+### Lines 210 and 218
 
-        // Call method
-        assertDoesNotThrow(() -> tableModel.setValueAt(-1, 0, COLUMN_TIMETODAY));
+These mutants consisted of removing the call to add and remove a project from the interface, respectively.
+Additionally, in the first case, there are two other surviving mutants, which consist of replacing the two subtractions with additions.
+The mutants survive because we are not verifying the calls to these methods, nor whether they are called with the correct arguments.
 
-        // Verify that the exception stacktrace was printed
-        verify(ex).printStackTrace();
-    }
-}
-```
+![Eighth Mutants](./images/mt_unit_test8-1.png)
 
+To kill these mutants, we used a *spy* object and verified that these methods were being called with the correct parameters.
 
-// TODO: ProjectTime.java -> o construtor private não deve ser para testar, certo?
+![Eighth Unit Test Changes](./images/mt_unit_test8-2.png)
 
 ## 4) Final Mutation Score
 
-// TODO: descrever score final de Mutation
+After performing mutation testing, we ended up with the following coverages:
 
-After performing mutation testing, we ended up with the following code coverage:
-
-// TODO: Add the final score image
 ![Final Mutation Score](./images/mt_final_score.png)
 
-Therefore, we were able to improve:
-- *Line Coverage* from 99% to &&%
-- *Mutation Coverage* from 80% to &&%
-- *Test Strength* from 80% to &&%
+Comparing these results with the initial report displayed on section 1, our:
+- *Line Coverage* stayed at 99% (an already high value addressed in the previous assignments)
+- *Mutation Coverage* increased from 80% to 93%
+- *Test Strength* increased from 80% to 93%
 
-Thus, we reached test coverage values above &&%, making the *JTimeSched* program more robust and error-free.
+Thus, we reached test coverage values above 90%, making the *jTimeSched* program more robust and error-free.
+This coverage was increased by addressing the mutants inside the `project` package, whose final class breakdown can be visualized in the following figure:
 
-The remaining score that prevented us from reaching 100% is associated with the Equivalent Mutants that can't be killed, which were thoroughly explained in section 2 of the assignment.
+![Final Mutation Score of the `project` package](./images/mt_final_score2.png)
+
+The remaining mutants that prevented us from reaching 100% are *Equivalent Mutants* that can't be killed, thoroughly explained in the previous sections.
 
 -----
 
