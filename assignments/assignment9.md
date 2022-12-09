@@ -120,8 +120,8 @@ Since the tests don't wait any time before pausing the project, the elapsed seco
 
 ![First Mutants](./images/mt_unit_test1-1.png)
 
-This occurs since the test `testPause_RunningProject_ShouldPause` implemented in previous assignments only asserts that the project state became "paused", ignoring the changes made to the time variables.
-Therefore, to kill this mutant, the following code lines were added to the test:
+This occurs since the test `testPause_RunningProject_ShouldPause` implemented in previous assignments was only asserting that the project state became "paused", ignoring the changes made to the time variables.
+Therefore, to kill this mutant, the following code lines were added to the test in the `ProjectTest.java` file:
 
 ![First Unit Test Changes](./images/mt_unit_test1-2.png)
 
@@ -135,8 +135,8 @@ This next mutant consisted of removing a call to a function that defines propert
 
 ![Second Mutant](./images/mt_unit_test2-1.png)
 
-To kill it, we verified the indentation of the XML file by checking the presence of four consecutive spaces.
-In the absence of the function call, the XML is written without indentation, leading to test failure.
+To kill it, we verified the indentation of the XML file by checking the presence of four consecutive spaces in the `ProjectSerializerTest.java` file.
+In the absence of the function call, the XML is written without any indentation, leading to test failure.
 
 ![Second Unit Test Changes](./images/mt_unit_test2-2.png)
 
@@ -147,7 +147,7 @@ Since this attribute was not tested in previous tests and did not affect the par
 
 ![Third Mutant](./images/mt_unit_test3-1.png)
 
-To kill it, we verified the version property when creating an XML file:
+To kill it, we verified the version property when creating an XML file in the `ProjectSerializerTest.java` file.
 
 ![Third Unit Test Changes](./images/mt_unit_test3-2.png)
 
@@ -159,7 +159,7 @@ However, we realized that we had forgotten to test two attributes from the proje
 
 ![Fourth Mutant](./images/mt_unit_test4-1.png)
 
-Thus, to kill it, we added asserts for the missing parameters.
+Thus, to kill it, we added asserts for the missing parameters, in the `ProjectSerializerTest.java` file.
 
 ![Fourth Unit Test Changes](./images/mt_unit_test4-2.png)
 
@@ -171,7 +171,7 @@ However, similarly to the last mutant, we realized that we had forgotten to test
 
 ![Fifth Mutants](./images/mt_unit_test5-1.png)
 
-Thus, to kill them, we added the necessary parameters to different projects.
+Thus, to kill them, we added the necessary parameters to different projects, in the `ProjectSerializerTest.java` file.
 Afterwards, we compared the initial parameters to those read from the XML file, thus killing these three mutants.
 
 ![Fifth Unit Test Changes](./images/mt_unit_test5-2.png)
@@ -186,7 +186,7 @@ As these conditionals and this call only affect the messages printed in the logs
 ![Sixth Mutants](./images/mt_unit_test6-1.png)
 
 Although not fundamental to the program, we decided to test the logging messages, killing these mutants.
-For this, we check the number of logs and the printed message.
+For this, we check the number of logs and the printed message, in the `ProjectTableModelTest.java` file.
 
 ![Sixth Unit Test Changes](./images/mt_unit_test6-2.png)
 
@@ -198,8 +198,8 @@ The presence of the mentioned method ends up not influencing the behaviour of th
 
 ![Seventh Mutants](./images/mt_unit_test7-1.png)
 
-Despite being of little relevance to the program, we decided to kill this mutant.
-To kill this mutant, we implemented a test using *Mockito* that mocked the exception and verified if the call to the given method was being made.
+Despite being of little relevance to the program, we decided to kill this mutant, in the `ProjectTableModelTest.java` file.
+To kill it, we implemented a test using *Mockito* that mocked the exception and verified if the call to the given method was being made.
 
 ![Seventh Unit Test Changes](./images/mt_unit_test7-2.png)
 
@@ -211,7 +211,7 @@ The mutants survive because we need to verify the calls to these methods and whe
 
 ![Eighth Mutants](./images/mt_unit_test8-1.png)
 
-We used a *spy* object to kill these mutants and verified that these methods were being called with the correct parameters.
+We used a *spy* object to kill these mutants and verified that these methods were being called with the correct parameters, in the `ProjectTableModelTest.java` file.
 
 ![Eighth Unit Test Changes](./images/mt_unit_test8-2.png)
 
