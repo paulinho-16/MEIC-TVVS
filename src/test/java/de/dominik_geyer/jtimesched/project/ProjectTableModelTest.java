@@ -25,6 +25,8 @@ import org.mockito.Mockito;
 import static de.dominik_geyer.jtimesched.project.ProjectTableModel.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class ProjectTableModelTest {
@@ -44,6 +46,7 @@ public class ProjectTableModelTest {
         projects.add(proj2);
         projects.add(proj3);
         tableModel = new ProjectTableModel(projects);
+        tableModel = spy(tableModel);
 
         Field reader = JTimeSchedApp.class.getDeclaredField("LOGGER");
         reader.setAccessible(true);
@@ -104,7 +107,6 @@ public class ProjectTableModelTest {
         );
 
         assertEquals(tableModel.getRowCount(), rows + 1);
-
     }
 
     @ParameterizedTest(name = "Test #{index} with input {arguments} returns true")
@@ -238,11 +240,21 @@ public class ProjectTableModelTest {
     }
 
     @Test
+    public void testAddProject_AddingProject_ShouldUpdateTable() {
+        Project proj = new Project("Test Project 4");
+
+        tableModel.addProject(proj);
+
+        verify(tableModel, times(1)).fireTableRowsInserted(3, 3);
+    }
+
+    @Test
     public void testRemoveProject_DeletingProject_ShouldRemoveIt() throws ParseException {
         int initial_count = tableModel.getRowCount();
 
         tableModel.removeProject(0);
 
         assertEquals(initial_count - 1, tableModel.getRowCount());
+        verify(tableModel, times(1)).fireTableRowsDeleted(0, 0);
     }
 }

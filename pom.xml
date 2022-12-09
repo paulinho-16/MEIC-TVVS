@@ -15,7 +15,7 @@
         <!-- Maven related -->
         <site.plugin.version>4.0.0-M3</site.plugin.version>
         <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
-        <mockito.version>3.4.0</mockito.version>
+        <mockito.version>4.8.0</mockito.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
