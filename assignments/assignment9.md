@@ -1,16 +1,16 @@
 # Assignment 9 - Mutation Testing (White-box Testing)
 
-*Mutation Testing* is a type of software testing in which certain statements of the source code are changed/mutated to check if the test cases are able to find source code errors.
+*Mutation Testing* is a type of software testing in which certain source code statements are changed/mutated to check if the test cases can find source code errors.
 Its goal is to ensure the quality of test cases in terms of robustness so that they should fail the mutated source code.
-The changes made in the mutant program should be kept extremely small so that it does not affect the program's overall objective.
+The changes made in the mutant program should be kept extremely small not to affect the program's overall objective.
 A **mutation** is nothing but a single syntactic change that is made to the program statement.
 If the tests fail, the **mutation** is killed; if your tests pass, the **mutation** survives.
 The quality of the tests can be gauged from the percentage of **mutations** killed.
 
 Mutants that cannot be killed are called **equivalent mutants**.
 An **equivalent mutant** is a mutant that always behaves the same way as the original program.
-If the mutant behaves like the normal code, it will always give the same output as the original program for any given input.
-Clearly, this makes this mutant (which is basically the same program as the one under test) impossible to be killed by the tests.
+If the mutant acts like the standard code, it will always give the same output as the original program for any given input.
+This makes this mutant (which is the same program as the one under test) impossible to be killed by the tests.
 
 To assess the robustness of our tests, we used the **Pitest** tool, a mutation testing system.
 The first step we took was to configure **Pitest** in our project.
@@ -46,9 +46,9 @@ This assignment aims to increase the mutation score of our tests, seeking to eli
 #### Lines 163 & 177
 
 The first mutants we found consisted of removing calls to the `printStackTrace` method from exceptions thrown in the code.
-These exceptions would only happen if there was an attempt to get the elapsed seconds of a project that is not running.
-The mutants survived, as removing the calls had no effect on the program's behavior.
-The main cause of this is essentially due to the fact that this scenario never happens, as it is prevented by an `if` statement performed before calling the method that could throw them.
+These exceptions would only happen if there were an attempt to get the elapsed seconds of a project that is not running.
+The mutants survived, as removing the calls did not affect the program's behaviour.
+The leading cause of this is essentially due to the fact that this scenario never happens, as it is prevented by an `if` statement performed before calling the method that could throw them.
 This verification ensures that no exception is thrown, so the statement at hand is never executed.
 
 ![First Equivalent Mutants](./images/mt_equivalent_mutant1.png)
@@ -58,16 +58,16 @@ This verification ensures that no exception is thrown, so the statement at hand 
 #### Line 63
 
 This next mutant also consists of removing a method call, namely a method responsible for defining the number of spaces used in the indentation of the XML file to be written.
-The fact that the mutant survives, despite correctly testing by reading the resulting XML, suggests that this call is not fundamental to the program at all.
+The fact that the mutant survives, despite correctly testing by reading the resulting XML, suggests that this call is not fundamental to the program.
 We also noticed that the code contained an author comment with a link to a given bug in a bug database ([Bug Link/ID](http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6296446)).
-After studying the subject, we concluded that, despite the default indentation value being already 4, the author was forced to make this function call due to the aforementioned bug, which is currently fixed.
+After studying the subject, we concluded that, despite the default indentation value being already 4, the author was forced to make this function call due to the bug mentioned above, which is currently fixed.
 Therefore, this call is dispensable, resulting in an **equivalent mutant**.
 
 ![Second Equivalent Mutant](./images/mt_equivalent_mutant2.png)
 
 #### Line 67
 
-This next mutant consisted of removing a call to a function that defines properties of the XML file to be written, more precisely the type of encoding.
+This next mutant consisted of removing a call to a function that defines properties of the XML file to be written, more precisely, the type of encoding.
 Since the defined value is the default value for reading the XML files, the presence of this function call also turns out to be unnecessary, thus resulting in an **equivalent mutant**.
 (ENCODING default value = "encoding" = "UTF-8", sources = [Purpose](https://docs.oracle.com/javase/7/docs/api/javax/xml/transform/OutputKeys.html), [Default Values](https://docs.oracle.com/javase/7/docs/api/constant-values.html))
 
@@ -77,15 +77,15 @@ Since the defined value is the default value for reading the XML files, the pres
 
 The following mutants also consist of removing function calls.
 More specifically, the invoked functions serve to notify the start and end of a document, respectively.
-However, both are optional, having no impact on the program's behavior, hence these cases are considered **equivalent mutants**.
+However, both are optional, having no impact on the program's behaviour; hence these cases are considered **equivalent mutants**.
 (source = [Purpose](https://docs.oracle.com/javase/7/docs/api/org/xml/sax/ContentHandler.html), [Optionality](https://stackoverflow.com/a/4267492))
 
 ![Fourth Equivalent Mutants](./images/mt_equivalent_mutant4.png)
 
 #### Lines 87, 92 & 99
 
-The next three mutants result from removing a call responsible for clearing the list of attributes for reuse, freeing up little memory.
-Since this call does not affect the behavior of the program, serving only for memory management purposes, this case is an **equivalent mutant**.
+The following three mutants result from removing a call responsible for clearing the list of attributes for reuse, freeing up little memory.
+Since this call does not affect the program's behaviour, serving only for memory management purposes, this case is an **equivalent mutant**.
 (source = [Purpose](https://docs.oracle.com/javase/7/docs/api/org/xml/sax/helpers/AttributesImpl.html#clear()))
 
 ![Fifth Equivalent Mutants](./images/mt_equivalent_mutant5.png)
@@ -93,16 +93,16 @@ Since this call does not affect the behavior of the program, serving only for me
 #### Lines 113 & 114
 
 Similarly to the last mutants, these result from removing calls to functions related to memory management.
-The first is responsible for flushing the stream, and the second for closing it.
-Thus, as they do not interfere with the behavior of the program, they constitute **equivalent mutants**.
+The first is responsible for flushing the stream, and the second is for closing it.
+Thus, as they do not interfere with the program's behaviour, they constitute **equivalent mutants**.
 (sources = [Flush](https://www.tutorialspoint.com/java/io/outputstreamwriter_flush.htm), [Close](https://www.tutorialspoint.com/java/io/outputstreamwriter_close.htm))
 
 ![Sixth Equivalent Mutants](./images/mt_equivalent_mutant6.png)
 
 #### Line 193
 
-The reason for this mutant is the same as the previous ones: removal of a call to a function, in this case to *Java*'s print function.
-Logically, this function has no interference with the output of the program, so its presence is insignificant, thus resulting in an **equivalent mutant**.
+The reason for this mutant is the same as the previous ones: removal of a call to a function, in this case, to *Java*'s print function.
+Logically, this function has no interference with the program's output, so its presence is insignificant, thus resulting in an **equivalent mutant**.
 
 ![Seventh Equivalent Mutant](./images/mt_equivalent_mutant7.png)
 
