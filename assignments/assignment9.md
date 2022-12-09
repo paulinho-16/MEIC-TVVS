@@ -26,7 +26,7 @@ Finally, this report ends with the execution of the final **mutation analysis** 
 ## 1) Initial Mutation Score
 
 The first step consisted of performing an initial analysis of the mutation coverage derived from the tests developed in previous assignments.
-This first score surprised us positively due to its relatively high values, as shown in the following image:
+This initial score surprised us positively due to its relatively high values, as shown in the following image:
 
 ![Initial Mutation Score](./images/mt_initial_score.png)
 
@@ -113,7 +113,7 @@ This section describes these mutants and the tests implemented to kill them.
 
 ### In file `Project.java`
 
-#### Lines 138 and 139
+#### Lines 138 & 139
 
 These mutants occur when the `+=` operator is changed for `-=`, replacing integer addition with subtraction, when updating the values of the `this.secondsOverall` and `this.secondsToday` variables inside the `pause` method.
 Since the tests don't wait any time before pausing the project, the elapsed seconds were zero, so the result of these two operators was the same; therefore the mutants survived.
@@ -163,7 +163,7 @@ Thus, to kill it, we added asserts for the missing parameters, in the `ProjectSe
 
 ![Fourth Unit Test Changes](./images/mt_unit_test4-2.png)
 
-#### Line 146, 165, and 167
+#### Lines 146, 165 & 167
 
 These mutants consisted of removing the call for three *set* methods after reading a project through the `readXML` method.
 In previous assignments, we had tested this method through the `testReadXml_ProjectList_ShouldReadAllProjects` test, which creates projects with new parameters, writes them to an XML (through the `writeXML` method) and then calls the `readXML` method to verify that the values were properly read.
@@ -178,7 +178,7 @@ Afterwards, we compared the initial parameters to those read from the XML file, 
 
 ### In file `ProjectTableModel.java`
 
-#### Lines 160, 183, 187 and 205
+#### Lines 160, 183, 187 & 205
 
 These mutants consisted of the negation of conditionals, and a removed call, in the `setValueAt` method.
 As these conditionals and this call only affect the messages printed in the logs, they do not affect the program's behaviour, so the mutants at hand survive.
@@ -203,7 +203,7 @@ To kill it, we implemented a test using *Mockito* that mocked the exception and 
 
 ![Seventh Unit Test Changes](./images/mt_unit_test7-2.png)
 
-### Lines 210 and 218
+### Lines 210 & 218
 
 These mutants consisted of removing the call to add and remove a project from the interface.
 Additionally, in the first case, there are two other surviving mutants, which consist of replacing the two subtractions with additions.
@@ -221,7 +221,7 @@ After performing mutation testing, we ended up with the following coverages:
 
 ![Final Mutation Score](./images/mt_final_score.png)
 
-Comparing these results with the initial report displayed on section 1, our:
+Comparing these results with the initial report, our:
 - *Line Coverage* stayed at 99% (an already high value addressed in the previous assignments)
 - *Mutation Coverage* increased from 80% to 93%
 - *Test Strength* increased from 80% to 93%
