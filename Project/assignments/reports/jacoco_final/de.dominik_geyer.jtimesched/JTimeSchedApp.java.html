@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JTimeSchedApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jTimeSched -- Time tracking application</a> &gt; <a href="index.source.html" class="el_package">de.dominik_geyer.jtimesched</a> &gt; <span class="el_source">JTimeSchedApp.java</span></div><h1>JTimeSchedApp.java</h1><pre class="source lang-java linenums">/* jTimeSched - A simple and lightweight time tracking tool
+ * Copyright (C) 2010-2012 Dominik D. Geyer &lt;dominik.geyer@gmail.com&gt;
+ * See LICENSE.txt for details.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package de.dominik_geyer.jtimesched;
+
+import de.dominik_geyer.jtimesched.gui.JTimeSchedFrame;
+import de.dominik_geyer.jtimesched.misc.PlainTextFormatter;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
+import java.text.ParseException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+/**
+ * Main class of the application.
+ */
+<span class="fc" id="L36">public class JTimeSchedApp {</span>
+    public static final String DATA_PATH = &quot;data/&quot;;
+    public static final String IMAGES_PATH = DATA_PATH + &quot;img/&quot;;
+    public static final String CONF_PATH = &quot;conf/&quot;;
+    public static final String PRJ_FILE = CONF_PATH + &quot;jTimeSched.projects&quot;;
+    public static final String PRJ_FILE_BACKUP = JTimeSchedApp.PRJ_FILE + &quot;.backup&quot;;
+    public static final String SETTINGS_FILE = CONF_PATH + &quot;jTimeSched.settings&quot;;
+    public static final String LOCK_FILE = CONF_PATH + &quot;jTimeSched.lock&quot;;
+    public static final String LOG_FILE = CONF_PATH + &quot;jTimeSched.log&quot;;
+
+    private static Logger LOGGER;
+
+    /**
+     * Application's entry point.
+     *
+     * @param args Command line arguments
+     */
+    public static void main(String[] args) throws IOException, ParseException {
+        // FIXME: allow custom configuration path via command-line argument [#22]
+<span class="fc" id="L55">        File dirConf = new File(JTimeSchedApp.CONF_PATH);</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (!dirConf.isDirectory()) {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (!dirConf.mkdir()) {</span>
+<span class="nc" id="L58">                throw new IOException(&quot;Unable to create path&quot;);</span>
+            }
+        }
+
+        // request lock
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (!JTimeSchedApp.lockInstance()) {</span>
+<span class="nc" id="L64">            JOptionPane.showMessageDialog(null,</span>
+                &quot;It seems that there is already a running instance of jTimeSched &quot;
+                    + &quot;using the projects-file in use.\n\n&quot;
+                    + &quot;Possible solutions:\n&quot;
+                    + &quot;1) Most likely you want to use the running instance residing in the system-tray.\n&quot;
+                    + &quot;2) Run another instance from within a different directory.\n&quot;
+                    + &quot;3) Delete the lock-file '&quot; + JTimeSchedApp.LOCK_FILE + &quot;' manually if it is a leftover caused by an unclean shutdown.\n\n&quot;
+                    + &quot;jTimeSched will exit now.&quot;,
+                &quot;Another running instance for projects-file detected&quot;,
+                JOptionPane.WARNING_MESSAGE);
+
+<span class="nc" id="L75">            System.exit(1);</span>
+        }
+
+
+        // initialize logger
+<span class="fc" id="L80">        JTimeSchedApp.LOGGER = Logger.getLogger(&quot;JTimeSched&quot;);</span>
+<span class="fc" id="L81">        JTimeSchedApp.LOGGER.setLevel(Level.ALL);</span>
+
+        try {
+<span class="fc" id="L84">            FileHandler fh = new FileHandler(JTimeSchedApp.LOG_FILE, true);</span>
+<span class="fc" id="L85">            fh.setFormatter(new PlainTextFormatter());</span>
+<span class="fc" id="L86">            JTimeSchedApp.LOGGER.addHandler(fh);</span>
+<span class="nc" id="L87">        } catch (Exception e) {</span>
+<span class="nc" id="L88">            e.printStackTrace();</span>
+<span class="nc" id="L89">            System.err.println(&quot;Enable to initialize logger for file &quot; + JTimeSchedApp.LOG_FILE);</span>
+<span class="fc" id="L90">        }</span>
+
+
+        // open main frame
+<span class="fc" id="L94">        new JTimeSchedFrame();</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Determines and returns the application's version, which is set in the Manifest file in attribute &quot;ImplementationVersion&quot;.
+     *
+     * @return String The application's version; if not set in Manifest or not available it returns the string &quot;unknown&quot;
+     */
+    public static String getAppVersion() {
+<span class="fc" id="L103">        String appVersion = Package.getPackage(&quot;de.dominik_geyer.jtimesched&quot;).getImplementationVersion();</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        return (appVersion != null) ? appVersion : &quot;unknown&quot;;</span>
+    }
+
+    private static boolean lockInstance() {
+        try {
+<span class="fc" id="L109">            final File file = new File(JTimeSchedApp.LOCK_FILE);</span>
+<span class="fc" id="L110">            final RandomAccessFile randomAccessFile = new RandomAccessFile(file, &quot;rw&quot;);</span>
+<span class="fc" id="L111">            final FileLock fileLock = randomAccessFile.getChannel().tryLock();</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if (fileLock != null) {</span>
+<span class="fc" id="L113">                Runtime.getRuntime().addShutdownHook(new Thread() {</span>
+                    public void run() {
+                        try {
+<span class="fc" id="L116">                            fileLock.release();</span>
+<span class="fc" id="L117">                            randomAccessFile.close();</span>
+<span class="fc" id="L118">                            file.delete();</span>
+<span class="nc" id="L119">                        } catch (Exception e) {</span>
+<span class="nc" id="L120">                            System.err.println(&quot;Unable to remove lock file: &quot; + JTimeSchedApp.LOCK_FILE + &quot; &quot; + e.getMessage());</span>
+<span class="fc" id="L121">                        }</span>
+<span class="fc" id="L122">                    }</span>
+                });
+<span class="fc" id="L124">                return true;</span>
+            }
+<span class="nc" id="L126">        } catch (Exception e) {</span>
+<span class="nc" id="L127">            System.err.println(&quot;Unable to create and/or lock file: &quot; + JTimeSchedApp.LOCK_FILE + &quot; &quot; + e.getMessage());</span>
+<span class="nc" id="L128">        }</span>
+<span class="nc" id="L129">        return false;</span>
+    }
+
+
+    public static Logger getLogger() {
+<span class="fc" id="L134">        return LOGGER;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

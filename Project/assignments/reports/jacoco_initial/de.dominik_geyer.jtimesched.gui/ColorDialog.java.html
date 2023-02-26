@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ColorDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jTimeSched -- Time tracking application</a> &gt; <a href="index.source.html" class="el_package">de.dominik_geyer.jtimesched.gui</a> &gt; <span class="el_source">ColorDialog.java</span></div><h1>ColorDialog.java</h1><pre class="source lang-java linenums">/* jTimeSched - A simple and lightweight time tracking tool
+ * Copyright (C) 2010-2012 Dominik D. Geyer &lt;dominik.geyer@gmail.com&gt;
+ * See LICENSE.txt for details.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package de.dominik_geyer.jtimesched.gui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
+
+@SuppressWarnings(&quot;serial&quot;)
+public class ColorDialog extends JDialog implements ActionListener {
+    private static final String NOCOLOR = &quot;nocolor&quot;;
+    private static final String CHOOSER = &quot;chooser&quot;;
+    private static final int SIZE = 32;
+
+    private Color selectedColor;
+    private Color currentColor;
+
+    public ColorDialog(JFrame parent, Point position, Color currentColor) {
+<span class="nc" id="L48">        super(parent);</span>
+
+<span class="nc" id="L50">        this.setModal(true);</span>
+<span class="nc" id="L51">        this.setUndecorated(true);</span>
+<span class="nc" id="L52">        this.setLocation(position);</span>
+
+<span class="nc" id="L54">        this.currentColor = currentColor;</span>
+
+
+<span class="nc" id="L57">        Color[] colors = new Color[]{</span>
+            new Color(219, 148, 112),
+            new Color(219, 201, 112),
+            //new Color(184,    219,    112),
+            new Color(130, 219, 112),
+            new Color(229, 122, 194),
+            //new Color(207,    111,    63),
+            new Color(122, 194, 229),
+            new Color(205, 205, 205),
+        };
+
+<span class="nc" id="L68">        JPanel panel = new JPanel();</span>
+
+<span class="nc" id="L70">        panel.setLayout(new FlowLayout());</span>
+
+
+        JButton btn;
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (Color c : colors) {</span>
+<span class="nc" id="L76">            btn = new JButton();</span>
+<span class="nc" id="L77">            btn.setPreferredSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L78">            btn.setMinimumSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L79">            btn.setMaximumSize(new Dimension(SIZE, SIZE));</span>
+
+<span class="nc" id="L81">            btn.setBackground(c);</span>
+
+<span class="nc" id="L83">            btn.addActionListener(this);</span>
+
+<span class="nc" id="L85">            panel.add(btn);</span>
+        }
+
+<span class="nc" id="L88">        this.add(panel);</span>
+
+
+        // custom-color chooser button
+<span class="nc" id="L92">        btn = new JButton(JTimeSchedFrame.getImageIcon(&quot;color-custom.png&quot;));</span>
+<span class="nc" id="L93">        btn.setToolTipText(&quot;choose custom color&quot;);</span>
+<span class="nc" id="L94">        btn.setPreferredSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L95">        btn.setMinimumSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L96">        btn.setMaximumSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L97">        btn.setMargin(new Insets(0, 0, 0, 0));</span>
+
+<span class="nc" id="L99">        btn.setBackground(Color.WHITE);</span>
+<span class="nc" id="L100">        btn.setForeground(Color.BLUE);</span>
+<span class="nc" id="L101">        btn.setFont(btn.getFont().deriveFont(22.0f));</span>
+
+<span class="nc" id="L103">        btn.addActionListener(this);</span>
+<span class="nc" id="L104">        btn.setActionCommand(CHOOSER);</span>
+
+<span class="nc" id="L106">        panel.add(btn);</span>
+
+
+        // no-color button
+<span class="nc" id="L110">        btn = new JButton(JTimeSchedFrame.getImageIcon(&quot;color-reset.png&quot;));</span>
+<span class="nc" id="L111">        btn.setToolTipText(&quot;reset color&quot;);</span>
+<span class="nc" id="L112">        btn.setPreferredSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L113">        btn.setMinimumSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L114">        btn.setMaximumSize(new Dimension(SIZE, SIZE));</span>
+<span class="nc" id="L115">        btn.setMargin(new Insets(0, 0, 0, 0));</span>
+
+<span class="nc" id="L117">        btn.setBackground(Color.WHITE);</span>
+<span class="nc" id="L118">        btn.setForeground(Color.RED);</span>
+<span class="nc" id="L119">        btn.setFont(btn.getFont().deriveFont(22.0f));</span>
+
+<span class="nc" id="L121">        btn.addActionListener(this);</span>
+<span class="nc" id="L122">        btn.setActionCommand(NOCOLOR);</span>
+
+<span class="nc" id="L124">        panel.add(btn);</span>
+
+
+        // exit on key ESC
+<span class="nc" id="L128">        final KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true);</span>
+<span class="nc" id="L129">        getRootPane().registerKeyboardAction(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L132">                ColorDialog.this.selectedColor = ColorDialog.this.currentColor;</span>
+<span class="nc" id="L133">                ColorDialog.this.setVisible(false);</span>
+<span class="nc" id="L134">                ColorDialog.this.dispose();</span>
+<span class="nc" id="L135">            }</span>
+        },
+            keyStroke,
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+
+<span class="nc" id="L141">        this.pack();</span>
+<span class="nc" id="L142">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L146">        JButton btn = (JButton) e.getSource();</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (e.getActionCommand() == NOCOLOR) {</span>
+<span class="nc" id="L149">            this.selectedColor = null;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        } else if (e.getActionCommand() == CHOOSER) {</span>
+<span class="nc" id="L151">            Color chosenColor = JColorChooser.showDialog(ColorDialog.this,</span>
+                &quot;Choose a custom color&quot;,
+                ColorDialog.this.currentColor);
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (chosenColor != null) {</span>
+<span class="nc" id="L156">                this.selectedColor = chosenColor;</span>
+            } else {
+<span class="nc" id="L158">                this.selectedColor = this.currentColor;</span>
+            }
+<span class="nc" id="L160">        } else {</span>
+<span class="nc" id="L161">            this.selectedColor = btn.getBackground();</span>
+        }
+
+<span class="nc" id="L164">        this.setVisible(false);</span>
+<span class="nc" id="L165">        this.dispose();</span>
+<span class="nc" id="L166">    }</span>
+
+    public Color getSelectedColor() {
+<span class="nc" id="L169">        return this.selectedColor;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

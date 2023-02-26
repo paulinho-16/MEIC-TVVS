@@ -1,0 +1,41 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.misc,PlainTextFormatter,33,0,0,0,6,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched,JTimeSchedApp,114,0,10,0,32,0,10,0,5,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched,JTimeSchedApp.new Thread() {...},36,0,0,0,8,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,ColorCellRenderer,55,0,6,0,16,0,5,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,TimeCellComponent,101,0,8,0,25,0,7,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,TimeCellEditor,59,0,4,0,17,0,5,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,DateCellEditor,55,0,2,0,17,0,4,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,CustomCellRenderer,184,0,17,0,51,0,13,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,ColorCellEditor,56,0,0,0,19,0,8,0,8,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,ProjectTable,471,0,14,0,70,0,10,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,CheckCellRenderer,45,0,4,0,14,0,4,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui.table,TimeCellRenderer,119,0,11,0,26,0,8,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.project,ProjectTime,87,0,2,0,13,0,5,0,4,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.project,ProjectSerializer,535,0,28,0,116,0,22,0,8,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.project,ProjectException,4,0,0,0,2,0,1,0,1,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.project,ProjectTableModel,370,0,36,0,84,0,36,0,11,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.project,Project,303,0,22,0,94,0,42,0,31,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.TimeSchedTableHeaderMouseListener,142,0,6,0,32,0,8,0,4,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.JTimeSchedGUILogHandler,38,0,0,0,11,0,4,0,4,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,ColorDialog,321,0,8,0,59,0,7,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},20,0,2,0,5,0,3,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,ColorDialog.new ActionListener() {...},21,0,0,0,5,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.TimeSchedTableMouseListener,187,0,32,0,45,0,19,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,NotesDialog,130,0,0,0,29,0,3,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame,1406,0,74,0,327,0,59,0,22,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},17,0,2,0,4,0,3,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.TimeSchedTableHeaderMouseListener.new ActionListener() {...},28,0,2,0,6,0,3,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,NotesDialog.new ActionListener() {...},16,0,0,0,4,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.TimeSchedTableHeaderMouseListener.new ActionListener() {...},35,0,2,0,8,0,3,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,NotesDialog.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},24,0,0,0,5,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},37,0,2,0,13,0,3,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.TimeSchedTableKeyListener,76,0,7,0,23,0,8,0,4,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new KeyListener() {...},21,0,0,0,6,0,4,0,4,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},48,0,4,0,7,0,4,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.new FocusListener() {...},12,0,0,0,4,0,3,0,3,0
+jTimeSched -- Time tracking application,de.dominik_geyer.jtimesched.gui,JTimeSchedFrame.TimeSchedTableHeaderMouseListener.new ActionListener() {...},32,0,2,0,8,0,3,0,2,0

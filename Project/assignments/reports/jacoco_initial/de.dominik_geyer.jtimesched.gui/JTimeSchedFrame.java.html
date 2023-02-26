@@ -1,0 +1,1054 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JTimeSchedFrame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jTimeSched -- Time tracking application</a> &gt; <a href="index.source.html" class="el_package">de.dominik_geyer.jtimesched.gui</a> &gt; <span class="el_source">JTimeSchedFrame.java</span></div><h1>JTimeSchedFrame.java</h1><pre class="source lang-java linenums">/* jTimeSched - A simple and lightweight time tracking tool
+ * Copyright (C) 2010-2012 Dominik D. Geyer &lt;dominik.geyer@gmail.com&gt;
+ * See LICENSE.txt for details.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package de.dominik_geyer.jtimesched.gui;
+
+import de.dominik_geyer.jtimesched.JTimeSchedApp;
+import de.dominik_geyer.jtimesched.gui.table.ProjectTable;
+import de.dominik_geyer.jtimesched.project.Project;
+import de.dominik_geyer.jtimesched.project.ProjectException;
+import de.dominik_geyer.jtimesched.project.ProjectSerializer;
+import de.dominik_geyer.jtimesched.project.ProjectTableModel;
+import de.dominik_geyer.jtimesched.project.ProjectTime;
+import java.awt.AWTException;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.Point;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
+
+@SuppressWarnings(&quot;serial&quot;)
+public class JTimeSchedFrame extends JFrame {
+    private TrayIcon trayIcon;
+<span class="nc" id="L87">    private boolean runningState = false;</span>
+    private MenuItem itemToggleProject;
+
+    private ProjectTable tblSched;
+    private JLabel lblOverall;
+    private JTextField tfHighlight;
+
+    private static final int LOGAREA_HEIGHT = 100;
+    private JScrollPane spLog;
+<span class="nc" id="L96">    private JTextArea tfLog = new JTextArea();</span>
+    private JToggleButton btnLogToggle;
+
+<span class="nc" id="L99">    private ArrayList&lt;Project&gt; arPrj = new ArrayList&lt;Project&gt;();</span>
+    private Project currentProject;
+
+    private Timer saveTimer;
+
+<span class="nc" id="L104">    private boolean initiallyVisible = true;</span>
+
+<span class="nc" id="L106">    private static final int[] appIconSizes = {16, 24, 32, 40, 48, 64, 128, 256};</span>
+
+    public JTimeSchedFrame() {
+<span class="nc" id="L109">        super(&quot;jTimeSched&quot;);</span>
+
+<span class="nc" id="L111">        this.updateIconImage(false);</span>
+<span class="nc" id="L112">        this.setPreferredSize(new Dimension(600, 200));</span>
+<span class="nc" id="L113">        this.setMinimumSize(new Dimension(520, 150));</span>
+
+
+        // create tray-icon and set default close-behavior
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (this.setupTrayIcon()) {</span>
+<span class="nc" id="L118">            this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);</span>
+        } else {
+<span class="nc" id="L120">            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</span>
+        }
+
+
+        // add handler for GUI log
+<span class="nc" id="L125">        JTimeSchedApp.getLogger().addHandler(new JTimeSchedGUILogHandler(this.tfLog));</span>
+
+
+        // backup project-file
+        try {
+<span class="nc" id="L130">            this.backupProjects();</span>
+<span class="nc" id="L131">        } catch (FileNotFoundException e) {</span>
+            // ignore this exception: no project file -&gt; no backup
+<span class="nc" id="L133">        } catch (Exception e) {</span>
+<span class="nc" id="L134">            e.printStackTrace();</span>
+<span class="nc" id="L135">            JTimeSchedApp.getLogger().warning(&quot;Unable to create backup of project file: &quot; + e.getMessage());</span>
+<span class="nc" id="L136">        }</span>
+
+        // load project-file
+        try {
+<span class="nc" id="L140">            this.loadProjects();</span>
+<span class="nc" id="L141">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L142">            JTimeSchedApp.getLogger().info(&quot;Projects file does not exist, starting with empty projects file.&quot;);</span>
+<span class="nc" id="L143">        } catch (Exception e) {</span>
+<span class="nc" id="L144">            e.printStackTrace();</span>
+<span class="nc" id="L145">            JTimeSchedApp.getLogger().severe(&quot;Error loading projects file: &quot; + e.getMessage());</span>
+
+<span class="nc" id="L147">            JOptionPane.showMessageDialog(this,</span>
+                &quot;An error occurred while loading the projects file.\n&quot;
+<span class="nc" id="L149">                    + &quot;Details: \&quot;&quot; + e.getMessage() + &quot;\&quot;\n\n&quot;</span>
+                    + &quot;Please correct or remove the file '&quot; + JTimeSchedApp.PRJ_FILE + &quot;' &quot;
+                    + &quot;(or replace it with the backup file '&quot; + JTimeSchedApp.PRJ_FILE_BACKUP + &quot;', if present).\n\n&quot;
+                    + &quot;JTimeSched will quit now to avoid data corruption.&quot;,
+                &quot;Error loading projects file&quot;,
+                JOptionPane.ERROR_MESSAGE);
+
+<span class="nc" id="L156">            System.exit(1);</span>
+<span class="nc" id="L157">        }</span>
+
+        // check all projects for a today-time reset
+<span class="nc" id="L160">        checkResetToday();</span>
+
+
+        // create model an associate data
+<span class="nc" id="L164">        ProjectTableModel tstm = new ProjectTableModel(this.arPrj);</span>
+
+        // create table
+<span class="nc" id="L167">        this.tblSched = new ProjectTable(this, tstm);</span>
+
+        // listen on table-clicks
+<span class="nc" id="L170">        this.tblSched.addMouseListener(new TimeSchedTableMouseListener());</span>
+<span class="nc" id="L171">        this.tblSched.getTableHeader().addMouseListener(new TimeSchedTableHeaderMouseListener());</span>
+
+<span class="nc" id="L173">        this.tblSched.addKeyListener(new TimeSchedTableKeyListener());</span>
+
+        // add table to a scroll-pane
+<span class="nc" id="L176">        JScrollPane spSched = new JScrollPane(this.tblSched);</span>
+<span class="nc" id="L177">        this.add(spSched, BorderLayout.CENTER);</span>
+
+
+        // bottom panel
+<span class="nc" id="L181">        JPanel panelBottom = new JPanel();</span>
+<span class="nc" id="L182">        panelBottom.setLayout(new BoxLayout(panelBottom, BoxLayout.LINE_AXIS));</span>
+<span class="nc" id="L183">        JButton btnAdd = new JButton(&quot;Add project&quot;, JTimeSchedFrame.getImageIcon(&quot;project-add.png&quot;));</span>
+<span class="nc" id="L184">        btnAdd.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L187">                handleNewButton();</span>
+<span class="nc" id="L188">            }</span>
+        });
+<span class="nc" id="L190">        panelBottom.add(btnAdd);</span>
+
+        // bottom panel
+<span class="nc" id="L193">        panelBottom.add(Box.createRigidArea(new Dimension(10, 0)));</span>
+<span class="nc" id="L194">        panelBottom.add(Box.createHorizontalGlue());</span>
+<span class="nc" id="L195">        this.lblOverall = new JLabel(&quot;&quot;, SwingConstants.CENTER);</span>
+<span class="nc" id="L196">        this.lblOverall.setFont(this.lblOverall.getFont().deriveFont(Font.PLAIN));</span>
+<span class="nc" id="L197">        panelBottom.add(this.lblOverall);</span>
+<span class="nc" id="L198">        panelBottom.add(Box.createHorizontalGlue());</span>
+<span class="nc" id="L199">        panelBottom.add(Box.createRigidArea(new Dimension(10, 0)));</span>
+
+        // highlight editbox
+<span class="nc" id="L202">        this.tfHighlight = new JTextField(6);</span>
+<span class="nc" id="L203">        this.tfHighlight.setToolTipText(&quot;highlight expression&quot;);</span>
+<span class="nc" id="L204">        this.tfHighlight.addFocusListener(new FocusListener() {</span>
+            @Override
+            public void focusGained(FocusEvent fe) {
+<span class="nc" id="L207">                tfHighlight.selectAll();</span>
+<span class="nc" id="L208">            }</span>
+
+            @Override
+            public void focusLost(FocusEvent fe) {
+<span class="nc" id="L212">            }</span>
+        });
+<span class="nc" id="L214">        this.tfHighlight.addKeyListener(new KeyListener() {</span>
+            @Override
+            public void keyPressed(KeyEvent ke) {
+<span class="nc" id="L217">            }</span>
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+<span class="nc" id="L221">                tblSched.setHighlightString(tfHighlight.getText());</span>
+<span class="nc" id="L222">                tblSched.repaint();</span>
+<span class="nc" id="L223">            }</span>
+
+            @Override
+            public void keyTyped(KeyEvent ke) {
+<span class="nc" id="L227">            }</span>
+        });
+
+<span class="nc" id="L230">        Dimension sizeTf = new Dimension(100, this.tfHighlight.getMinimumSize().height);</span>
+<span class="nc" id="L231">        this.tfHighlight.setMaximumSize(sizeTf);</span>
+<span class="nc" id="L232">        this.tfHighlight.setMaximumSize(sizeTf);</span>
+<span class="nc" id="L233">        panelBottom.add(this.tfHighlight);</span>
+<span class="nc" id="L234">        panelBottom.add(Box.createRigidArea(new Dimension(5, 0)));</span>
+
+        // log toggle button
+<span class="nc" id="L237">        this.btnLogToggle = new JToggleButton(JTimeSchedFrame.getImageIcon(&quot;log-toggle.png&quot;));</span>
+<span class="nc" id="L238">        this.btnLogToggle.setToolTipText(&quot;toggle log area&quot;);</span>
+<span class="nc" id="L239">        this.btnLogToggle.addActionListener(new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L242">                Boolean isVisible = spLog.isVisible();</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                setSize(getWidth(), getHeight() + JTimeSchedFrame.LOGAREA_HEIGHT * (isVisible ? -1 : 1));</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">                spLog.setVisible(!isVisible);</span>
+<span class="nc" id="L245">                spLog.doLayout();</span>
+<span class="nc" id="L246">                doLayout();</span>
+<span class="nc" id="L247">            }</span>
+        }
+        );
+<span class="nc" id="L250">        panelBottom.add(this.btnLogToggle);</span>
+
+
+        // logging area
+<span class="nc" id="L254">        this.tfLog.setEditable(false);</span>
+        //this.tfLog.setFont(this.tfLog.getFont().deriveFont(10.0f));
+<span class="nc" id="L256">        this.spLog = new JScrollPane(this.tfLog);</span>
+<span class="nc" id="L257">        this.spLog.setVisible(false);</span>
+<span class="nc" id="L258">        this.spLog.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);</span>
+<span class="nc" id="L259">        this.spLog.setPreferredSize(new Dimension(100 /* ignored */, JTimeSchedFrame.LOGAREA_HEIGHT));</span>
+
+
+        // the whole bottom panel
+<span class="nc" id="L263">        JPanel panelBottomAll = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L264">        panelBottomAll.add(panelBottom, BorderLayout.NORTH);</span>
+<span class="nc" id="L265">        panelBottomAll.add(this.spLog, BorderLayout.SOUTH);</span>
+<span class="nc" id="L266">        this.add(panelBottomAll, BorderLayout.SOUTH);</span>
+
+
+        // load settings
+        try {
+<span class="nc" id="L271">            this.loadSettings();</span>
+<span class="nc" id="L272">        } catch (FileNotFoundException fnfe) {</span>
+<span class="nc" id="L273">            JTimeSchedApp.getLogger().info(&quot;Settings file does not exist, running with defaults.&quot;);</span>
+<span class="nc" id="L274">        } catch (Exception e) {</span>
+<span class="nc" id="L275">            e.printStackTrace();</span>
+<span class="nc" id="L276">            JTimeSchedApp.getLogger().warning(&quot;Error loading settings, running with defaults: &quot; + e.getMessage());</span>
+<span class="nc" id="L277">        }</span>
+
+
+        // setup projects-save timer, interval 60 seconds
+<span class="nc" id="L281">        saveTimer = new Timer(60 * 1000, new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L284">                saveProjects();</span>
+<span class="nc" id="L285">            }</span>
+        });
+
+<span class="nc" id="L288">        saveTimer.setRepeats(true);</span>
+<span class="nc" id="L289">        saveTimer.start();</span>
+
+
+        // setup GUI update timer
+<span class="nc" id="L293">        Timer timer = new Timer(1 * 1000, new ActionListener() {</span>
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L296">                updateGUI();</span>
+<span class="nc" id="L297">            }</span>
+        });
+
+        //timer.setInitialDelay(0);
+<span class="nc" id="L301">        timer.setRepeats(true);</span>
+<span class="nc" id="L302">        timer.start();</span>
+
+
+        // initially refresh GUI values
+        // Note: we need to do the initial update before the pack(), so
+        // timer.setInitialDelay(0) for the update timer isn't enough
+<span class="nc" id="L308">        this.updateGUI();</span>
+
+<span class="nc" id="L310">        this.pack();</span>
+<span class="nc" id="L311">        this.tblSched.requestFocusInWindow();</span>
+<span class="nc" id="L312">        this.setVisible(this.initiallyVisible);</span>
+<span class="nc" id="L313">    }</span>
+
+    public static URL getImageResource(String filename) {
+<span class="nc" id="L316">        String path = JTimeSchedApp.IMAGES_PATH + filename;</span>
+<span class="nc" id="L317">        URL resFile = JTimeSchedFrame.class.getResource(&quot;/&quot; + path);</span>
+
+        // loading from JAR failed? Try local data directory
+<span class="nc bnc" id="L320" title="All 2 branches missed.">        if (resFile == null) {</span>
+            try {
+<span class="nc" id="L322">                resFile = new URL(&quot;file://&quot; + new File(path).getCanonicalPath());</span>
+<span class="nc" id="L323">            } catch (Exception e) {</span>
+                // print stack-trace and ignore error
+<span class="nc" id="L325">                e.printStackTrace();</span>
+<span class="nc" id="L326">            }</span>
+        }
+<span class="nc" id="L328">        return resFile;</span>
+    }
+
+    public static Image getImage(String filename) {
+<span class="nc" id="L332">        return Toolkit.getDefaultToolkit().getImage(JTimeSchedFrame.getImageResource(filename));</span>
+    }
+
+    public static ImageIcon getImageIcon(String filename) {
+<span class="nc" id="L336">        return new ImageIcon(JTimeSchedFrame.getImageResource(filename));</span>
+    }
+
+    protected void updateGUI() {
+<span class="nc" id="L340">        this.updateSchedTable();</span>
+<span class="nc" id="L341">        this.updateStatsLabel();</span>
+<span class="nc" id="L342">        this.updateAppIcons();</span>
+<span class="nc" id="L343">    }</span>
+
+    protected void updateAppIcons() {
+<span class="nc" id="L346">        boolean running = false;</span>
+<span class="nc" id="L347">        Project runningProject = null;</span>
+
+<span class="nc bnc" id="L349" title="All 2 branches missed.">        for (Project p : this.arPrj) {</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">            if (p.isRunning()) {</span>
+<span class="nc" id="L351">                running = true;</span>
+<span class="nc" id="L352">                runningProject = p;</span>
+<span class="nc" id="L353">                break;</span>
+            }
+<span class="nc" id="L355">        }</span>
+
+        // update frame-icon
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (this.runningState != running) {</span>
+<span class="nc" id="L359">            this.updateIconImage(running);</span>
+        }
+
+
+        // update system-tray
+<span class="nc bnc" id="L364" title="All 2 branches missed.">        if (SystemTray.isSupported()) {</span>
+<span class="nc" id="L365">            String strTray = &quot;jTimeSched&quot;;</span>
+
+<span class="nc bnc" id="L367" title="All 2 branches missed.">            if (running) {</span>
+<span class="nc" id="L368">                strTray += String.format(&quot; - %s %s&quot;,</span>
+<span class="nc" id="L369">                    runningProject.getTitle(),</span>
+<span class="nc" id="L370">                    ProjectTime.formatSeconds(runningProject.getSecondsToday()));</span>
+            }
+
+            // escape ampersand-character on windows
+<span class="nc bnc" id="L374" title="All 2 branches missed.">            if (System.getProperty(&quot;os.name&quot;).startsWith(&quot;Windows&quot;)) {</span>
+<span class="nc" id="L375">                strTray = strTray.replaceAll(&quot;&amp;&quot;, &quot;&amp;&amp;&amp;&quot;);</span>
+            }
+
+<span class="nc" id="L378">            this.trayIcon.setToolTip(strTray);</span>
+
+
+            // only update tray-icon on change
+<span class="nc bnc" id="L382" title="All 2 branches missed.">            if (this.runningState != running) {</span>
+<span class="nc" id="L383">                this.updateTrayIcon(running);</span>
+            }
+        }
+
+<span class="nc" id="L387">        this.runningState = running;</span>
+<span class="nc" id="L388">    }</span>
+
+    protected void updateIconImage(boolean running) {
+<span class="nc" id="L391">        List&lt;Image&gt; images = new ArrayList&lt;Image&gt;();</span>
+
+<span class="nc bnc" id="L393" title="All 2 branches missed.">        for (int size : JTimeSchedFrame.appIconSizes) {</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">            String filename = String.format(&quot;appicon/jTimeSched_%s_%dpx.png&quot;, (running ? &quot;on&quot; : &quot;off&quot;), size);</span>
+<span class="nc" id="L395">            images.add(JTimeSchedFrame.getImage(filename));</span>
+        }
+
+<span class="nc" id="L398">        this.setIconImages(images);</span>
+<span class="nc" id="L399">    }</span>
+
+    protected void updateTrayIcon(boolean running) {
+<span class="nc" id="L402">        int trayIconSize = this.trayIcon.getSize().width;</span>
+<span class="nc" id="L403">        int useSize = JTimeSchedFrame.appIconSizes[JTimeSchedFrame.appIconSizes.length - 1];</span>
+
+<span class="nc bnc" id="L405" title="All 2 branches missed.">        for (int size : JTimeSchedFrame.appIconSizes) {</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">            if (trayIconSize &lt;= size) {</span>
+<span class="nc" id="L407">                useSize = size;</span>
+<span class="nc" id="L408">                break;</span>
+            }
+        }
+
+<span class="nc bnc" id="L412" title="All 2 branches missed.">        String filename = String.format(&quot;appicon/jTimeSched_%s_%dpx.png&quot;, (running ? &quot;on&quot; : &quot;off&quot;), useSize);</span>
+<span class="nc" id="L413">        this.trayIcon.setImage(JTimeSchedFrame.getImage(filename));</span>
+<span class="nc" id="L414">    }</span>
+
+    protected void updateSchedTable() {
+<span class="nc" id="L417">        ProjectTableModel tstm = (ProjectTableModel) tblSched.getModel();</span>
+
+<span class="nc" id="L419">        int rowCount = tstm.getRowCount();</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">        if (rowCount &gt; 0) {</span>
+<span class="nc" id="L421">            tstm.fireTableRowsUpdated(0, rowCount - 1);</span>
+        }
+<span class="nc" id="L423">    }</span>
+
+    protected void updateStatsLabel() {
+<span class="nc" id="L426">        int projectCount = this.arPrj.size();</span>
+
+        // bottom stats label
+<span class="nc" id="L429">        String strStats = &quot;&quot;/*&quot;no projects&quot;*/;</span>
+<span class="nc bnc" id="L430" title="All 2 branches missed.">        if (projectCount &gt; 0) {</span>
+<span class="nc" id="L431">            int timeOverall = 0;</span>
+<span class="nc" id="L432">            int timeToday = 0;</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">            for (Project p : this.arPrj) {</span>
+<span class="nc" id="L434">                timeOverall += p.getSecondsOverall();</span>
+<span class="nc" id="L435">                timeToday += p.getSecondsToday();</span>
+<span class="nc" id="L436">            }</span>
+
+<span class="nc" id="L438">            strStats = String.format(&quot;%d project%s | %s overall | %s today&quot;,</span>
+<span class="nc" id="L439">                projectCount,</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">                (projectCount == 1) ? &quot;&quot; : &quot;s&quot;,</span>
+<span class="nc" id="L441">                ProjectTime.formatSeconds(timeOverall),</span>
+<span class="nc" id="L442">                ProjectTime.formatSeconds(timeToday));</span>
+        }
+
+<span class="nc" id="L445">        this.lblOverall.setText(strStats);</span>
+<span class="nc" id="L446">    }</span>
+
+    protected void updateTrayCurrentProject() {
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        if (this.currentProject == null) {</span>
+<span class="nc" id="L450">            itemToggleProject.setLabel(&quot;Toggle project&quot;);</span>
+<span class="nc" id="L451">            itemToggleProject.setEnabled(false);</span>
+        } else {
+<span class="nc" id="L453">            this.itemToggleProject.setLabel(</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">                (this.currentProject.isRunning() ? &quot;Pause&quot; : &quot;Start&quot;)</span>
+<span class="nc" id="L455">                    + &quot; \&quot;&quot; + this.currentProject.getTitle() + &quot;\&quot;&quot;);</span>
+<span class="nc" id="L456">            itemToggleProject.setEnabled(true);</span>
+        }
+<span class="nc" id="L458">    }</span>
+
+    public void handleStartPause(Project prj) {
+<span class="nc" id="L461">        JTimeSchedApp.getLogger().info(String.format(&quot;%s project '%s' (time overall: %s, time today: %s)&quot;,</span>
+<span class="nc bnc" id="L462" title="All 2 branches missed.">            (prj.isRunning()) ? &quot;Pausing&quot; : &quot;Starting&quot;,</span>
+<span class="nc" id="L463">            prj.getTitle(),</span>
+<span class="nc" id="L464">            ProjectTime.formatSeconds(prj.getSecondsOverall()),</span>
+<span class="nc" id="L465">            ProjectTime.formatSeconds(prj.getSecondsToday())));</span>
+
+        try {
+<span class="nc bnc" id="L468" title="All 2 branches missed.">            if (prj.isRunning()) {</span>
+<span class="nc" id="L469">                prj.pause();</span>
+            } else {
+                // pause all other projects
+<span class="nc bnc" id="L472" title="All 2 branches missed.">                for (Project p : this.arPrj) {</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">                    if (p.isRunning()) {</span>
+<span class="nc" id="L474">                        p.pause();</span>
+                    }
+<span class="nc" id="L476">                }</span>
+
+                // set project to run-state
+<span class="nc" id="L479">                prj.start();</span>
+            }
+
+<span class="nc" id="L482">            this.currentProject = prj;</span>
+<span class="nc" id="L483">            this.updateTrayCurrentProject();</span>
+
+<span class="nc" id="L485">        } catch (ProjectException ex) {</span>
+<span class="nc" id="L486">            ex.printStackTrace();</span>
+<span class="nc" id="L487">        }</span>
+
+        // update table
+<span class="nc" id="L490">        this.updateGUI();</span>
+<span class="nc" id="L491">    }</span>
+
+
+    public void handleDelete(ProjectTableModel tstm, Project prj, int modelRow) {
+        //  int response = JOptionPane.showConfirmDialog(
+        //  this,
+        //  &quot;Remove project \&quot;&quot; + prj.getTitle() + &quot;\&quot; from list?&quot;,
+        //  &quot;Remove project?&quot;,
+        //  JOptionPane.YES_NO_OPTION);
+        //
+        //  if (response != JOptionPane.YES_OPTION)
+        //      return;
+
+<span class="nc bnc" id="L504" title="All 2 branches missed.">        if (this.currentProject == prj) {</span>
+<span class="nc" id="L505">            this.currentProject = null;</span>
+        }
+
+<span class="nc" id="L508">        tstm.removeProject(modelRow);</span>
+
+<span class="nc" id="L510">        this.updateTrayCurrentProject();</span>
+<span class="nc" id="L511">        this.updateStatsLabel();</span>
+<span class="nc" id="L512">    }</span>
+
+
+    public void handleNewButton() {
+<span class="nc" id="L516">        Project prj = new Project(&quot;New project&quot;);</span>
+
+<span class="nc" id="L518">        ProjectTableModel tstm = (ProjectTableModel) this.tblSched.getModel();</span>
+<span class="nc" id="L519">        tstm.addProject(prj);</span>
+
+
+        // get recently added row (view index)
+<span class="nc" id="L523">        int viewRow = this.tblSched.convertRowIndexToView(tstm.getRowCount() - 1);</span>
+<span class="nc" id="L524">        int viewColumn = this.tblSched.convertColumnIndexToView(ProjectTableModel.COLUMN_TITLE);</span>
+
+        // start editing cell
+<span class="nc" id="L527">        this.tblSched.editCellAt(viewRow, viewColumn);</span>
+
+        // scroll to row/cell
+<span class="nc" id="L530">        this.tblSched.changeSelection(viewRow, viewColumn, false, false);</span>
+
+        // select all text if component is a textfield
+<span class="nc" id="L533">        Component ec = this.tblSched.getEditorComponent();</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">        if (ec != null) {</span>
+<span class="nc bnc" id="L535" title="All 2 branches missed.">            if (ec instanceof JTextField) {</span>
+<span class="nc" id="L536">                JTextField tf = (JTextField) ec;</span>
+<span class="nc" id="L537">                tf.selectAll();</span>
+            }
+
+            // set input focus on edit-cell
+<span class="nc" id="L541">            ec.requestFocusInWindow();</span>
+        }
+
+<span class="nc" id="L544">        this.updateStatsLabel();</span>
+<span class="nc" id="L545">    }</span>
+
+
+    protected void checkResetToday() {
+<span class="nc bnc" id="L549" title="All 2 branches missed.">        for (Project p : this.arPrj) {</span>
+<span class="nc" id="L550">            Date currentTime = new Date();</span>
+<span class="nc" id="L551">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;y-MMM-d&quot;);</span>
+<span class="nc" id="L552">            String strCurrentDay = sdf.format(currentTime);</span>
+<span class="nc" id="L553">            String strStartDay = sdf.format(p.getTimeStart());</span>
+
+<span class="nc bnc" id="L555" title="All 2 branches missed.">            if (!strCurrentDay.equals(strStartDay)) {</span>
+<span class="nc" id="L556">                JTimeSchedApp.getLogger().info(String.format(&quot;Resetting project '%s' (previous time: %s; checked: %s)&quot;,</span>
+<span class="nc" id="L557">                    p.getTitle(),</span>
+<span class="nc" id="L558">                    ProjectTime.formatSeconds(p.getSecondsToday()),</span>
+<span class="nc bnc" id="L559" title="All 2 branches missed.">                    (p.isChecked() ? &quot;yes&quot; : &quot;no&quot;)));</span>
+
+<span class="nc" id="L561">                p.resetToday();            // reset time today</span>
+<span class="nc" id="L562">                p.setChecked(false);    // uncheck project</span>
+            }
+<span class="nc" id="L564">        }</span>
+<span class="nc" id="L565">    }</span>
+
+
+    protected boolean setupTrayIcon() {
+<span class="nc bnc" id="L569" title="All 2 branches missed.">        if (SystemTray.isSupported()) {</span>
+<span class="nc" id="L570">            SystemTray tray = SystemTray.getSystemTray();</span>
+
+<span class="nc" id="L572">            ActionListener aboutListener = new ActionListener() {</span>
+                @Override
+                public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L575">                    JOptionPane.showMessageDialog(JTimeSchedFrame.this,</span>
+                        &quot;&lt;html&gt;&lt;big&gt;jTimeSched&lt;/big&gt;&lt;br/&gt;Version &quot;
+<span class="nc" id="L577">                            + JTimeSchedApp.getAppVersion() + &quot;&lt;br/&gt;&lt;br/&gt;&quot;</span>
+                            + &quot;written by Dominik D. Geyer&lt;br/&gt;&quot;
+                            + &quot;&amp;lt;code@dominik-geyer.de&amp;gt;&lt;br/&gt;&lt;br/&gt;&quot;
+                            + &quot;released under the GPLv3 license&lt;/html&gt;&quot;,
+                        &quot;About jTimeSched&quot;,
+                        JOptionPane.INFORMATION_MESSAGE,
+<span class="nc" id="L583">                        JTimeSchedFrame.getImageIcon(&quot;appicon/jTimeSched_on_64px.png&quot;));</span>
+<span class="nc" id="L584">                }</span>
+            };
+
+<span class="nc" id="L587">            final ActionListener exitListener = new ActionListener() {</span>
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    // save projects
+<span class="nc" id="L592">                    saveTimer.stop();</span>
+<span class="nc" id="L593">                    saveProjects();</span>
+
+                    // store settings
+                    try {
+<span class="nc" id="L597">                        JTimeSchedFrame.this.saveSettings();</span>
+<span class="nc" id="L598">                    } catch (Exception ex) {</span>
+<span class="nc" id="L599">                        ex.printStackTrace();</span>
+<span class="nc" id="L600">                    }</span>
+
+<span class="nc" id="L602">                    JTimeSchedFrame.this.setVisible(false);</span>
+<span class="nc" id="L603">                    JTimeSchedFrame.this.dispose();</span>
+
+<span class="nc bnc" id="L605" title="All 2 branches missed.">                    if (SystemTray.isSupported()) {</span>
+<span class="nc" id="L606">                        SystemTray.getSystemTray().remove(JTimeSchedFrame.this.trayIcon);</span>
+                    }
+
+<span class="nc" id="L609">                    System.exit(0);</span>
+<span class="nc" id="L610">                }</span>
+            };
+
+<span class="nc" id="L613">            final ActionListener toggleProjectListener = new ActionListener() {</span>
+                @Override
+                public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L616" title="All 2 branches missed.">                    if (JTimeSchedFrame.this.currentProject != null) {</span>
+<span class="nc" id="L617">                        handleStartPause(JTimeSchedFrame.this.currentProject);</span>
+                    }
+<span class="nc" id="L619">                }</span>
+            };
+
+
+<span class="nc" id="L623">            PopupMenu popup = new PopupMenu();</span>
+
+<span class="nc" id="L625">            MenuItem itemAbout = new MenuItem(&quot;About...&quot;);</span>
+<span class="nc" id="L626">            itemAbout.addActionListener(aboutListener);</span>
+<span class="nc" id="L627">            popup.add(itemAbout);</span>
+
+<span class="nc" id="L629">            popup.addSeparator();</span>
+
+<span class="nc" id="L631">            itemToggleProject = new MenuItem(&quot;Toggle project&quot;);</span>
+<span class="nc" id="L632">            itemToggleProject.addActionListener(toggleProjectListener);</span>
+<span class="nc" id="L633">            itemToggleProject.setEnabled(false);</span>
+<span class="nc" id="L634">            popup.add(itemToggleProject);</span>
+
+<span class="nc" id="L636">            popup.addSeparator();</span>
+
+<span class="nc" id="L638">            MenuItem itemExit = new MenuItem(&quot;Exit&quot;);</span>
+<span class="nc" id="L639">            itemExit.addActionListener(exitListener);</span>
+<span class="nc" id="L640">            popup.add(itemExit);</span>
+
+
+<span class="nc" id="L643">            trayIcon = new TrayIcon(JTimeSchedFrame.getImage(&quot;appicon/jTimeSched_off_16px.png&quot;), &quot;jTimeSched&quot;, popup);</span>
+
+<span class="nc" id="L645">            ActionListener actionListener = new ActionListener() {</span>
+                public void actionPerformed(ActionEvent e) {
+                    //                    trayIcon.displayMessage(&quot;Action Event&quot;, 
+                    //                        &quot;An Action Event Has Been Performed!&quot;,
+                    //                        TrayIcon.MessageType.INFO);
+
+
+                    // FIXME: bring to front if not foreground-window [#5]
+                    // isActive() doesn't work on MS-Windows because click
+                    // into tray steels the focus.
+<span class="nc bnc" id="L655" title="All 2 branches missed.">                    if (!isVisible() /*|| !isActive()*/) {</span>
+<span class="nc" id="L656">                        setVisible(true);</span>
+                    } else {
+<span class="nc" id="L658">                        setVisible(false);</span>
+                    }
+<span class="nc" id="L660">                }</span>
+            };
+
+<span class="nc" id="L663">            trayIcon.setImageAutoSize(true);</span>
+<span class="nc" id="L664">            trayIcon.addActionListener(actionListener);</span>
+            //trayIcon.addMouseListener(mouseListener);
+
+            try {
+<span class="nc" id="L668">                tray.add(trayIcon);</span>
+
+<span class="nc" id="L670">                this.updateTrayIcon(false);</span>
+<span class="nc" id="L671">            } catch (AWTException e) {</span>
+<span class="nc" id="L672">                System.err.println(&quot;TrayIcon could not be added.&quot;);</span>
+<span class="nc" id="L673">                return false;</span>
+<span class="nc" id="L674">            }</span>
+
+<span class="nc" id="L676">            return true;</span>
+        } else {
+            //  System Tray is not supported
+<span class="nc" id="L679">            System.err.println(&quot;TrayIcon is not supported.&quot;);</span>
+<span class="nc" id="L680">            return false;</span>
+        }
+
+    }
+
+    protected void loadProjects() throws FileNotFoundException, Exception {
+<span class="nc" id="L686">        ProjectSerializer ps = new ProjectSerializer(JTimeSchedApp.PRJ_FILE);</span>
+<span class="nc" id="L687">        this.arPrj = ps.readXml();</span>
+<span class="nc" id="L688">    }</span>
+
+    protected void saveProjects() {
+        try {
+<span class="nc" id="L692">            ProjectSerializer ps = new ProjectSerializer(JTimeSchedApp.PRJ_FILE);</span>
+<span class="nc" id="L693">            ps.writeXml(JTimeSchedFrame.this.arPrj);</span>
+<span class="nc" id="L694">        } catch (Exception e) {</span>
+<span class="nc" id="L695">            JTimeSchedApp.getLogger().severe(&quot;Error saving project file: &quot; + e.getMessage());</span>
+<span class="nc" id="L696">            e.printStackTrace();</span>
+<span class="nc" id="L697">        }</span>
+<span class="nc" id="L698">    }</span>
+
+    /**
+     * Creates a backup of the current projects file.
+     * &lt;p&gt;
+     * NOTE: There is a more convenient way to do this: Path.copyTo(). However,
+     * Path.copyTo() of NIO is only available in &gt;=J2SE7
+     *
+     * @throws FileNotFoundException
+     * @throws Exception
+     */
+    protected void backupProjects() throws FileNotFoundException, Exception {
+<span class="nc" id="L710">        File file = new File(JTimeSchedApp.PRJ_FILE);</span>
+
+<span class="nc" id="L712">        FileInputStream fis = null;</span>
+<span class="nc" id="L713">        FileOutputStream fos = null;</span>
+
+        try {
+<span class="nc" id="L716">            fis = new FileInputStream(file);</span>
+<span class="nc" id="L717">            fos = new FileOutputStream(JTimeSchedApp.PRJ_FILE_BACKUP);</span>
+
+<span class="nc" id="L719">            byte[] buf = new byte[1024];</span>
+<span class="nc" id="L720">            int i = 0;</span>
+<span class="nc bnc" id="L721" title="All 2 branches missed.">            while ((i = fis.read(buf)) != -1) {</span>
+<span class="nc" id="L722">                fos.write(buf, 0, i);</span>
+            }
+        } finally {
+<span class="nc bnc" id="L725" title="All 2 branches missed.">            if (fis != null) {</span>
+                try {
+<span class="nc" id="L727">                    fis.close();</span>
+<span class="nc" id="L728">                } catch (IOException e) {</span>
+<span class="nc" id="L729">                    e.printStackTrace();</span>
+<span class="nc" id="L730">                }</span>
+            }
+<span class="nc bnc" id="L732" title="All 2 branches missed.">            if (fos != null) {</span>
+                try {
+<span class="nc" id="L734">                    fos.close();</span>
+<span class="nc" id="L735">                } catch (IOException e) {</span>
+<span class="nc" id="L736">                    e.printStackTrace();</span>
+<span class="nc" id="L737">                }</span>
+            }
+        }
+<span class="nc" id="L740">    }</span>
+
+    protected void loadSettings() throws FileNotFoundException, Exception {
+<span class="nc" id="L743">        FileInputStream fis = null;</span>
+<span class="nc" id="L744">        ObjectInputStream in = null;</span>
+        try {
+<span class="nc" id="L746">            fis = new FileInputStream(JTimeSchedApp.SETTINGS_FILE);</span>
+<span class="nc" id="L747">            in = new ObjectInputStream(fis);</span>
+
+            /*String appVersion =*/
+<span class="nc" id="L750">            in.readUTF();    // app-version; ignored by now</span>
+
+<span class="nc" id="L752">            Dimension size = (Dimension) in.readObject();</span>
+<span class="nc" id="L753">            this.setSize(size);</span>
+<span class="nc" id="L754">            this.setPreferredSize(size);</span>
+
+<span class="nc" id="L756">            this.setLocation((Point) in.readObject());</span>
+<span class="nc" id="L757">            this.initiallyVisible = in.readBoolean();</span>
+
+<span class="nc" id="L759">            Boolean logVisible = in.readBoolean();</span>
+<span class="nc" id="L760">            this.spLog.setVisible(logVisible);</span>
+<span class="nc" id="L761">            this.btnLogToggle.setSelected(logVisible);</span>
+
+<span class="nc" id="L763">            int sortColumn = in.readInt();</span>
+<span class="nc" id="L764">            boolean sortAsc = in.readBoolean();</span>
+<span class="nc" id="L765">            List&lt;RowSorter.SortKey&gt; sortKeys = new ArrayList&lt;RowSorter.SortKey&gt;();</span>
+<span class="nc bnc" id="L766" title="All 2 branches missed.">            sortKeys.add(new RowSorter.SortKey(sortColumn, sortAsc ? SortOrder.ASCENDING : SortOrder.DESCENDING));</span>
+<span class="nc" id="L767">            this.tblSched.getRowSorter().setSortKeys(sortKeys);</span>
+<span class="nc" id="L768">        } catch (Exception ex) {</span>
+<span class="nc" id="L769">            throw ex;</span>
+        } finally {
+<span class="nc bnc" id="L771" title="All 2 branches missed.">            if (in != null) {</span>
+<span class="nc" id="L772">                in.close();</span>
+            }
+        }
+<span class="nc" id="L775">    }</span>
+
+
+    protected void saveSettings() throws Exception {
+<span class="nc" id="L779">        FileOutputStream fos = null;</span>
+<span class="nc" id="L780">        ObjectOutputStream out = null;</span>
+        try {
+<span class="nc" id="L782">            fos = new FileOutputStream(JTimeSchedApp.SETTINGS_FILE);</span>
+<span class="nc" id="L783">            out = new ObjectOutputStream(fos);</span>
+
+<span class="nc" id="L785">            out.writeUTF(JTimeSchedApp.getAppVersion());</span>
+<span class="nc" id="L786">            out.writeObject(this.getSize());</span>
+<span class="nc" id="L787">            out.writeObject(this.getLocation());</span>
+<span class="nc" id="L788">            out.writeBoolean(this.isVisible());</span>
+<span class="nc" id="L789">            out.writeBoolean(this.spLog.isVisible());</span>
+
+<span class="nc" id="L791">            List&lt;? extends SortKey&gt; sortKeys = this.tblSched.getRowSorter().getSortKeys();</span>
+<span class="nc" id="L792">            RowSorter.SortKey sortKey = sortKeys.get(0);</span>
+<span class="nc" id="L793">            out.writeInt(sortKey.getColumn());</span>
+<span class="nc bnc" id="L794" title="All 2 branches missed.">            boolean sortAsc = (sortKey.getSortOrder() == SortOrder.ASCENDING) ? true : false;</span>
+<span class="nc" id="L795">            out.writeBoolean(sortAsc);</span>
+
+<span class="nc" id="L797">            out.close();</span>
+<span class="nc" id="L798">        } catch (IOException ex) {</span>
+<span class="nc" id="L799">            throw ex;</span>
+<span class="nc" id="L800">        }</span>
+<span class="nc" id="L801">    }</span>
+
+
+<span class="nc" id="L804">    class TimeSchedTableMouseListener extends MouseAdapter {</span>
+        @Override
+        public void mouseClicked(MouseEvent e) {
+<span class="nc bnc" id="L807" title="All 2 branches missed.">            if (tblSched.getRowCount() == 0) {</span>
+<span class="nc" id="L808">                return;</span>
+            }
+
+<span class="nc" id="L811">            int selRow = tblSched.rowAtPoint(e.getPoint());</span>
+<span class="nc" id="L812">            int selColumn = tblSched.columnAtPoint(e.getPoint());</span>
+
+<span class="nc bnc" id="L814" title="All 4 branches missed.">            if (selRow == -1 || selColumn == -1) {</span>
+<span class="nc" id="L815">                return;</span>
+            }
+
+<span class="nc" id="L818">            int row = tblSched.convertRowIndexToModel(selRow);</span>
+<span class="nc" id="L819">            int column = tblSched.convertColumnIndexToModel(selColumn);</span>
+
+<span class="nc" id="L821">            ProjectTableModel tstm = (ProjectTableModel) tblSched.getModel();</span>
+<span class="nc" id="L822">            Project prj = tstm.getProjectAt(row);</span>
+
+<span class="nc" id="L824">            int button = e.getButton();</span>
+<span class="nc bnc" id="L825" title="All 2 branches missed.">            if (button == MouseEvent.BUTTON1) {    // left button</span>
+<span class="nc bnc" id="L826" title="All 3 branches missed.">                switch (column) {</span>
+                    case ProjectTableModel.COLUMN_ACTION_DELETE:
+<span class="nc bnc" id="L828" title="All 2 branches missed.">                        if (e.getClickCount() == 2) {</span>
+<span class="nc" id="L829">                            handleDelete(tstm, prj, row);</span>
+                        }
+                        break;
+                    case ProjectTableModel.COLUMN_ACTION_STARTPAUSE:
+<span class="nc" id="L833">                        handleStartPause(prj);</span>
+<span class="nc" id="L834">                        break;</span>
+                    default:
+<span class="nc" id="L836">                        break;</span>
+                }
+<span class="nc bnc" id="L838" title="All 2 branches missed.">            } else if (button == MouseEvent.BUTTON2) {    // middle button</span>
+<span class="nc" id="L839">                handleStartPause(prj);</span>
+<span class="nc bnc" id="L840" title="All 2 branches missed.">            } else if (button == MouseEvent.BUTTON3) {    // right button</span>
+<span class="nc bnc" id="L841" title="All 3 branches missed.">                switch (column) {</span>
+                    case ProjectTableModel.COLUMN_TIMEOVERALL:
+                    case ProjectTableModel.COLUMN_TIMETODAY:
+<span class="nc" id="L844">                        String input = JOptionPane.showInputDialog(JTimeSchedFrame.this,</span>
+                            &quot;Enter new quota for time &quot;
+<span class="nc bnc" id="L846" title="All 2 branches missed.">                                + (column == ProjectTableModel.COLUMN_TIMEOVERALL ? &quot;overall&quot; : &quot;today&quot;) + &quot;:&quot;,</span>
+<span class="nc" id="L847">                            ProjectTime.formatSeconds(</span>
+<span class="nc bnc" id="L848" title="All 2 branches missed.">                                (column == ProjectTableModel.COLUMN_TIMEOVERALL) ? prj.getQuotaOverall() : prj.getQuotaToday()));</span>
+
+<span class="nc bnc" id="L850" title="All 2 branches missed.">                        if (input != null) {</span>
+<span class="nc" id="L851">                            int newSeconds = 0;</span>
+                            try {
+<span class="nc bnc" id="L853" title="All 2 branches missed.">                                if (!input.isEmpty()) {</span>
+<span class="nc" id="L854">                                    newSeconds = ProjectTime.parseSeconds(input);</span>
+                                }
+
+<span class="nc bnc" id="L857" title="All 2 branches missed.">                                if (column == ProjectTableModel.COLUMN_TIMEOVERALL) {</span>
+<span class="nc" id="L858">                                    prj.setQuotaOverall(newSeconds);</span>
+                                } else {
+<span class="nc" id="L860">                                    prj.setQuotaToday(newSeconds);</span>
+                                }
+
+<span class="nc" id="L863">                                tstm.fireTableRowsUpdated(row, row);</span>
+<span class="nc" id="L864">                            } catch (ParseException pe) {</span>
+<span class="nc" id="L865">                                JOptionPane.showMessageDialog(JTimeSchedFrame.this,</span>
+                                    &quot;Invalid seconds-string, keeping previous value.&quot;,
+                                    &quot;Invalid input&quot;,
+                                    JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L869">                            }</span>
+<span class="nc" id="L870">                        }</span>
+                        break;
+                    case ProjectTableModel.COLUMN_TITLE:
+<span class="nc" id="L873">                        NotesDialog dialog = new NotesDialog(JTimeSchedFrame.this, prj.getNotes());</span>
+<span class="nc" id="L874">                        dialog.setVisible(true);</span>
+
+<span class="nc bnc" id="L876" title="All 2 branches missed.">                        if (dialog.isConfirmed()) {</span>
+<span class="nc" id="L877">                            prj.setNotes(dialog.getInputText());</span>
+                        }
+
+                        break;
+                    default:
+<span class="nc" id="L882">                        throw new IllegalStateException(&quot;Unexpected value: &quot; + column);</span>
+                }
+            }
+<span class="nc" id="L885">        }</span>
+    }
+
+<span class="nc" id="L888">    class TimeSchedTableHeaderMouseListener extends MouseAdapter {</span>
+        @Override
+        public void mousePressed(MouseEvent e) {
+<span class="nc" id="L891">            this.showPopup(e);</span>
+<span class="nc" id="L892">        }</span>
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+<span class="nc" id="L896">            this.showPopup(e);</span>
+<span class="nc" id="L897">        }</span>
+
+        private void showPopup(MouseEvent e) {
+<span class="nc bnc" id="L900" title="All 2 branches missed.">            if (!e.isPopupTrigger()) {</span>
+<span class="nc" id="L901">                return;</span>
+            }
+
+<span class="nc" id="L904">            Point p = e.getPoint();</span>
+<span class="nc" id="L905">            int selColumn = tblSched.getTableHeader().columnAtPoint(p);</span>
+<span class="nc" id="L906">            int column = tblSched.convertColumnIndexToModel(selColumn);</span>
+
+<span class="nc" id="L908">            JPopupMenu popup = new JPopupMenu();</span>
+
+<span class="nc bnc" id="L910" title="All 4 branches missed.">            switch (column) {</span>
+                case ProjectTableModel.COLUMN_CHECK:
+                    class CheckActionListener implements ActionListener {
+                        private boolean check;
+
+<span class="nc" id="L915">                        public CheckActionListener(boolean check) {</span>
+<span class="nc" id="L916">                            this.check = check;</span>
+<span class="nc" id="L917">                        }</span>
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L921" title="All 2 branches missed.">                            for (Project p : arPrj) {</span>
+<span class="nc" id="L922">                                p.setChecked(this.check);</span>
+<span class="nc" id="L923">                            }</span>
+<span class="nc" id="L924">                            updateSchedTable();</span>
+<span class="nc" id="L925">                        }</span>
+                    }
+
+<span class="nc" id="L928">                    JMenuItem itemCheck = new JMenuItem(&quot;Check all&quot;);</span>
+<span class="nc" id="L929">                    itemCheck.addActionListener(new CheckActionListener(true));</span>
+<span class="nc" id="L930">                    JMenuItem itemUncheck = new JMenuItem(&quot;Uncheck all&quot;);</span>
+<span class="nc" id="L931">                    itemUncheck.addActionListener(new CheckActionListener(false));</span>
+
+<span class="nc" id="L933">                    popup.add(itemCheck);</span>
+<span class="nc" id="L934">                    popup.add(itemUncheck);</span>
+<span class="nc" id="L935">                    popup.show(e.getComponent(), e.getX(), e.getY());</span>
+
+<span class="nc" id="L937">                    break;</span>
+
+                case ProjectTableModel.COLUMN_ACTION_DELETE:
+<span class="nc" id="L940">                    JMenuItem itemDelete = new JMenuItem(&quot;Delete all&quot;);</span>
+<span class="nc" id="L941">                    itemDelete.addActionListener(new ActionListener() {</span>
+                        @Override
+                        public void actionPerformed(ActionEvent arg0) {
+<span class="nc" id="L944">                            ProjectTableModel ptm = (ProjectTableModel) JTimeSchedFrame.this.tblSched.getModel();</span>
+
+                            // make use of table model's removeProject method
+<span class="nc bnc" id="L947" title="All 2 branches missed.">                            while (ptm.getRowCount() &gt; 0) {</span>
+<span class="nc" id="L948">                                ptm.removeProject(0);</span>
+                            }
+<span class="nc" id="L950">                            JTimeSchedFrame.this.currentProject = null;</span>
+
+<span class="nc" id="L952">                            JTimeSchedFrame.this.updateStatsLabel();</span>
+<span class="nc" id="L953">                            JTimeSchedFrame.this.updateTrayCurrentProject();</span>
+<span class="nc" id="L954">                        }</span>
+                    });
+
+<span class="nc" id="L957">                    popup.add(itemDelete);</span>
+<span class="nc" id="L958">                    popup.show(e.getComponent(), e.getX(), e.getY());</span>
+
+<span class="nc" id="L960">                    break;</span>
+
+                case ProjectTableModel.COLUMN_COLOR:
+<span class="nc" id="L963">                    JMenuItem itemClear = new JMenuItem(&quot;Clear all&quot;);</span>
+<span class="nc" id="L964">                    itemClear.addActionListener(new ActionListener() {</span>
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L968" title="All 2 branches missed.">                            for (Project p : arPrj) {</span>
+<span class="nc" id="L969">                                p.setColor(null);</span>
+<span class="nc" id="L970">                            }</span>
+<span class="nc" id="L971">                            updateSchedTable();</span>
+<span class="nc" id="L972">                        }</span>
+                    });
+
+<span class="nc" id="L975">                    popup.add(itemClear);</span>
+<span class="nc" id="L976">                    popup.show(e.getComponent(), e.getX(), e.getY());</span>
+
+<span class="nc" id="L978">                    break;</span>
+                default:
+<span class="nc" id="L980">                    throw new IllegalStateException(&quot;Unexpected value: &quot; + column);</span>
+            }
+<span class="nc" id="L982">        }</span>
+    }
+
+<span class="nc" id="L985">    class TimeSchedTableKeyListener implements KeyListener {</span>
+        @Override
+        public void keyPressed(KeyEvent e) {
+<span class="nc" id="L988">            int keyCode = e.getKeyCode();</span>
+
+<span class="nc bnc" id="L990" title="All 2 branches missed.">            if (keyCode == KeyEvent.VK_INSERT) {</span>
+<span class="nc" id="L991">                handleNewButton();</span>
+<span class="nc" id="L992">                e.consume();</span>
+<span class="nc" id="L993">                return;</span>
+            }
+
+<span class="nc" id="L996">            int selRow = tblSched.getSelectedRow();</span>
+<span class="nc bnc" id="L997" title="All 2 branches missed.">            if (selRow == -1) {</span>
+<span class="nc" id="L998">                return;</span>
+            }
+
+<span class="nc" id="L1001">            int row = tblSched.convertRowIndexToModel(selRow);</span>
+
+<span class="nc" id="L1003">            ProjectTableModel ptm = (ProjectTableModel) tblSched.getModel();</span>
+<span class="nc" id="L1004">            Project p = ptm.getProjectAt(row);</span>
+
+<span class="nc bnc" id="L1006" title="All 3 branches missed.">            switch (keyCode) {</span>
+                case KeyEvent.VK_SPACE:
+<span class="nc" id="L1008">                    handleStartPause(p);</span>
+<span class="nc" id="L1009">                    e.consume();</span>
+<span class="nc" id="L1010">                    break;</span>
+                case KeyEvent.VK_DELETE:
+<span class="nc" id="L1012">                    handleDelete(ptm, p, row);</span>
+<span class="nc" id="L1013">                    e.consume();</span>
+<span class="nc" id="L1014">                    break;</span>
+                default:
+<span class="nc" id="L1016">                    throw new IllegalStateException(&quot;Unexpected value: &quot; + keyCode);</span>
+            }
+<span class="nc" id="L1018">        }</span>
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+<span class="nc" id="L1022">        }</span>
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+<span class="nc" id="L1026">        }</span>
+    }
+
+    static class JTimeSchedGUILogHandler extends Handler {
+        private JTextArea logArea;
+
+<span class="nc" id="L1032">        public JTimeSchedGUILogHandler(JTextArea ta) {</span>
+<span class="nc" id="L1033">            this.logArea = ta;</span>
+<span class="nc" id="L1034">        }</span>
+
+        @Override
+        public void close() throws SecurityException {
+<span class="nc" id="L1038">        }</span>
+
+        @Override
+        public void flush() {
+<span class="nc" id="L1042">        }</span>
+
+        @Override
+        public void publish(LogRecord lr) {
+<span class="nc" id="L1046">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;HH:mm:ss&quot;);</span>
+<span class="nc" id="L1047">            String line = String.format(&quot;%s %s%n&quot;,</span>
+<span class="nc" id="L1048">                sdf.format(new Date(lr.getMillis())),</span>
+<span class="nc" id="L1049">                lr.getMessage());</span>
+<span class="nc" id="L1050">            this.logArea.append(line);</span>
+<span class="nc" id="L1051">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

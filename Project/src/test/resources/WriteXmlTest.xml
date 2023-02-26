@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><projects version="unknown">
+    <project>
+        <title>Running Project</title>
+        <notes>A quick note</notes>
+        <created>1670262597596</created>
+        <started>1670262597596</started>
+        <running>no</running>
+        <checked>no</checked>
+        <time overall="0" today="0"/>
+        <quota overall="120" today="60"/>
+    </project>
+    <project>
+        <title>Checked Project</title>
+        <notes/>
+        <created>1670262597596</created>
+        <started>1670262597596</started>
+        <running>no</running>
+        <checked>yes</checked>
+        <time overall="0" today="0"/>
+        <quota overall="0" today="0"/>
+        <color red="3" green="145" blue="255" alpha="255"/>
+    </project>
+    <project>
+        <title>Times Project</title>
+        <notes/>
+        <created>1539648000000</created>
+        <started>1670262597596</started>
+        <running>no</running>
+        <checked>no</checked>
+        <time overall="3600" today="440"/>
+        <quota overall="0" today="0"/>
+    </project>
+</projects>
